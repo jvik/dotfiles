@@ -1,0 +1,11 @@
+[gpg]
+        format = ssh
+[user]
+        signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPzWi+NokP2tWZOMWl92oWK3A5bbfX4C1tPgtDkH08iF"
+        name = "Jorgen V"
+        email = mail@jvik.no
+[commit]
+        gpgsign = true
+        
+[push]
+	autoSetupRemote = true
