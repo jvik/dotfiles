@@ -2,7 +2,7 @@
 - name: Install multiple packages
   hosts: localhost
   become: yes
-  gather_facts: yes
+  gather_facts: false
   vars:
     user: 'jorgen'
   tasks:
@@ -19,6 +19,7 @@
           - tree
           - flatpak
           - ansible-lint
+          - wofi
         state: present
         update_cache: yes
 
