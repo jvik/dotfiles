@@ -22,14 +22,10 @@
           - firefox
           - gh
           - gnome-tweaks
-          - gcc
-          - go-task
           - ripgrep
-          - poetry
           - zsh
           - fzf
           - tmux
-          - ffmpeg-free
           - wl-clipboard
           - fd-find
         state: present

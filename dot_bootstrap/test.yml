@@ -1,0 +1,111 @@
+---
+- name: Install multiple packages
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  vars:
+    user: 'jorgen'
+  tasks:
+    # - name: Ensure community.general collection is installed and up-to-date
+    #   ansible.builtin.command:
+    #     cmd: ansible-galaxy collection install community.general --upgrade
+    #   become: false
+    #   changed_when: false
+
+    - name: Install packages
+      ansible.builtin.package:
+        name:
+          - fd-find
+          - tree
+          - flatpak
+          - ansible-lint
+        state: present
+        update_cache: yes
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name:
+          - org.videolan.VLC
+        state: present
+
+    - name: Set user shell to zsh
+      ansible.builtin.user:
+        name: '{{ user }}'
+        shell: /bin/zsh
+      become: true
+
+    - name: Check if Homebrew is already installed
+      ansible.builtin.stat:
+        path: '/home/linuxbrew/.linuxbrew/bin/brew'
+      register: brew_stat
+
+    - block:
+        - name: Create Homebrew directory
+          ansible.builtin.file:
+            path: '/home/linuxbrew/.linuxbrew'
+            state: directory
+            owner: '{{ user }}'
+            group: '{{ user }}'
+            mode: '0755'
+          become: true
+
+        - name: Install Homebrew
+          ansible.builtin.shell: |
+            curl -fsSL https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C /home/linuxbrew/.linuxbrew
+
+      when: not brew_stat.stat.exists
+      environment:
+        PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+
+    - name: Check if oh my zsh is already installed
+      ansible.builtin.stat:
+        path: '/home/{{ user }}/.oh-my-zsh'
+      register: oh_my_zsh_stat
+
+    - name: Install oh-my-zsh
+      block:
+        - name: Create oh-my-zsh directory
+          ansible.builtin.file:
+            path: '/home/{{ user }}/.oh-my-zsh'
+            state: directory
+            owner: '{{ user }}'
+            group: '{{ user }}'
+            mode: '0755'
+
+        - name: Download ohmyzsh
+          ansible.builtin.get_url:
+            url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+            dest: '/home/{{ user }}/install.sh'
+            mode: '0755'
+
+        - name: Install ohmyzsh
+          ansible.builtin.script:
+            cmd: '/home/{{ user }}/install.sh'
+
+      when: not oh_my_zsh_stat.stat.exists
+
+    - name: Install homebrew packages
+      become: false
+      community.general.homebrew:
+        name:
+          - ctop
+          - fzf
+          - gh
+          - just
+          - neovim
+          - tfenv
+          - uv
+          - zoxide
+          - zsh-autosuggestions
+          - zsh-syntax-highlighting
+        state: present
+
+    - name: Install homebrew casks
+      become: false
+      community.general.homebrew_cask:
+        name:
+          - font-fira-code-nerd-font
+          - font-fontawesome
+          - font-jetbrains-mono
+          - font-jetbrains-mono-nerd-font
+        state: present
