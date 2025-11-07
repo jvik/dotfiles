@@ -54,12 +54,12 @@ set $monitorDisableTimeout 300
 set $lockerTimeout 360
 set $suspendTimeout 600
 
-exec_always killall swayidle; swayidle -w \
-timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-timeout $lockerTimeout $locker \
-timeout $suspendTimeout 'systemctl suspend' before-sleep $locker before-sleep $locker
+set $lockman exec bash ~/.config/sway/lockman.sh
 
-bindsym $mod+Control+l exec $locker
+
+#bindsym $mod+Control+l exec $locker; swayidle -w \
+#timeout 10 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
+bindsym $mod+Control+l exec $lockman
 #          timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
 #          before-sleep 'swaylock -f -c 000000'
 #
