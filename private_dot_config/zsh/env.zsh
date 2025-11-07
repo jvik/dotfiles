@@ -53,7 +53,7 @@ export CLICOLOR=1
 
 export ZLE_RPROMPT_INDENT=0
 
-export SSH_AUTH_SOCK=$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
+export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
 
 plugins=(vi-mode git kubectl terraform azure)
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
