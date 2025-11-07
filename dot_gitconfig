@@ -6,3 +6,6 @@
         email = mail@jvik.no
 [commit]
         gpgsign = true
+        
+[push]
+	autoSetupRemote = true
