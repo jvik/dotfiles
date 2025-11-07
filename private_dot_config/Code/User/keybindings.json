@@ -1,0 +1,13 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+'",
+        "command": "-ms-azurecli.runLineInTerminal",
+        "when": "editorTextFocus && editorLangId == 'azcli'"
+    },
+    {
+        "key": "ctrl+k ctrl+c",
+        "command": "-editor.action.addCommentLine",
+        "when": "editorTextFocus && !editorReadonly"
+    }
+]

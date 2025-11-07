@@ -1,0 +1,122 @@
+{
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "[powershell]": {
+        "editor.autoIndent": "advanced",
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": false,
+        "editor.snippetSuggestions": "none",
+        "files.autoGuessEncoding": false,
+        "files.encoding": "utf8bom"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "[yaml]": {
+        "editor.rulers": [
+            80
+        ]
+    },
+    "azureFunctions.showProjectWarning": false,
+    "azureTerraform.survey": {
+        "surveyPromptDate": "never",
+        "surveyPromptIgnoredCount": 0
+    },
+    "editor.bracketPairColorization.enabled": true,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.detectIndentation": true,
+    "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'Droid Sans Mono', 'monospace', 'Font Awesome 7 Free'",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 14,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.guides.bracketPairs": "active",
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "all",
+    "editor.rulers": [
+        120
+    ],
+    "editor.smoothScrolling": true,
+    "editor.suggestSelection": "first",
+    "explorer.confirmDragAndDrop": false,
+    "extensions.autoUpdate": "onlyEnabledExtensions",
+    "files.associations": {
+        "*.ps1xml": "xml"
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/*/**": true
+    },
+    "git.autofetch": false,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "git.ignoreRebaseWarning": true,
+    "git.terminalAuthentication": true,
+    "github.copilot.enable": {
+        "*": false,
+        "plaintext": true,
+        "markdown": false,
+        "scminput": false,
+        "javascript": false,
+        "json": false,
+        "python": false,
+        "terraform": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": true,
+    "githubPullRequests.createOnPublishBranch": "never",
+    "githubPullRequests.fileListLayout": "tree",
+    "githubPullRequests.pushBranch": "always",
+    "indentRainbow.updateDelay": 500,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "powershell.codeFormatting.autoCorrectAliases": true,
+    "powershell.codeFormatting.ignoreOneLineBlock": true,
+    "powershell.codeFormatting.useCorrectCasing": true,
+    "powershell.enableProfileLoading": false,
+    "powershell.scriptAnalysis.enable": true,
+    "presentationMode.zoomLevel": 3,
+    "redhat.telemetry.enabled": false,
+    "svelte.enable-ts-plugin": true,
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    "settingsSync.ignoredExtensions": [
+        "icrawl.discord-vscode"
+    ],
+    "terminal.integrated.gpuAcceleration": "auto",
+    "terminal.integrated.fontFamily": "JetBrainsMono Nerd Font Mono",
+    "terraform.experimentalFeatures.prefillRequiredFields": true,
+    "terraform.experimentalFeatures.validateOnSave": true,
+    "terraform.languageServer.enable": true,
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "[ ]",
+        "[x]"
+    ],
+    "todo-tree.regex.regex": "(//|#|<!--|;|/\\*|^|^\\s*(-|\\d+.))\\s*($TAGS)",
+    "turboConsoleLog.quote": "'",
+    "update.showReleaseNotes": false,
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.colorTheme": "Gruvbox Light Soft",
+    "workbench.editor.empty.hint": "hidden",
+    "workbench.externalBrowser": "firefox",
+    "workbench.iconTheme": "catppuccin-latte",
+    "workbench.startupEditor": "newUntitledFile"
+}

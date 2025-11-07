@@ -1,0 +1,4 @@
+.zcompdump*
+/.zsh_sessions/
+*.zwc
+local.zsh

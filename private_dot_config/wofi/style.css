@@ -1,0 +1,57 @@
+/* Wofi Style - Gruvbox Light theme */
+
+window {
+    margin: 0px;
+    border: 2px solid #076678;
+    background-color: #fbf1c7;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+#input {
+    margin: 5px;
+    border: 1px solid #076678;
+    color: #3c3836;
+    background-color: #ebdbb2;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#inner-box {
+    margin: 5px;
+    border: none;
+    background-color: #fbf1c7;
+}
+
+#outer-box {
+    margin: 5px;
+    border: none;
+    background-color: #fbf1c7;
+}
+
+#scroll {
+    margin: 0px;
+    border: none;
+}
+
+#text {
+    margin: 5px;
+    border: none;
+    color: #3c3836;
+}
+
+#entry:selected {
+    background-color: #076678;
+    color: #fbf1c7;
+    border-radius: 3px;
+}
+
+#entry:hover {
+    background-color: #d5c4a1;
+    border-radius: 3px;
+}
+
+#text:selected {
+    color: #fbf1c7;
+}
