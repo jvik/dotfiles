@@ -138,4 +138,5 @@
           - font-fontawesome
           - font-jetbrains-mono
           - font-jetbrains-mono-nerd-font
+          - font-fontawesome
         state: present
