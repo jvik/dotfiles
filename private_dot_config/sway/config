@@ -310,12 +310,10 @@ assign [title="Plexamp"] 10
 assign [app_id="spotify"] 10
 assign [app_id="signal"] 8
 
+focus_on_window_activation focus
+
 # Auto launch default applications
 exec flatpak run com.bitwarden.desktop
-
-
-
-focus_on_window_activation urgent
 
 # Autostart background services
 exec_always "killall swaync; swaync"
