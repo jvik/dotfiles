@@ -38,6 +38,15 @@
       community.general.flatpak:
         name:
           - org.videolan.VLC
+          - com.bitwarden.desktop/x86_64/stable
+          - com.fastmail.Fastmail/x86_64/stable
+          - com.github.tchx84.Flatseal/x86_64/stable
+          - com.mattjakeman.ExtensionManager/x86_64/stable
+          - com.mikrotik.WinBox/x86_64/stable
+          - com.plexamp.Plexamp/x86_64/stable
+          - com.saivert.pwvucontrol/x86_64/stable
+          - dev.vencord.Vesktop/x86_64/stable
+          - md.obsidian.Obsidian/x86_64/stable
         state: present
 
     - name: Set user shell to zsh
