@@ -3,8 +3,8 @@
   hosts: localhost
   become: yes
   gather_facts: false
-  vars:
-    user: "jorgen"
+  vars_files:
+    - ~/.bootstrap/vars.yml
   tasks:
     # - name: Ensure community.general collection is installed and up-to-date
     #   ansible.builtin.command:
@@ -29,7 +29,6 @@
       ansible.builtin.package:
         name:
           - sway
-          - waylock
           - wofi
           - SwayNotificationCenter
           - waybar
@@ -113,6 +112,14 @@
           - zsh-autosuggestions
           - zsh-syntax-highlighting
         state: present
+
+    # - name: Install homebrew extras for sway
+    #   become: false
+    #   community.general.homebrew:
+    #     name:
+    #       - waylock
+    #     state: present
+    #   when: window_manager == "sway"
 
     - name: Install homebrew casks
       become: false
