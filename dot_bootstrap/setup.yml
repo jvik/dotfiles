@@ -2,7 +2,7 @@
 - name: Install multiple packages
   hosts: localhost
   become: yes
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - ~/.bootstrap/vars.yml
   tasks:
@@ -11,6 +11,29 @@
     #     cmd: ansible-galaxy collection install community.general --upgrade
     #   become: false
     #   changed_when: false
+
+    - block:
+        - name: Importing RPM Fusion (free) key
+          ansible.builtin.rpm_key:
+            state: present
+            key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+
+        - name: Importing RPM Fusion (non-free) key
+          ansible.builtin.rpm_key:
+            state: present
+            key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+
+        - name: Enable the RPM Fusion repository
+          ansible.builtin.dnf:
+            name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm"
+            state: present
+
+        - name: Enable RPM Fusion Nonfree repository
+          ansible.builtin.dnf:
+            name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+            state: present
+
+      when: ansible_distribution == 'Fedora'
 
     - name: Install packages
       ansible.builtin.package:
@@ -22,6 +45,7 @@
           - htop
           - blueman
           - wezterm
+          - unrar
         state: present
         update_cache: yes
 
