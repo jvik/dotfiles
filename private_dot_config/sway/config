@@ -49,12 +49,16 @@ output * bg #333333 solid_color
 #
 #
 set $locker 'swaylock -f -c 444444'
+set $lockman exec bash ~/.config/sway/lockman.sh
 
 set $monitorDisableTimeout 300
 set $lockerTimeout 360
 set $suspendTimeout 600
 
-set $lockman exec bash ~/.config/sway/lockman.sh
+exec_always killall swayidle; swayidle -w \
+timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+timeout $lockerTimeout $locker \
+timeout $suspendTimeout 'systemctl suspend' before-sleep $locker before-sleep $locker
 
 
 #bindsym $mod+Control+l exec $locker; swayidle -w \
