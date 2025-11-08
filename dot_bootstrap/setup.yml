@@ -3,8 +3,8 @@
   hosts: localhost
   become: yes
   gather_facts: false
-  vars:
-    user: 'jorgen'
+  vars_files:
+    - ~/.bootstrap/vars.yml
   tasks:
     # - name: Ensure community.general collection is installed and up-to-date
     #   ansible.builtin.command:
@@ -19,35 +19,55 @@
           - tree
           - flatpak
           - ansible-lint
-          - wofi
+          - htop
+          - blueman
+          - wezterm
         state: present
         update_cache: yes
+
+    - name: Install sway packages
+      ansible.builtin.package:
+        name:
+          - sway
+          - wofi
+          - SwayNotificationCenter
+          - waybar
+      when: window_manager == "sway"
 
     - name: Install Flatpak packages
       community.general.flatpak:
         name:
           - org.videolan.VLC
+          - com.bitwarden.desktop/x86_64/stable
+          - com.fastmail.Fastmail/x86_64/stable
+          - com.github.tchx84.Flatseal/x86_64/stable
+          - com.mattjakeman.ExtensionManager/x86_64/stable
+          - com.mikrotik.WinBox/x86_64/stable
+          - com.plexamp.Plexamp/x86_64/stable
+          - com.saivert.pwvucontrol/x86_64/stable
+          - dev.vencord.Vesktop/x86_64/stable
+          - md.obsidian.Obsidian/x86_64/stable
         state: present
 
     - name: Set user shell to zsh
       ansible.builtin.user:
-        name: '{{ user }}'
+        name: "{{ user }}"
         shell: /bin/zsh
       become: true
 
     - name: Check if Homebrew is already installed
       ansible.builtin.stat:
-        path: '/home/linuxbrew/.linuxbrew/bin/brew'
+        path: "/home/linuxbrew/.linuxbrew/bin/brew"
       register: brew_stat
 
     - block:
         - name: Create Homebrew directory
           ansible.builtin.file:
-            path: '/home/linuxbrew/.linuxbrew'
+            path: "/home/linuxbrew/.linuxbrew"
             state: directory
-            owner: '{{ user }}'
-            group: '{{ user }}'
-            mode: '0755'
+            owner: "{{ user }}"
+            group: "{{ user }}"
+            mode: "0755"
           become: true
 
         - name: Install Homebrew
@@ -56,32 +76,32 @@
 
       when: not brew_stat.stat.exists
       environment:
-        PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
 
     - name: Check if oh my zsh is already installed
       ansible.builtin.stat:
-        path: '/home/{{ user }}/.oh-my-zsh'
+        path: "/home/{{ user }}/.oh-my-zsh"
       register: oh_my_zsh_stat
 
     - name: Install oh-my-zsh
       block:
         - name: Create oh-my-zsh directory
           ansible.builtin.file:
-            path: '/home/{{ user }}/.oh-my-zsh'
+            path: "/home/{{ user }}/.oh-my-zsh"
             state: directory
-            owner: '{{ user }}'
-            group: '{{ user }}'
-            mode: '0755'
+            owner: "{{ user }}"
+            group: "{{ user }}"
+            mode: "0755"
 
         - name: Download ohmyzsh
           ansible.builtin.get_url:
             url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-            dest: '/home/{{ user }}/install.sh'
-            mode: '0755'
+            dest: "/home/{{ user }}/install.sh"
+            mode: "0755"
 
         - name: Install ohmyzsh
           ansible.builtin.script:
-            cmd: '/home/{{ user }}/install.sh'
+            cmd: "/home/{{ user }}/install.sh"
 
       when: not oh_my_zsh_stat.stat.exists
 
@@ -94,12 +114,21 @@
           - gh
           - just
           - neovim
+          - neofetch
           - tfenv
           - uv
           - zoxide
           - zsh-autosuggestions
           - zsh-syntax-highlighting
         state: present
+
+    # - name: Install homebrew extras for sway
+    #   become: false
+    #   community.general.homebrew:
+    #     name:
+    #       - waylock
+    #     state: present
+    #   when: window_manager == "sway"
 
     - name: Install homebrew casks
       become: false
