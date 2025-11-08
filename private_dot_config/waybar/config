@@ -41,6 +41,27 @@
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
+    "sway/workspaces": {
+        "disable-scroll-wraparound": true,
+        "smooth-scrolling-threshold": 4,
+        "enable-bar-scroll": true,
+        "format": "{name}: {icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "󰦑",
+            "8": "",
+            "10": "",
+            "high-priority-named": [
+                "1",
+                "2"
+            ],
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
     "power-profiles-daemon": {
         "format": "{icon}",
         "tooltip-format": "Power profile: {profile}nDriver: {driver}",
