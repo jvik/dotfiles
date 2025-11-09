@@ -126,6 +126,7 @@
         - name: Install Homebrew
           ansible.builtin.shell: |
             curl -fsSL https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C /home/linuxbrew/.linuxbrew
+          when: not brew_stat.stat.exists
 
         - name: Fix Homebrew directory ownership
           ansible.builtin.file:
@@ -135,7 +136,6 @@
             owner: "{{ user }}"
             group: "{{ user }}"
           become: true
-          when: not brew_stat.stat.exists
 
       environment:
         PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
@@ -164,6 +164,10 @@
       when: not oh_my_zsh_stat.stat.exists
 
     - block:
+        - name: Tap a Homebrew repository, state present
+          become: false
+          community.general.homebrew_tap:
+            name: wezterm/wezterm-linuxbrew
         - name: Install Homebrew packages
           become: false
           community.general.homebrew:
@@ -179,6 +183,7 @@
               - zoxide
               - zsh-autosuggestions
               - zsh-syntax-highlighting
+              - wezterm/wezterm-linuxbrew/wezterm
             state: present
 
           # - name: Install homebrew extras for sway
