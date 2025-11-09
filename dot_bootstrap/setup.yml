@@ -12,6 +12,23 @@
     #   become: false
     #   changed_when: false
 
+    - name: Add vscode native repo
+      block:
+        - name: Import Microsoft GPG Key
+          ansible.builtin.rpm_key:
+            key: https://packages.microsoft.com/keys/microsoft.asc
+            state: present
+
+        - name: Add Visual Studio Code Repo
+          ansible.builtin.yum_repository:
+            name: vscode
+            description: Visual Studio Code
+            baseurl: https://packages.microsoft.com/yumrepos/vscode
+            gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+            gpgcheck: true
+            enabled: true
+      when: ansible_distribution == 'Fedora'
+
     - block:
         - name: Importing RPM Fusion (free) key
           ansible.builtin.rpm_key:
@@ -48,6 +65,7 @@
           - zsh
           - git
           - neovim
+          - code
         state: present
         update_cache: yes
 
