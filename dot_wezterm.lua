@@ -49,7 +49,7 @@ config.force_reverse_video_cursor = true
 -- setup wsl domain --
 -- config.default_domain = "WSL:Ubuntu"
 -- font size --
-config.font = wezterm.font("JetBrainsMonoNL Nerd Font")
+config.font = wezterm.font("JetBrainsMono Nerd Font")
 config.font_size = 12
 config.hide_tab_bar_if_only_one_tab = true
 config.window_close_confirmation = "NeverPrompt"
