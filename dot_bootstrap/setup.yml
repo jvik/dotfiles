@@ -176,7 +176,6 @@
               - fzf
               - gh
               - just
-              - neovim
               - neofetch
               - tfenv
               - uv
@@ -201,6 +200,5 @@
               - font-jetbrains-mono
               - font-jetbrains-mono-nerd-font
             state: present
-
       environment:
         PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"

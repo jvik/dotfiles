@@ -12,14 +12,14 @@ alias screen='screen -U'
 alias tmux="tmux -2 -f '$XDG_CONFIG_HOME/tmux/tmux.conf'"
 alias tmuxa='tmux attach || tmux new-session'
 
-alias v="$EDITOR"
-alias vi="$EDITOR"
-alias vim="$EDITOR"
-alias nvim="$EDITOR"
+#alias v="$EDITOR"
+#alias vi="$EDITOR"
+#alias vim="$EDITOR"
+#alias nvim="$EDITOR"
 
-if [[ "$EDITOR" == nvim ]]; then
-  alias vimdiff='nvim -d'
-fi
+#if [[ "$EDITOR" == nvim ]]; then
+#  alias vimdiff='nvim -d'
+#fi
 
 alias ,,='cd ..'
 alias ..l='cd .. && ls'
