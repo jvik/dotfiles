@@ -106,39 +106,32 @@
       register: brew_stat
 
     - block:
-        - name: Ensure Homebrew dependencies are installed
-          ansible.builtin.package:
-            name:
-              - curl
-              - git
-              - tar
-          become: true
+        - name: Check if HomeBrew is installed
+          become: false
+          ansible.builtin.stat:
+            path: /home/linuxbrew/.linuxbrew/bin/brew
+          register: brew
 
-        - name: Create Homebrew directory
-          ansible.builtin.file:
-            path: "/home/linuxbrew/.linuxbrew"
-            state: directory
-            owner: "{{ user }}"
-            group: "{{ user }}"
-            mode: "0755"
-          become: true
+        - name: Download & Install HomeBrew
+          become: false
+          when: not brew.stat.exists
+          block:
+            - name: Create tmp dir
+              ansible.builtin.file:
+                path: "/home/{{ user }}/temp"
+                state: directory
+            - name: Download Installer Script
+              ansible.builtin.get_url:
+                url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+                dest: /home/{{ user }}/temp/brew_install.sh
+                mode: "775"
+            - name: Run Installer Script
+              ansible.builtin.shell: NONINTERACTIVE=1 /home/{{ user }}/temp/brew_install.sh
 
-        - name: Install Homebrew
-          ansible.builtin.shell: |
-            curl -fsSL https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C /home/linuxbrew/.linuxbrew
-          when: not brew_stat.stat.exists
-
-        - name: Fix Homebrew directory ownership
-          ansible.builtin.file:
-            path: "/home/linuxbrew/.linuxbrew"
-            state: directory
-            recurse: yes
-            owner: "{{ user }}"
-            group: "{{ user }}"
-          become: true
-
-      environment:
-        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+        - name: Set LinuxBrew Executable Path
+          ansible.builtin.set_fact:
+            linuxbrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
+            linuxbrew_path: /home/linuxbrew/.linuxbrew/bin
 
     - name: Set user shell to zsh
       ansible.builtin.user:
@@ -168,6 +161,7 @@
           become: false
           community.general.homebrew_tap:
             name: wezterm/wezterm-linuxbrew
+
         - name: Install Homebrew packages
           become: false
           community.general.homebrew:
@@ -198,11 +192,9 @@
           become: false
           community.general.homebrew_cask:
             name:
-              - font-fira-code-nerd-font
               - font-fontawesome
               - font-jetbrains-mono
               - font-jetbrains-mono-nerd-font
-              - font-fontawesome
             state: present
 
       environment:
