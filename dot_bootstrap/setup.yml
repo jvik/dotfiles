@@ -12,6 +12,23 @@
     #   become: false
     #   changed_when: false
 
+    - name: Add vscode native repo
+      block:
+        - name: Import Microsoft GPG Key
+          ansible.builtin.rpm_key:
+            key: https://packages.microsoft.com/keys/microsoft.asc
+            state: present
+
+        - name: Add Visual Studio Code Repo
+          ansible.builtin.yum_repository:
+            name: vscode
+            description: Visual Studio Code
+            baseurl: https://packages.microsoft.com/yumrepos/vscode
+            gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+            gpgcheck: true
+            enabled: true
+      when: ansible_distribution == 'Fedora'
+
     - block:
         - name: Importing RPM Fusion (free) key
           ansible.builtin.rpm_key:
@@ -44,8 +61,11 @@
           - ansible-lint
           - htop
           - blueman
-          - wezterm
           - unrar
+          - zsh
+          - git
+          - neovim
+          - code
         state: present
         update_cache: yes
 
@@ -57,6 +77,13 @@
           - SwayNotificationCenter
           - waybar
       when: window_manager == "sway"
+
+    - name: Add Flathub remote
+      community.general.flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+        method: system
 
     - name: Install Flatpak packages
       community.general.flatpak:
@@ -73,18 +100,20 @@
           - md.obsidian.Obsidian/x86_64/stable
         state: present
 
-    - name: Set user shell to zsh
-      ansible.builtin.user:
-        name: "{{ user }}"
-        shell: /bin/zsh
-      become: true
-
     - name: Check if Homebrew is already installed
       ansible.builtin.stat:
         path: "/home/linuxbrew/.linuxbrew/bin/brew"
       register: brew_stat
 
     - block:
+        - name: Ensure Homebrew dependencies are installed
+          ansible.builtin.package:
+            name:
+              - curl
+              - git
+              - tar
+          become: true
+
         - name: Create Homebrew directory
           ansible.builtin.file:
             path: "/home/linuxbrew/.linuxbrew"
@@ -97,10 +126,25 @@
         - name: Install Homebrew
           ansible.builtin.shell: |
             curl -fsSL https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C /home/linuxbrew/.linuxbrew
+          when: not brew_stat.stat.exists
 
-      when: not brew_stat.stat.exists
+        - name: Fix Homebrew directory ownership
+          ansible.builtin.file:
+            path: "/home/linuxbrew/.linuxbrew"
+            state: directory
+            recurse: yes
+            owner: "{{ user }}"
+            group: "{{ user }}"
+          become: true
+
       environment:
         PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+
+    - name: Set user shell to zsh
+      ansible.builtin.user:
+        name: "{{ user }}"
+        shell: /bin/zsh
+      become: true
 
     - name: Check if oh my zsh is already installed
       ansible.builtin.stat:
@@ -109,58 +153,57 @@
 
     - name: Install oh-my-zsh
       block:
-        - name: Create oh-my-zsh directory
-          ansible.builtin.file:
-            path: "/home/{{ user }}/.oh-my-zsh"
-            state: directory
-            owner: "{{ user }}"
-            group: "{{ user }}"
-            mode: "0755"
-
-        - name: Download ohmyzsh
-          ansible.builtin.get_url:
-            url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-            dest: "/home/{{ user }}/install.sh"
-            mode: "0755"
-
-        - name: Install ohmyzsh
-          ansible.builtin.script:
-            cmd: "/home/{{ user }}/install.sh"
+        - name: Install Oh-My-Zsh
+          ansible.builtin.git:
+            repo: https://github.com/ohmyzsh/ohmyzsh.git
+            dest: /home/{{ user }}/.oh-my-zsh
+            version: "master"
+            clone: yes
+            update: yes
 
       when: not oh_my_zsh_stat.stat.exists
 
-    - name: Install homebrew packages
-      become: false
-      community.general.homebrew:
-        name:
-          - ctop
-          - fzf
-          - gh
-          - just
-          - neovim
-          - neofetch
-          - tfenv
-          - uv
-          - zoxide
-          - zsh-autosuggestions
-          - zsh-syntax-highlighting
-        state: present
+    - block:
+        - name: Tap a Homebrew repository, state present
+          become: false
+          community.general.homebrew_tap:
+            name: wezterm/wezterm-linuxbrew
+        - name: Install Homebrew packages
+          become: false
+          community.general.homebrew:
+            name:
+              - ctop
+              - fzf
+              - gh
+              - just
+              - neovim
+              - neofetch
+              - tfenv
+              - uv
+              - zoxide
+              - zsh-autosuggestions
+              - zsh-syntax-highlighting
+              - wezterm/wezterm-linuxbrew/wezterm
+            state: present
 
-    # - name: Install homebrew extras for sway
-    #   become: false
-    #   community.general.homebrew:
-    #     name:
-    #       - waylock
-    #     state: present
-    #   when: window_manager == "sway"
+          # - name: Install homebrew extras for sway
+          #   become: false
+          #   community.general.homebrew:
+          #     name:
+          #       - waylock
+          #     state: present
+          #   when: window_manager == "sway"
 
-    - name: Install homebrew casks
-      become: false
-      community.general.homebrew_cask:
-        name:
-          - font-fira-code-nerd-font
-          - font-fontawesome
-          - font-jetbrains-mono
-          - font-jetbrains-mono-nerd-font
-          - font-fontawesome
-        state: present
+        - name: Install homebrew casks
+          become: false
+          community.general.homebrew_cask:
+            name:
+              - font-fira-code-nerd-font
+              - font-fontawesome
+              - font-jetbrains-mono
+              - font-jetbrains-mono-nerd-font
+              - font-fontawesome
+            state: present
+
+      environment:
+        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
