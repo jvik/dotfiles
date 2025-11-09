@@ -50,6 +50,17 @@
             name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
             state: present
 
+        - name: Install wezterm
+          community.general.copr:
+            name: "wezfurlong/wezterm-nightly"
+            state: enabled
+
+        - name: Install packages
+          ansible.builtin.package:
+            name:
+              - wezterm
+            state: present
+            update_cache: yes
       when: ansible_distribution == 'Fedora'
 
     - name: Install packages
@@ -157,11 +168,6 @@
       when: not oh_my_zsh_stat.stat.exists
 
     - block:
-        - name: Tap a Homebrew repository, state present
-          become: false
-          community.general.homebrew_tap:
-            name: wezterm/wezterm-linuxbrew
-
         - name: Install Homebrew packages
           become: false
           community.general.homebrew:
@@ -177,7 +183,6 @@
               - zoxide
               - zsh-autosuggestions
               - zsh-syntax-highlighting
-              - wezterm/wezterm-linuxbrew/wezterm
             state: present
 
           # - name: Install homebrew extras for sway

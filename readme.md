@@ -45,7 +45,7 @@ Minimal before first run:
 
 Automatically handled / installed:
 
-* Ansible (via `run_once_01_install_ansible.sh` for Fedora, Ubuntu. MacOS is not tested.)
+* Ansible (via `run_once_01_install_ansible.sh` for Fedora. Other distros are not tested, but Ubuntu/Debian will likely work.)
 * Homebrew (Linuxbrew) if not present (installed by Ansible playbook)
 * oh-my-zsh (if absent)
 
