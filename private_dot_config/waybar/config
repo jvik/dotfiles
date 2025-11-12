@@ -15,6 +15,7 @@
         "sway/window"
     ],
     "modules-right": [
+        "bluetooth",
         "idle_inhibitor",
         "pulseaudio",
         "power-profiles-daemon",
@@ -143,6 +144,10 @@
             ""
         ]
     },
+    "bluetooth": {
+        "on-click": "exec blueman-manager &",
+        "format": " {status}"
+    },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
         "format-wifi": "{essid} ({signalStrength}%) ",
@@ -174,7 +179,7 @@
                 ""
             ]
         },
-        "on-click": "pwvucontrol"
+        "on-click": "exec pavucontrol&"
     },
     "custom/media": {
         "format": "{icon} {}",

@@ -7,6 +7,8 @@
 exec --no-startup-id dbus-update-activation-environment --all
 #exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
+exec blueman-applet
+
 exec_always {
   pkill kanshi
   kanshi &
@@ -292,14 +294,16 @@ default_border normal 2
 default_floating_border normal 2
 
 # Everyting floats down here
-for_window [app_id="wdisplays|blueman-manager"] floating enable # System utilities
+for_window [window_type="dialog"] floating enable
+for_window [app_id="wdisplays"] floating enable # System utilities
+for_window [app_id="blueman-manager"] floating enable, border pixel 1, sticky enable
 for_window [app_id="copyq"] floating enable
 for_window [class="Bitwarden"] floating enable
 for_window [app_id="nmwui"] floating enable, move position center
 for_window [app_id="Calculator|snap-store"] floating enable
-for_window [app_id="org.pulseaudio.pavucontrol"] floating enable
+for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 60 ppt
 for_window [app_id="com.saivert.pwvucontrol"] floating enable
-for_window [app_id="^firefox*" title="^Extension: *"] floating enable
+for_window [title="^(?=.*Extension:)(?=.*Mozilla Firefox).*"] floating enable
 for_window [title="^(Picture-in-Picture)$"] floating enable
 for_window [title="Copying *"] floating enable
 for_window [title="Moving *"] floating enable
