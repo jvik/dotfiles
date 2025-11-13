@@ -89,6 +89,7 @@ bindsym $mod+Control+l exec $lockman
 
 input * {
     xkb_layout "no"
+    xkb_options "caps:swapescape,altwin:swap_lalt_lwin"
     middle_emulation enabled
 }
 
