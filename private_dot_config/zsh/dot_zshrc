@@ -19,10 +19,6 @@ elif [[ "$(uname -s)" == 'Darwin' ]]; then
   source "$ZDOTDIR/mac.zsh"
 fi
 
-if [[ -e "$HOME/.zshrc_local" ]]; then
-  source "$HOME/.zshrc_local"
-fi
-
 fvim() {
     local file
     file=$(fzf) && nvim "$file"

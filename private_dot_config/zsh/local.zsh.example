@@ -1,2 +1,4 @@
 # Bitwarden session
 export BW_SESSION=
+export LOCATION=Trondheim
+export TILING_MANAGER=sway
