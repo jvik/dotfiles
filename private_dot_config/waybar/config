@@ -179,7 +179,7 @@
                 ""
             ]
         },
-        "on-click": "exec pavucontrol&"
+        "on-click": "flatpak run com.saivert.pwvucontrol"
     },
     "custom/media": {
         "format": "{icon} {}",
