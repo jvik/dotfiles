@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-LOCATION={{- (env "LOCATION") | default "Oslo" -}}
+LOCATION={{ (env "LOCATION") | default "Oslo" }}
 
-# Hent værdata fra wttr.in
-# Format: %c = værikon, %t = temp, %w = vind, %p = nedbør
+# Fetch weather data from wttr.in
+# Format: %c = weather icon, %t = temperature, %w = wind, %p = precipitation
 weather_data=$(curl -s "https://wttr.in/${LOCATION}?format=%c+%t+%w+%p&m" 2>/dev/null)
 
 if [ -z "$weather_data" ]; then
@@ -11,8 +11,8 @@ if [ -z "$weather_data" ]; then
     exit 0
 fi
 
-# Konverter km/h til m/s (del på 3.6)
-# Ekstraher vindverdi med retning
+Convert km/h to m/s (divide by 3.6)
+# Extract wind value with direction
 wind=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙]\K\d+(?=km/h)')
 wind_dir=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙](?=\d+km/h)')
 
@@ -21,7 +21,7 @@ if [ -n "$wind" ]; then
     weather_data=$(echo "$weather_data" | sed "s/${wind_dir}${wind}km\/h/${wind_dir}${wind_ms}m\/s/")
 fi
 
-# Fjern % tegn fra nedbør om det finnes
+# Remove % sign from precipitation if present
 weather_data=$(echo "$weather_data" | sed 's/mm%/mm/')
 
 echo "$weather_data"
