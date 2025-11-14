@@ -52,11 +52,11 @@
             name: 'https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm'
             state: present
 
-        - name: Install wezterm
-          community.general.copr:
-            name:
-              - 'wezfurlong/wezterm-nightly'
-            state: enabled
+        # - name: Install wezterm
+        #   community.general.copr:
+        #     name:
+        #       - 'wezfurlong/wezterm-nightly'
+        #     state: enabled
 
         - name: Install Fedora specific packages
           ansible.builtin.package:
