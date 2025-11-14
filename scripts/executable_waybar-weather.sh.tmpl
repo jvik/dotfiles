@@ -11,7 +11,7 @@ if [ -z "$weather_data" ]; then
     exit 0
 fi
 
-Convert km/h to m/s (divide by 3.6)
+# Convert km/h to m/s (divide by 3.6)
 # Extract wind value with direction
 wind=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙]\K\d+(?=km/h)')
 wind_dir=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙](?=\d+km/h)')
