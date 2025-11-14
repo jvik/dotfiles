@@ -1,41 +1,24 @@
 #!/usr/bin/env bash
 
 LOCATION={{ (env "LOCATION") | default "Oslo" }}
-CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/waybar-weather"
-YR_URL_CACHE="$CACHE_DIR/yr_url"
 
-# Create cache directory if it doesn't exist
-mkdir -p "$CACHE_DIR"
+# Query YR's location API (curl will handle URL encoding)
+search_result=$(curl -s -G --data-urlencode "q=${LOCATION}" \
+    "https://www.yr.no/api/v0/locations/suggest?language=nb" 2>/dev/null)
 
-# Function to get YR URL for the location
-get_yr_url() {
-    local location="$1"
-    
-    # Query YR's location API (curl will handle URL encoding)
-    local search_result=$(curl -s -G --data-urlencode "q=${location}" \
-        "https://www.yr.no/api/v0/locations/suggest?language=nb" 2>/dev/null)
-    
-    if [ -z "$search_result" ]; then
-        echo "https://www.yr.no"
-        return
-    fi
-    
-    # Extract the first suggestion's id and urlPath
-    local location_id=$(echo "$search_result" | jq -r '._embedded.location[0].id // empty' 2>/dev/null)
-    local url_path=$(echo "$search_result" | jq -r '._embedded.location[0].urlPath // empty' 2>/dev/null)
-    
-    if [ -n "$location_id" ] && [ -n "$url_path" ]; then
-        echo "https://www.yr.no/nb/værvarsel/daglig-tabell/${location_id}/${url_path}"
-    else
-        echo "https://www.yr.no"
-    fi
-}
-
-# Check if YR URL is cached, if not, fetch and cache it
-if [ ! -f "$YR_URL_CACHE" ]; then
-    yr_url=$(get_yr_url "$LOCATION")
-    echo "$yr_url" > "$YR_URL_CACHE"
+if [ -z "$search_result" ]; then
+    echo "https://www.yr.no"
+    exit 0
 fi
 
-# Output the cached URL
-cat "$YR_URL_CACHE"
+# Extract the first suggestion's id and urlPath
+location_id=$(echo "$search_result" | jq -r '._embedded.location[0].id // empty' 2>/dev/null)
+url_path=$(echo "$search_result" | jq -r '._embedded.location[0].urlPath // empty' 2>/dev/null | tr -d '\n')
+
+if [ -n "$location_id" ] && [ -n "$url_path" ]; then
+    # URL-encode the path properly
+    encoded_path=$(printf '%s' "$url_path" | jq -sRr @uri)
+    echo "https://www.yr.no/nb/værvarsel/daglig-tabell/${location_id}/${encoded_path}"
+else
+    echo "https://www.yr.no"
+fi
