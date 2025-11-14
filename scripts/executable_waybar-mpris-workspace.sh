@@ -53,45 +53,47 @@ fi
 # Get workspace information from Sway
 workspace=""
 if [ -n "$player_pid" ]; then
-    # Collect all PIDs related to the player (parent and children)
-    all_pids="$player_pid"
+    # For browsers and multi-window apps, try multiple strategies to find the right window
+    matching_window=""
     
-    # Add all processes with the same name
-    player_name=$(ps -p "$player_pid" -o comm= 2>/dev/null)
-    if [ -n "$player_name" ]; then
-        additional_pids=$(pgrep -x "$player_name" 2>/dev/null)
-        if [ -n "$additional_pids" ]; then
-            all_pids="$all_pids $additional_pids"
-        fi
+    # Strategy 1: Try to find window whose name contains the media title
+    # (works when media is in the active tab)
+    if [ -n "$title" ]; then
+        matching_window=$(swaymsg -t get_tree | jq -r --arg pid "$player_pid" --arg title "$title" '
+            .. | 
+            select(.pid?) | 
+            select(.pid == ($pid | tonumber)) | 
+            select(.name? | contains($title)) | 
+            .id
+        ' 2>/dev/null | head -n1)
     fi
     
-    # Add child processes
-    child_pids=$(pgrep -P "$player_pid" 2>/dev/null)
-    if [ -n "$child_pids" ]; then
-        all_pids="$all_pids $child_pids"
-    fi
-    
-    # Remove duplicates and try each PID
-    all_pids=$(echo "$all_pids" | tr ' ' '\n' | sort -u | tr '\n' ' ')
-    
-    for pid in $all_pids; do
-        # Get the window for this PID
-        window_data=$(swaymsg -t get_tree | jq -r ".. | select(.pid?) | select(.pid == $pid) | .id" 2>/dev/null | head -n1)
+    # Strategy 2: If title matching failed, list ALL workspaces with this PID
+    # (for multi-window apps where we can't determine which window is playing)
+    if [ -z "$matching_window" ]; then
+        # Get all unique workspaces that have windows with this PID
+        workspace=$(swaymsg -t get_tree | jq -r --arg pid "$player_pid" '
+            [.. | select(.type? == "workspace") | select(.. | select(.pid?) | .pid == ($pid | tonumber)) | .num // .name] | 
+            unique | 
+            join(",")
+        ' 2>/dev/null)
         
-        if [ -n "$window_data" ]; then
-            # Find which workspace contains this window
-            workspace=$(swaymsg -t get_tree | jq -r --arg wid "$window_data" '
-                .. | 
-                select(.type? == "workspace") | 
-                select(.. | .id? == ($wid | tonumber)) | 
-                .num // .name
-            ' 2>/dev/null | head -n1)
-            
-            if [ -n "$workspace" ]; then
-                break
-            fi
+        # If we got multiple workspaces or a single one, we're done
+        # Skip the rest of the logic
+        if [ -n "$workspace" ]; then
+            matching_window="skip"
         fi
-    done
+    fi
+    
+    # Find which workspace contains the matched window (only if we matched by title)
+    if [ -n "$matching_window" ] && [ "$matching_window" != "skip" ]; then
+        workspace=$(swaymsg -t get_tree | jq -r --arg wid "$matching_window" '
+            .. | 
+            select(.type? == "workspace") | 
+            select(.. | .id? == ($wid | tonumber)) | 
+            .num // .name
+        ' 2>/dev/null | head -n1)
+    fi
 fi
 
 # Determine player icon
