@@ -48,18 +48,21 @@ output * bg #333333 solid_color
 # Example configuration:
 #
 #
-set $locker 'swaylock -f -c 444444'
+set $locker 'swaylock -f -c 444444 --clock --indicator --effect-blur 4x5 --indicator-caps-lock'
 set $lockman exec bash ~/.config/sway/lockman.sh
 
 set $monitorDisableTimeout 300
 set $lockerTimeout 360
-set $suspendTimeout 600
+# Set suspend timeout based on power source
+# If on battery (AC online = 0): 10 minutes, if on AC or desktop: never suspend
+set $suspendTimeout $([ -f /sys/class/power_supply/AC/online ] && [ "$(cat /sys/class/power_supply/AC/online)" = "0" ] && echo 600 || echo 999999)
+
+bindsym ctrl+shift+p exec notify-send $suspendTimeout
 
 exec_always killall swayidle; swayidle -w \
 timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
 timeout $lockerTimeout $locker \
 timeout $suspendTimeout 'systemctl suspend' before-sleep $locker before-sleep $locker
-
 
 #bindsym $mod+Control+l exec $locker; swayidle -w \
 #timeout 10 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"'
