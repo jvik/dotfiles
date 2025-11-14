@@ -118,7 +118,8 @@
         path: '/home/linuxbrew/.linuxbrew/bin/brew'
       register: brew_stat
 
-    - block:
+    - name: Install and configure Homebrew
+      block:
         - name: Check if HomeBrew is installed
           become: false
           ansible.builtin.stat:
@@ -158,18 +159,18 @@
       register: oh_my_zsh_stat
 
     - name: Install oh-my-zsh
+      when: not oh_my_zsh_stat.stat.exists
       block:
         - name: Install Oh-My-Zsh
           ansible.builtin.git:
             repo: https://github.com/ohmyzsh/ohmyzsh.git
             dest: /home/{{ user }}/.oh-my-zsh
             version: 'master'
-            clone: yes
-            update: yes
+            clone: true
+            update: true
 
-      when: not oh_my_zsh_stat.stat.exists
-
-    - block:
+    - name: Install Homebrew packages and casks
+      block:
         - name: Install Homebrew packages
           become: false
           community.general.homebrew:
