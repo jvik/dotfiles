@@ -58,8 +58,6 @@ set $lockerTimeout 360
 # If on battery (AC online = 0): 10 minutes, if on AC or desktop: never suspend
 set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ] && [ "$(cat /sys/class/power_supply/AC/online)" = "0" ]; then echo 600; else echo 0; fi)
 
-bindsym ctrl+shift+p exec notify-send "altså: $suspendTimeout"
-
 exec_always killall swayidle; swayidle -w \
 timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
 timeout $lockerTimeout $locker \
