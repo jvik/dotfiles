@@ -143,13 +143,23 @@ if [ -n "$length" ] && [ "$length" != "0" ]; then
 fi
 
 # Format current position
-if [ -n "$position" ]; then
-    # playerctl position returns seconds as a float
-    pos_total_seconds=$(printf "%.0f" "$position")
-    pos_minutes=$((pos_total_seconds / 60))
-    pos_seconds=$((pos_total_seconds % 60))
-    position_str=$(printf "%d:%02d" $pos_minutes $pos_seconds)
-fi
+# Only show position for players that properly report it via MPRIS
+# Plexamp has a bug where Position always reports 0
+case "$active_player" in
+    *plexamp*|*Plexamp*)
+        # Plexamp doesn't properly report position, skip it
+        position_str=""
+        ;;
+    *)
+        if [ -n "$position" ]; then
+            # playerctl position returns seconds as a float
+            pos_total_seconds=$(printf "%.0f" "$position")
+            pos_minutes=$((pos_total_seconds / 60))
+            pos_seconds=$((pos_total_seconds % 60))
+            position_str=$(printf "%d:%02d" $pos_minutes $pos_seconds)
+        fi
+        ;;
+esac
 
 # Combine position and length
 time_str=""
