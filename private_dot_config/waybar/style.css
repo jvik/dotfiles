@@ -306,7 +306,6 @@ label:focus {
 
 #mpris.paused {
     background-color: #51a37a;
-    font-style: italic;
 }
 
 #mpris.stopped {

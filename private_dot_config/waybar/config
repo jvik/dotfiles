@@ -185,8 +185,8 @@
         "on-click": "flatpak run com.saivert.pwvucontrol"
     },
     "mpris": {
-        "format": "{player_icon} {dynamic}",
-        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "format": "{status_icon} {dynamic} {player_icon}",
+        "format-paused": "{status_icon} <i>{dynamic}</i> {player_icon}",
         "dynamic-order": [
             "title",
             "artist",
@@ -195,14 +195,20 @@
         "dynamic-separator": " - ",
         "dynamic-len": 40,
         "player-icons": {
-            "default": "▶",
+            "default": "🎵",
+            "firefox": "",
+            "chromium": "",
+            "google-chrome": "",
             "mpv": "�",
-            "spotify": ""
+            "spotify": "",
+            "vlc": "🎬",
+            "plexamp": "🎵",
+            "plex": "🎬"
         },
         "status-icons": {
-            "paused": "⏸",
-            "playing": "▶",
-            "stopped": "⏹"
+            "paused": "",
+            "playing": "",
+            "stopped": ""
         },
         "ignored-players": [],
         "tooltip-format": "{player} ({status}): {dynamic}"
