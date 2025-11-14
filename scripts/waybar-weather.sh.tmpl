@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
-# Værscript for Waybar - Ålesund
-# Bruker wttr.in API for værdata
-
-LOCATION="Ålesund"
+LOCATION={{- (env "LOCATION") | default "Oslo" -}}
 
 # Hent værdata fra wttr.in
 # Format: %c = værikon, %t = temp, %w = vind, %p = nedbør
