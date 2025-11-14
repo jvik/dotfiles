@@ -148,6 +148,8 @@ pointer_accel 0.2
     bindsym $mod+Shift+Down move down
     bindsym $mod+Shift+Up move up
     bindsym $mod+Shift+Right move right
+
+    bindsym $mod+Shift+m sticky toggle
 #
 # Workspaces:
 #
@@ -254,6 +256,8 @@ bindsym $mod+r mode "resize"
 #     bindsym Escape mode "default"
 # }
 bindsym $mod+shift+p exec ~/scripts/present-select.sh
+bindsym ctrl+Shift+v exec clipman pick -t wofi
+
 
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
@@ -279,7 +283,6 @@ bindsym $mod+Control+Shift+Up move workspace to output up
     bindsym --locked XF86AudioNext exec playerctl next
 
     # Clipboard manager
-    bindsym $mod+Shift+v exec clipman pick -t wofi
 #
 # Status Bar:
 #
@@ -314,9 +317,13 @@ for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 
 # Set default workspace
+assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
+assign [class="Slack"] 4
+assign [app_id="signal"] 8
+assign [app_id="discord|vesktop"] 8
 assign [title="Plexamp"] 10
 assign [app_id="spotify"] 10
-assign [app_id="signal"] 8
+
 
 focus_on_window_activation focus
 
