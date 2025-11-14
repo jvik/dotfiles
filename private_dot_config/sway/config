@@ -55,7 +55,7 @@ set $monitorDisableTimeout 300
 set $lockerTimeout 360
 # Set suspend timeout based on power source
 # If on battery (AC online = 0): 10 minutes, if on AC or desktop: never suspend
-set $suspendTimeout $([ -f /sys/class/power_supply/AC/online ] && [ "$(cat /sys/class/power_supply/AC/online)" = "0" ] && echo 600 || echo 999999)
+set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ] && [ "$(cat /sys/class/power_supply/AC/online)" = "0" ]; then echo 600; else echo 999999; fi)
 
 bindsym ctrl+shift+p exec notify-send $suspendTimeout
 
