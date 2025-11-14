@@ -254,9 +254,6 @@ bindsym $mod+r mode "resize"
 # }
 bindsym $mod+Shift+p exec ~/scripts/present-select.sh
 
-for_window [app_id="copyq"] floating enable, sticky enable, resize set height 600px width 550px, move position cursor, move down 330
-bindsym $mod+Shift+v exec copyq toggle
-
 
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
@@ -285,6 +282,8 @@ bindsym $mod+Control+Shift+Up move workspace to output up
     bindsym --locked XF86Wlan exec sleep 1 && sway-notify "WLAN is $(nmcli radio wifi)."
 
     # Clipboard manager
+    
+    bindsym $mod+Shift+v exec copyq toggle
 #
 # Status Bar:
 #
@@ -303,7 +302,7 @@ default_floating_border normal 2
 for_window [window_type="dialog"] floating enable
 for_window [app_id="wdisplays"] floating enable # System utilities
 for_window [app_id="blueman-manager"] floating enable, border pixel 1, sticky enable
-for_window [app_id="copyq"] floating enable
+for_window [app_id="copyq"] floating enable, sticky enable, resize set height 600px width 550px, move position cursor, move down 330
 for_window [class="Bitwarden"] floating enable
 for_window [app_id="nmwui"] floating enable, move position center
 for_window [app_id="Calculator|snap-store"] floating enable
