@@ -84,6 +84,7 @@ button:hover {
 #pulseaudio,
 #wireplumber,
 #custom-media,
+#custom-mpris,
 #custom-weather,
 #tray,
 #mode,
@@ -206,6 +207,12 @@ label:focus {
 }
 
 #custom-media {
+    background-color: #66cc99;
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#custom-mpris {
     background-color: #66cc99;
     color: #2a5c45;
     min-width: 100px;
