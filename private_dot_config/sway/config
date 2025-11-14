@@ -33,8 +33,6 @@ set $menu wofi --show drun
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-#output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
-output * bg #333333 solid_color
 output * bg ~/.wallpaper fill
 #
 #
@@ -54,9 +52,8 @@ set $lockman exec bash ~/.config/sway/lockman.sh
 
 set $monitorDisableTimeout 300
 set $lockerTimeout 360
-# Set suspend timeout based on power source
-# If on battery (AC online = 0): 10 minutes, if on AC or desktop: never suspend
-set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ] && [ "$(cat /sys/class/power_supply/AC/online)" = "0" ]; then echo 600; else echo 0; fi)
+# Set suspend timeout to 0 if laptop, 600 if desktop
+set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ]; then echo 600; else echo 0; fi)
 
 exec_always killall swayidle; swayidle -w \
 timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
@@ -255,8 +252,8 @@ bindsym $mod+r mode "resize"
 #     bindsym Return mode "default"
 #     bindsym Escape mode "default"
 # }
-bindsym $mod+shift+p exec ~/scripts/present-select.sh
-bindsym ctrl+Shift+v exec clipman pick -t wofi
+bindsym $mod+Shift+p exec ~/scripts/present-select.sh
+bindsym $mod+Shift+v exec clipman pick -t wofi
 
 
 bindsym $mod+Control+Shift+Right move workspace to output right
