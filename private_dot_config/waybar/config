@@ -49,6 +49,14 @@
         "smooth-scrolling-threshold": 4,
         "enable-bar-scroll": true,
         "format": "{name}: {icon}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "9": [],
+            "10": []
+        },
         "format-icons": {
             "1": "",
             "2": "",
