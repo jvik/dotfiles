@@ -8,8 +8,7 @@
     "modules-left": [
         "sway/workspaces",
         "sway/mode",
-        "sway/scratchpad",
-        "custom/media"
+        "sway/scratchpad"
     ],
     "modules-center": [
         "sway/window"
@@ -17,6 +16,7 @@
     "modules-right": [
         "bluetooth",
         "idle_inhibitor",
+        "mpris",
         "pulseaudio",
         "power-profiles-daemon",
         "network",
@@ -183,16 +183,27 @@
         },
         "on-click": "flatpak run com.saivert.pwvucontrol"
     },
-    "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
+    "mpris": {
+        "format": "{player_icon} {dynamic}",
+        "format-paused": "{status_icon} <i>{dynamic}</i>",
+        "dynamic-order": [
+            "title",
+            "artist",
+            "album"
+        ],
+        "dynamic-separator": " - ",
+        "dynamic-len": 40,
+        "player-icons": {
+            "default": "▶",
+            "mpv": "�",
+            "spotify": ""
         },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+        "status-icons": {
+            "paused": "⏸",
+            "playing": "▶",
+            "stopped": "⏹"
+        },
+        "ignored-players": [],
+        "tooltip-format": "{player} ({status}): {dynamic}"
     }
 }

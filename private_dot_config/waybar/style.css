@@ -87,7 +87,8 @@ button:hover {
 #mode,
 #idle_inhibitor,
 #scratchpad,
-#mpd {
+#mpd,
+#mpris {
     padding: 0 10px;
     color: #ffffff;
 }
@@ -278,3 +279,19 @@ label:focus {
 #scratchpad.empty {
 	background-color: transparent;
 }
+
+#mpris {
+    background-color: #66cc99;
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#mpris.paused {
+    background-color: #51a37a;
+    font-style: italic;
+}
+
+#mpris.stopped {
+    background-color: #90b1b1;
+}
+
