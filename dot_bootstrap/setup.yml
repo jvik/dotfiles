@@ -1,7 +1,7 @@
 ---
 - name: Install multiple packages
   hosts: localhost
-  become: yes
+  become: true
   gather_facts: true
   vars_files:
     - ~/.bootstrap/vars.yml
@@ -59,8 +59,9 @@
           ansible.builtin.package:
             name:
               - wezterm
+              - NetworkManager-tui
             state: present
-            update_cache: yes
+            update_cache: true
       when: ansible_distribution == 'Fedora'
 
     - name: Install packages
@@ -79,7 +80,6 @@
           - neovim
           - code
           - playerctl
-          - NetworkManager-tui
         state: present
         update_cache: yes
 
