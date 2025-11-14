@@ -210,7 +210,7 @@
     "custom/mpris": {
         "format": "{}",
         "exec": "$HOME/scripts/waybar-mpris-workspace.sh",
-        "interval": 2,
+        "interval": 1,
         "return-type": "text",
         "tooltip": false,
         "escape": false,

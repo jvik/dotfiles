@@ -13,6 +13,7 @@ status=$(playerctl -p "$active_player" status 2>/dev/null)
 title=$(playerctl -p "$active_player" metadata title 2>/dev/null)
 artist=$(playerctl -p "$active_player" metadata artist 2>/dev/null)
 length=$(playerctl -p "$active_player" metadata mpris:length 2>/dev/null)
+position=$(playerctl -p "$active_player" position 2>/dev/null)
 
 if [ "$status" != "Playing" ] && [ "$status" != "Paused" ]; then
     echo ""
@@ -132,12 +133,30 @@ fi
 
 # Format length/duration
 length_str=""
+position_str=""
 if [ -n "$length" ] && [ "$length" != "0" ]; then
     # Convert microseconds to mm:ss
     seconds=$((length / 1000000))
     minutes=$((seconds / 60))
     seconds=$((seconds % 60))
     length_str=$(printf "%d:%02d" $minutes $seconds)
+fi
+
+# Format current position
+if [ -n "$position" ]; then
+    # playerctl position returns seconds as a float
+    pos_total_seconds=$(printf "%.0f" "$position")
+    pos_minutes=$((pos_total_seconds / 60))
+    pos_seconds=$((pos_total_seconds % 60))
+    position_str=$(printf "%d:%02d" $pos_minutes $pos_seconds)
+fi
+
+# Combine position and length
+time_str=""
+if [ -n "$position_str" ] && [ -n "$length_str" ]; then
+    time_str="$position_str/$length_str"
+elif [ -n "$length_str" ]; then
+    time_str="$length_str"
 fi
 
 # Build output with workspace info
@@ -149,15 +168,15 @@ fi
 
 # Apply formatting based on status
 if [ "$status" = "Playing" ]; then
-    if [ -n "$length_str" ]; then
-        echo "$player_icon $dynamic $length_str$ws_info"
+    if [ -n "$time_str" ]; then
+        echo "$player_icon $dynamic $time_str$ws_info"
     else
         echo "$player_icon $dynamic$ws_info"
     fi
 else
     # Paused - use italic (Pango markup)
-    if [ -n "$length_str" ]; then
-        echo "$status_icon <i>$dynamic</i> $length_str$ws_info"
+    if [ -n "$time_str" ]; then
+        echo "$status_icon <i>$dynamic</i> $time_str$ws_info"
     else
         echo "$status_icon <i>$dynamic</i>$ws_info"
     fi
