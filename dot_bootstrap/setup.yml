@@ -44,7 +44,7 @@
 
         - name: Enable the RPM Fusion repository
           ansible.builtin.dnf:
-            name: 'https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm'
+            name: 'https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm'
             state: present
 
         - name: Enable RPM Fusion Nonfree repository
@@ -54,14 +54,15 @@
 
         - name: Install wezterm
           community.general.copr:
-            name: 'wezfurlong/wezterm-nightly'
+            name:
+              - 'wezfurlong/wezterm-nightly'
             state: enabled
 
-        - name: Install packages
+        - name: Install Fedora specific packages
           ansible.builtin.package:
             name:
+              - 'NetworkManager-tui'
             state: present
-            update_cache: true
 
     - name: Install packages
       ansible.builtin.package:
@@ -134,13 +135,17 @@
               ansible.builtin.file:
                 path: '/home/{{ user }}/temp'
                 state: directory
+                mode: '0755'
             - name: Download Installer Script
               ansible.builtin.get_url:
                 url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
                 dest: /home/{{ user }}/temp/brew_install.sh
                 mode: '775'
             - name: Run Installer Script
-              ansible.builtin.shell: NONINTERACTIVE=1 /home/{{ user }}/temp/brew_install.sh
+              ansible.builtin.command: /home/{{ user }}/temp/brew_install.sh
+              environment:
+                NONINTERACTIVE: '1'
+              changed_when: true
 
         - name: Set LinuxBrew Executable Path
           ansible.builtin.set_fact:
@@ -170,6 +175,8 @@
             update: true
 
     - name: Install Homebrew packages and casks
+      environment:
+        PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
       block:
         - name: Install Homebrew packages
           become: false
@@ -203,5 +210,3 @@
               - font-jetbrains-mono
               - font-jetbrains-mono-nerd-font
             state: present
-      environment:
-        PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
