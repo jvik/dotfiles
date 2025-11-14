@@ -12,6 +12,7 @@ fi
 status=$(playerctl -p "$active_player" status 2>/dev/null)
 title=$(playerctl -p "$active_player" metadata title 2>/dev/null)
 artist=$(playerctl -p "$active_player" metadata artist 2>/dev/null)
+length=$(playerctl -p "$active_player" metadata mpris:length 2>/dev/null)
 
 if [ "$status" != "Playing" ] && [ "$status" != "Paused" ]; then
     echo ""
@@ -25,17 +26,25 @@ player_pid=$(pgrep -f "$active_player" | head -n1)
 if [ -z "$player_pid" ]; then
     # Try different common player names
     case "$active_player" in
-        *spotify*)
+        *spotify*|*Spotify*)
             player_pid=$(pgrep -i spotify | head -n1)
             ;;
-        *firefox*)
+        *firefox*|*Firefox*)
             player_pid=$(pgrep -i firefox | head -n1)
             ;;
-        *chrome*)
+        *chrome*|*Chrome*)
             player_pid=$(pgrep -i chrome | head -n1)
             ;;
-        *mpv*)
+        *mpv*|*Mpv*)
             player_pid=$(pgrep -i mpv | head -n1)
+            ;;
+        *plexamp*|*Plexamp*)
+            player_pid=$(pgrep -i plexamp | head -n1)
+            ;;
+        *)
+            # Generic fallback - try to match player name
+            player_name=$(echo "$active_player" | awk -F'.' '{print $1}')
+            player_pid=$(pgrep -i "$player_name" | head -n1)
             ;;
     esac
 fi
@@ -43,28 +52,57 @@ fi
 # Get workspace information from Sway
 workspace=""
 if [ -n "$player_pid" ]; then
-    # Get the window ID for the player process
-    window_id=$(swaymsg -t get_tree | jq -r ".. | select(.pid? == $player_pid) | .id" | head -n1)
+    # Collect all PIDs related to the player (parent and children)
+    all_pids="$player_pid"
     
-    if [ -n "$window_id" ]; then
-        # Get workspace number/name from the window
-        workspace=$(swaymsg -t get_tree | jq -r ".. | select(.type? == \"workspace\") | select(.. | .id? == $window_id) | .num // .name" | head -n1)
+    # Add all processes with the same name
+    player_name=$(ps -p "$player_pid" -o comm= 2>/dev/null)
+    if [ -n "$player_name" ]; then
+        additional_pids=$(pgrep -x "$player_name" 2>/dev/null)
+        if [ -n "$additional_pids" ]; then
+            all_pids="$all_pids $additional_pids"
+        fi
     fi
     
-    # If not found, check child processes
-    if [ -z "$workspace" ]; then
-        child_pids=$(pgrep -P "$player_pid")
-        for child_pid in $child_pids; do
-            window_id=$(swaymsg -t get_tree | jq -r ".. | select(.pid? == $child_pid) | .id" | head -n1)
-            if [ -n "$window_id" ]; then
-                workspace=$(swaymsg -t get_tree | jq -r ".. | select(.type? == \"workspace\") | select(.. | .id? == $window_id) | .num // .name" | head -n1)
-                if [ -n "$workspace" ]; then
-                    break
-                fi
+    # Add child processes
+    child_pids=$(pgrep -P "$player_pid" 2>/dev/null)
+    if [ -n "$child_pids" ]; then
+        all_pids="$all_pids $child_pids"
+    fi
+    
+    # Remove duplicates and try each PID
+    all_pids=$(echo "$all_pids" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+    
+    for pid in $all_pids; do
+        # Get the window for this PID
+        window_data=$(swaymsg -t get_tree | jq -r ".. | select(.pid?) | select(.pid == $pid) | .id" 2>/dev/null | head -n1)
+        
+        if [ -n "$window_data" ]; then
+            # Find which workspace contains this window
+            workspace=$(swaymsg -t get_tree | jq -r --arg wid "$window_data" '
+                .. | 
+                select(.type? == "workspace") | 
+                select(.. | .id? == ($wid | tonumber)) | 
+                .num // .name
+            ' 2>/dev/null | head -n1)
+            
+            if [ -n "$workspace" ]; then
+                break
             fi
-        done
-    fi
+        fi
+    done
 fi
+
+# Determine player icon
+player_icon="▶"
+case "$active_player" in
+    *spotify*)
+        player_icon=""
+        ;;
+    *mpv*)
+        player_icon="🎵"
+        ;;
+esac
 
 # Format output
 if [ "$status" = "Playing" ]; then
@@ -82,14 +120,45 @@ if [ -n "$title" ]; then
     fi
 fi
 
-# Truncate if too long
-if [ ${#dynamic} -gt 40 ]; then
-    dynamic="${dynamic:0:37}..."
+# Truncate if too long (reserve space for workspace)
+max_len=40
+if [ -n "$workspace" ]; then
+    max_len=35
 fi
 
-# Add workspace if found
+if [ ${#dynamic} -gt $max_len ]; then
+    dynamic="${dynamic:0:$((max_len-3))}..."
+fi
+
+# Format length/duration
+length_str=""
+if [ -n "$length" ] && [ "$length" != "0" ]; then
+    # Convert microseconds to mm:ss
+    seconds=$((length / 1000000))
+    minutes=$((seconds / 60))
+    seconds=$((seconds % 60))
+    length_str=$(printf "%d:%02d" $minutes $seconds)
+fi
+
+# Build output with workspace info
 if [ -n "$workspace" ]; then
-    echo "$status_icon $dynamic [$workspace]"
+    ws_info=" [$workspace]"
 else
-    echo "$status_icon $dynamic"
+    ws_info=""
+fi
+
+# Apply formatting based on status
+if [ "$status" = "Playing" ]; then
+    if [ -n "$length_str" ]; then
+        echo "$player_icon $dynamic $length_str$ws_info"
+    else
+        echo "$player_icon $dynamic$ws_info"
+    fi
+else
+    # Paused - use italic (Pango markup)
+    if [ -n "$length_str" ]; then
+        echo "$status_icon <i>$dynamic</i> $length_str$ws_info"
+    else
+        echo "$status_icon <i>$dynamic</i>$ws_info"
+    fi
 fi
