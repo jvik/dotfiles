@@ -253,11 +253,6 @@ bindsym $mod+r mode "resize"
 #     bindsym Escape mode "default"
 # }
 bindsym $mod+Shift+p exec ~/scripts/present-select.sh
-<<<<<<< HEAD
-bindsym $mod+Shift+v exec clipman pick -t wofi
-=======
->>>>>>> 705b694eeb4ecee99ba1caeb21c573c108d59a7f
-
 
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
