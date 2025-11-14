@@ -137,6 +137,13 @@ Re-run provisioning:
 * Extend zsh: put functions in `private_dot_config/zsh/functions.zsh` (already provided) or use `antigen.zsh` for extra bundles.
 * Override local-only settings: create `private_dot_config/zsh/local.zsh` (see `local.zsh.example`). chezmoi can ignore or manage with encryption.
 
+### Wallpaper
+
+https://drive.proton.me/urls/K1NFJPP43M#p1daHRRboBCZ
+
+Add to ~/.wallpaper
+
+
 ---
 
 ## Scripts

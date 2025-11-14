@@ -1,0 +1,32 @@
+image=~/.wallpaper
+scaling=fill
+
+# Farger (myke, matte og nøytrale som matcher wallpaperet)
+# Disse er ment å ikke kollidere med gradientfargene
+
+# Ring
+ring-color=ffffff33
+ring-ver-color=ffffff55
+ring-wrong-color=ff6b6bcc
+ring-clear-color=33c7ffcc
+
+# Innside av ring
+inside-color=00000033
+inside-ver-color=00000033
+inside-wrong-color=ff6b6bcc
+inside-clear-color=33c7ffcc
+
+# Tekst
+text-color=ffffffff
+text-ver-color=ffffffff
+text-wrong-color=ffe0e0ff
+text-clear-color=ccf5ffff
+
+# Separator
+separator-color=ffffff33
+
+# Indikator
+show-keyboard-layout=no
+show-failed-attempts=yes
+indicator-radius=110
+indicator-thickness=12

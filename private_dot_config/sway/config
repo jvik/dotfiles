@@ -49,7 +49,7 @@ output * bg ~/.wallpaper fill
 # Example configuration:
 #
 #
-set $locker 'swaylock -f -c 444444 --clock --indicator --effect-blur 4x5 --indicator-caps-lock'
+set $locker 'swaylock -f'
 set $lockman exec bash ~/.config/sway/lockman.sh
 
 set $monitorDisableTimeout 300
