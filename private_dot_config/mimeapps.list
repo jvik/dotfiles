@@ -1,7 +1,13 @@
 [Default Applications]
 application/x-ms-dos-executable=wine.desktop
-x-scheme-handler/https=firefox.desktop
-x-scheme-handler/http=firefox.desktop
+x-scheme-handler/https=firefox_firefox.desktop
+x-scheme-handler/http=firefox_firefox.desktop
+application/xhtml+xml=firefox_firefox.desktop
+text/html=firefox_firefox.desktop
 
 [Added Associations]
 application/x-ms-dos-executable=wine.desktop;
+x-scheme-handler/http=com.microsoft.Edge.desktop;firefox_firefox.desktop;
+application/xhtml+xml=com.microsoft.Edge.desktop;firefox_firefox.desktop;
+text/html=com.microsoft.Edge.desktop;firefox_firefox.desktop;
+x-scheme-handler/https=com.microsoft.Edge.desktop;firefox_firefox.desktop;
