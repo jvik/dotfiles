@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# Værscript for Waybar - Ålesund
+# Bruker wttr.in API for værdata
+
+LOCATION="Ålesund"
+
+# Hent værdata fra wttr.in
+# Format: %c = værikon, %t = temp, %w = vind, %p = nedbør
+weather_data=$(curl -s "https://wttr.in/${LOCATION}?format=%c+%t+%w+%p&m" 2>/dev/null)
+
+if [ -z "$weather_data" ]; then
+    echo "  N/A"
+    exit 0
+fi
+
+# Konverter km/h til m/s (del på 3.6)
+# Ekstraher vindverdi med retning
+wind=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙]\K\d+(?=km/h)')
+wind_dir=$(echo "$weather_data" | grep -oP '[↑↓←→↖↗↘↙](?=\d+km/h)')
+
+if [ -n "$wind" ]; then
+    wind_ms=$(awk "BEGIN {printf \"%.0f\", $wind/3.6}")
+    weather_data=$(echo "$weather_data" | sed "s/${wind_dir}${wind}km\/h/${wind_dir}${wind_ms}m\/s/")
+fi
+
+# Fjern % tegn fra nedbør om det finnes
+weather_data=$(echo "$weather_data" | sed 's/mm%/mm/')
+
+echo "$weather_data"

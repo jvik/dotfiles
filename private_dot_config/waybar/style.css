@@ -84,6 +84,7 @@ button:hover {
 #pulseaudio,
 #wireplumber,
 #custom-media,
+#custom-weather,
 #tray,
 #mode,
 #idle_inhibitor,
@@ -167,6 +168,10 @@ label:focus {
 
 #network.disconnected {
     background-color: #f53c3c;
+}
+
+#custom-weather {
+    background-color: #4a90a4;
 }
 
 #bluetooth {

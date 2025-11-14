@@ -26,6 +26,7 @@
         "backlight",
         // "sway/language",
         "battery",
+        "custom/weather",
         "clock",
         "tray"
     ],
@@ -205,5 +206,12 @@
         },
         "ignored-players": [],
         "tooltip-format": "{player} ({status}): {dynamic}"
+    },
+    "custom/weather": {
+        "format": "{}",
+        "exec": "~/.local/share/chezmoi/scripts/waybar-weather.sh",
+        "interval": 1800,
+        "return-type": "text",
+        "tooltip": false
     }
 }
