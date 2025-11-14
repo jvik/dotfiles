@@ -68,7 +68,6 @@
       ansible.builtin.package:
         name:
           - fd-find
-          - clipman
           - tree
           - flatpak
           - ansible-lint
@@ -80,6 +79,7 @@
           - neovim
           - code
           - playerctl
+          - copyq
         state: present
         update_cache: true
 
