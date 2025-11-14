@@ -79,6 +79,7 @@
           - neovim
           - code
           - playerctl
+          - NetworkManager-tui
         state: present
         update_cache: yes
 

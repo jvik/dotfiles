@@ -7,8 +7,6 @@
 exec --no-startup-id dbus-update-activation-environment --all
 #exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
-exec blueman-applet
-
 exec_always {
   pkill kanshi
   kanshi &
