@@ -254,7 +254,6 @@ bindsym $mod+r mode "resize"
 # }
 bindsym $mod+Shift+p exec ~/scripts/present-select.sh
 
-
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
 bindsym $mod+Control+Shift+Down move workspace to output down
