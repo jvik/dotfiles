@@ -230,6 +230,6 @@
         "interval": 1800,
         "return-type": "text",
         "tooltip": false,
-        "on-click": "firefox --new-window https://www.yr.no"
+        "on-click": "firefox --new-window $($HOME/scripts/yr-url-lookup.sh)"
     }
 }

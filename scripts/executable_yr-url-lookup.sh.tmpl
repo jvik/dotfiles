@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+LOCATION={{ (env "LOCATION") | default "Oslo" }}
+
+# Query YR's location API (curl will handle URL encoding)
+search_result=$(curl -s -G --data-urlencode "q=${LOCATION}" \
+    "https://www.yr.no/api/v0/locations/suggest?language=nb" 2>/dev/null)
+
+if [ -z "$search_result" ]; then
+    echo "https://www.yr.no"
+    exit 0
+fi
+
+# Extract the first suggestion's id and urlPath
+location_id=$(echo "$search_result" | jq -r '._embedded.location[0].id // empty' 2>/dev/null)
+url_path=$(echo "$search_result" | jq -r '._embedded.location[0].urlPath // empty' 2>/dev/null | tr -d '\n')
+
+if [ -n "$location_id" ] && [ -n "$url_path" ]; then
+    # URL-encode the path properly
+    encoded_path=$(printf '%s' "$url_path" | jq -sRr @uri)
+    echo "https://www.yr.no/nb/værvarsel/daglig-tabell/${location_id}/${encoded_path}"
+else
+    echo "https://www.yr.no"
+fi
