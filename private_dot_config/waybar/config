@@ -44,6 +44,7 @@
         "tooltip-format": "{app}: {title}"
     },
     "sway/workspaces": {
+        "all-outputs": true,
         "disable-scroll-wraparound": true,
         "smooth-scrolling-threshold": 4,
         "enable-bar-scroll": true,
@@ -53,7 +54,7 @@
             "2": "",
             "3": "",
             "4": "󰦑",
-            "8": "",
+            "9": "",
             "10": "",
             "high-priority-named": [
                 "1",
