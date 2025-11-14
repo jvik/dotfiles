@@ -14,11 +14,11 @@
         "sway/window"
     ],
     "modules-right": [
-        "bluetooth",
         "idle_inhibitor",
         "mpris",
-        "pulseaudio",
         "power-profiles-daemon",
+        "bluetooth",
+        "pulseaudio",
         "network",
         "cpu",
         "memory",
