@@ -22,7 +22,6 @@ alias tmuxa='tmux attach || tmux new-session'
 #fi
 
 alias ,,='cd ..'
-alias ..l='cd .. && ls'
 alias :q='exit'
 alias cd..='cd ..'
 alias mdkir='mkdir'
@@ -35,6 +34,26 @@ alias i3config="nvim ~/.config/i3/config"
 alias audio="alsamixer"
 
 alias bw="flatpak run --command=bw com.bitwarden.desktop"
+
+# Eza
+alias l="eza -l --icons --git -a"
+alias lt="eza --tree --level=2 --long --icons --git"
+alias ltree="eza --tree --level=2  --icons --git"
+
+# K8S
+alias k="kubectl"
+alias ka="kubectl apply -f"
+alias kg="kubectl get"
+alias kd="kubectl describe"
+alias kdel="kubectl delete"
+alias kl="kubectl logs"
+alias kgpo="kubectl get pod"
+alias kgd="kubectl get deployments"
+alias kc="kubectx"
+alias kns="kubens"
+alias kl="kubectl logs -f"
+alias ke="kubectl exec -it"
+alias kcns='kubectl config set-context --current --namespace'
 
 mkcd () {
   \mkdir -p "$1"

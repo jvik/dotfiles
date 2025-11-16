@@ -55,7 +55,7 @@ export ZLE_RPROMPT_INDENT=0
 
 export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
 
-plugins=(vi-mode git kubectl terraform azure)
+plugins=(eza vi-mode git kubectl terraform azure gh docker zoxide kubectx colored-man-pages colorize chezmoi)
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 # Load other stuff
@@ -64,3 +64,7 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+zstyle ':omz:plugins:eza' 'icons' yes
+zstyle ':omz:plugins:eza' 'git-status' yes
