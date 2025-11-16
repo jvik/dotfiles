@@ -278,8 +278,6 @@ bindsym $mod+Control+Shift+Up move workspace to output up
     bindsym --locked XF86AudioNext exec playerctl next
 
 
-bindsym XF86WLAN exec --no-startup-id bash -c "nmcli radio wifi toggle && notify-send 'WiFi $(nmcli radio wifi | grep -o 'enabled\|disabled')'"
-
     # Clipboard manager
 
     bindsym $mod+Shift+v exec copyq toggle
