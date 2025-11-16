@@ -44,12 +44,12 @@
 
         - name: Enable the RPM Fusion repository
           ansible.builtin.dnf:
-            name: 'https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm'
+            name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
             state: present
 
         - name: Enable RPM Fusion Nonfree repository
           ansible.builtin.dnf:
-            name: 'https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm'
+            name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
             state: present
 
         # - name: Install wezterm
@@ -61,7 +61,7 @@
         - name: Install Fedora specific packages
           ansible.builtin.package:
             name:
-              - 'NetworkManager-tui'
+              - "NetworkManager-tui"
             state: present
 
     - name: Install packages
@@ -116,7 +116,7 @@
 
     - name: Check if Homebrew is already installed
       ansible.builtin.stat:
-        path: '/home/linuxbrew/.linuxbrew/bin/brew'
+        path: "/home/linuxbrew/.linuxbrew/bin/brew"
       register: brew_stat
 
     - name: Install and configure Homebrew
@@ -133,18 +133,18 @@
           block:
             - name: Create tmp dir
               ansible.builtin.file:
-                path: '/home/{{ user }}/temp'
+                path: "/home/{{ user }}/temp"
                 state: directory
-                mode: '0755'
+                mode: "0755"
             - name: Download Installer Script
               ansible.builtin.get_url:
                 url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
                 dest: /home/{{ user }}/temp/brew_install.sh
-                mode: '775'
+                mode: "775"
             - name: Run Installer Script
               ansible.builtin.command: /home/{{ user }}/temp/brew_install.sh
               environment:
-                NONINTERACTIVE: '1'
+                NONINTERACTIVE: "1"
               changed_when: true
 
         - name: Set LinuxBrew Executable Path
@@ -154,13 +154,13 @@
 
     - name: Set user shell to zsh
       ansible.builtin.user:
-        name: '{{ user }}'
+        name: "{{ user }}"
         shell: /bin/zsh
       become: true
 
     - name: Check if oh my zsh is already installed
       ansible.builtin.stat:
-        path: '/home/{{ user }}/.oh-my-zsh'
+        path: "/home/{{ user }}/.oh-my-zsh"
       register: oh_my_zsh_stat
 
     - name: Install oh-my-zsh
@@ -170,13 +170,13 @@
           ansible.builtin.git:
             repo: https://github.com/ohmyzsh/ohmyzsh.git
             dest: /home/{{ user }}/.oh-my-zsh
-            version: 'master'
+            version: "master"
             clone: true
             update: true
 
     - name: Install Homebrew packages and casks
       environment:
-        PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+        PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
       block:
         - name: Install Homebrew packages
           become: false
@@ -185,7 +185,6 @@
               - ctop
               - eza
               - fzf
-              - atuin
               - gh
               - just
               - neofetch

@@ -62,7 +62,6 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 eval "$(zoxide init zsh)"
-eval "$(atuin init zsh)"
 source $HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
