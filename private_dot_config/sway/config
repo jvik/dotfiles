@@ -8,6 +8,11 @@ exec --no-startup-id dbus-update-activation-environment --all
 #exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 
 exec_always {
+    rm /run/user/1000/pipectl.1000.wl-present.pipe 
+}
+
+
+exec_always {
   pkill kanshi
   kanshi &
 }
@@ -240,7 +245,8 @@ bindsym $mod+r mode "resize"
 # Present screen mode
 mode "present" {
     # command starts mirroring
-    bindsym m mode "default"; exec wl-mirror -s n eDP-1 
+    bindsym m mode "default"; exec wl-present mirror
+#    bindsym m mode "default"; exec wl-mirror -s n eDP-1 
     # these commands modify an already running mirroring window
     bindsym o mode "default"; exec wl-present set-output
     bindsym r mode "default"; exec wl-present set-region
@@ -255,6 +261,7 @@ mode "present" {
     bindsym Escape mode "default"
 }
 bindsym $mod+shift+p mode "present"
+bindsym XF86Display mode "present"
 
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
