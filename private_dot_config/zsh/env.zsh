@@ -55,7 +55,7 @@ export ZLE_RPROMPT_INDENT=0
 
 export SSH_AUTH_SOCK="$HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock"
 
-plugins=(eza vi-mode git kubectl terraform azure gh docker zoxide kubectx colored-man-pages colorize)
+plugins=(eza vi-mode git kubectl terraform azure gh docker zoxide kubectx colored-man-pages colorize chezmoi)
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 
 # Load other stuff

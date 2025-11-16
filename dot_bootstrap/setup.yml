@@ -194,6 +194,9 @@
               - zoxide
               - zsh-autosuggestions
               - zsh-syntax-highlighting
+              - kubectl
+              - kubectx
+              - k9s
             state: present
 
           # - name: Install homebrew extras for sway
