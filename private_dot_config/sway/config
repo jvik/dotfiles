@@ -237,22 +237,24 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 #
 
-# mode "present" {
-#     # command starts mirroring
-#     bindsym m mode "default"; exec wl-present mirror
-#     # these commands modify an already running mirroring window
-#     bindsym o mode "default"; exec wl-present set-output
-#     bindsym r mode "default"; exec wl-present set-region
-#     bindsym Shift+r mode "default"; exec wl-present unset-region
-#     bindsym s mode "default"; exec wl-present set-scaling
-#     bindsym f mode "default"; exec wl-present toggle-freeze
-#     bindsym c mode "default"; exec wl-present custom
+# Present screen mode
+mode "present" {
+    # command starts mirroring
+    bindsym m mode "default"; exec wl-mirror -s n eDP-1 
+    # these commands modify an already running mirroring window
+    bindsym o mode "default"; exec wl-present set-output
+    bindsym r mode "default"; exec wl-present set-region
+    bindsym Shift+r mode "default"; exec wl-present unset-region
+    bindsym s mode "default"; exec wl-present set-scaling
+    bindsym f mode "default"; exec wl-present toggle-freeze
+    bindsym c mode "default"; exec wl-present custom
+    bindsym k mode "default"; exec killall wl-mirror
 
-#     # return to default mode
-#     bindsym Return mode "default"
-#     bindsym Escape mode "default"
-# }
-bindsym $mod+Shift+p exec ~/scripts/present-select.sh
+    # return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+shift+p mode "present"
 
 bindsym $mod+Control+Shift+Right move workspace to output right
 bindsym $mod+Control+Shift+Left move workspace to output left
