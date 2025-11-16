@@ -183,7 +183,9 @@
           community.general.homebrew:
             name:
               - ctop
+              - eza
               - fzf
+              - atuin
               - gh
               - just
               - neofetch
