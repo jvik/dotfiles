@@ -21,12 +21,12 @@
   "hide-on-clear": false,
   "hide-on-action": true,
   "script-fail-notify": true,
-  "text-empty": "Nothing here",
   "widgets": [
     "buttons-grid",
     "volume",
     "backlight",
-    "mpris"
+    "mpris",
+    "dnd"
   ],
   "widget-config": {
     "title": {
@@ -68,7 +68,7 @@
         },
         {
           "label": "󰌾",
-          "command": "swaylock-corrupter"
+          "command": "swaylock"
         },
         {
           "label": "󰍃",
@@ -90,7 +90,7 @@
         },
         {
           "label": "󰖩",
-          "command": "iwgtk"
+          "command": "nmtui"
         },
         {
           "label": "󰂯",
@@ -98,7 +98,7 @@
         },
         {
           "label": "",
-          "command": "kooha"
+          "command": "flatpak run io.github.seadve.Kooha"
         }
       ]
     }
