@@ -28,7 +28,8 @@
         "battery",
         "custom/weather",
         "clock",
-        "tray"
+        "tray",
+        "custom/notification"
     ],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -231,5 +232,25 @@
         "return-type": "text",
         "tooltip": false,
         "on-click": "firefox --new-window $($HOME/scripts/yr-url-lookup.sh)"
+    },
+    "custom/notification": {
+        "tooltip": false,
+        "format": "",
+        "format-icons": {
+            "notification": "<span foreground='red'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
     }
 }
