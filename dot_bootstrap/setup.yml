@@ -113,6 +113,7 @@
           - com.saivert.pwvucontrol/x86_64/stable
           - dev.vencord.Vesktop/x86_64/stable
           - md.obsidian.Obsidian/x86_64/stable
+          - io.github.seadve.Kooha/x86_64/stable
         state: present
 
     - name: Check if Homebrew is already installed
