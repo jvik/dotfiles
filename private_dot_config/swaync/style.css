@@ -248,3 +248,16 @@
   padding: 5px 10px;
   margin: 10px 0 0 0;
 }
+
+.widget-mpris-player button {
+  background: @text-color-disabled;
+  color: @cc-bg;
+  font-size: 1.3rem;
+  padding: 8px 12px;
+  margin: 5px;
+}
+
+.widget-mpris-player button:hover {
+  background: @text-color;
+  color: @cc-bg;
+}
