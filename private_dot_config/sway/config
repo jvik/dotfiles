@@ -332,10 +332,10 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 # Set default workspace
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
 assign [class="Slack"] 4
+assign [title="Plexamp"] 8
+assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
 assign [app_id="discord|vesktop"] 9
-assign [title="Plexamp"] 10
-assign [app_id="spotify"] 10
 
 set $disp1 "eDP-1"
 set $disp2 "DP-7"
