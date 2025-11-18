@@ -270,6 +270,7 @@ bindsym $mod+Control+Shift+Left move workspace to output left
 bindsym $mod+Control+Shift+Down move workspace to output down
 bindsym $mod+Control+Shift+Up move workspace to output up
 
+
 #
 # Utilities:
 #
@@ -323,6 +324,7 @@ for_window [title="Moving *"] floating enable
 # A window that both as rename and is spawned by thunar
 for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 
 # Sticky floating windows
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
@@ -334,6 +336,21 @@ assign [app_id="signal"] 9
 assign [app_id="discord|vesktop"] 9
 assign [title="Plexamp"] 10
 assign [app_id="spotify"] 10
+
+set $disp1 "eDP-1"
+set $disp2 "DP-7"
+
+# default display outputs for workspaces with fallback to disp1
+workspace 1 output $disp2 
+workspace 2 output $disp2 
+workspace 3 output $disp2 
+workspace 4 output $disp2 
+workspace 5 output $disp2 
+workspace 6 output $disp2 
+workspace 7 output $disp2 
+workspace 8 output $disp2 
+workspace 9 output $disp2
+workspace 10 output $disp1
 
 workspace_auto_back_and_forth yes
 focus_on_window_activation focus
