@@ -114,6 +114,12 @@ pointer_accel 0.2
     # Start your launcher
     bindsym $mod+d exec $menu
 
+    # Start firefox
+    bindsym $mod+z exec firefox
+
+    # Start file manager
+    bindsym $mod+x exec thunar
+
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
