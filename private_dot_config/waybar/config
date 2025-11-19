@@ -18,7 +18,9 @@
         "idle_inhibitor",
         "power-profiles-daemon",
         "bluetooth",
-        "pulseaudio",
+        "pulseaudio#speaker",
+        "pulseaudio#mic",
+        "custom/bt-profile",
         "network",
         "cpu",
         "memory",
@@ -170,14 +172,14 @@
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
         "on-click-right": "wezterm -e --class nmwui nmtui"
     },
-    "pulseaudio": {
+    "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
-        "format": "{volume}% {icon} {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": " {format_source}",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
+        "format": "{volume}% {icon}",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-bluetooth-muted": "{icon}",
+        "format-muted": "{format_source}",
+        "format-source": "{volume}%",
+        "format-source-muted": "",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -191,7 +193,19 @@
                 ""
             ]
         },
-        "on-click": "flatpak run com.saivert.pwvucontrol"
+        "on-click-right": "flatpak run com.saivert.pwvucontrol -t 4",
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+    "pulseaudio#mic": {
+        "source": true,
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "tooltip-format": "Microphone: {source_desc}, {volume}%",
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",
+        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +5%",
+        "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%"
     },
     "mpris": {
         "format": "{status_icon} {dynamic} {player_icon}",
@@ -229,6 +243,13 @@
         "return-type": "text",
         "tooltip": false,
         "on-click": "firefox --new-window $($HOME/scripts/yr-url-lookup.sh)"
+    },
+    "custom/bt-profile": {
+        "format": "{}",
+        "exec": "$HOME/scripts/waybar-bt-profile.sh",
+        "interval": 1,
+        "return-type": "text",
+        "tooltip": false
     },
     "custom/notification": {
         "tooltip": false,
