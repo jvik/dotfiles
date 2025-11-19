@@ -18,7 +18,7 @@
         "idle_inhibitor",
         "power-profiles-daemon",
         "bluetooth",
-        "pulseaudio",
+        "pulseaudio#speaker",
         "pulseaudio#mic",
         "custom/bt-profile",
         "network",
@@ -172,7 +172,7 @@
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
         "on-click-right": "wezterm -e --class nmwui nmtui"
     },
-    "pulseaudio": {
+    "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon}",
@@ -200,7 +200,7 @@
         "source": true,
         "format": "{format_source}",
         "format-source": " {volume}%",
-        "format-source-muted": "  ",
+        "format-source-muted": "",
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
         "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",

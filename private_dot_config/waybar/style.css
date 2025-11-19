@@ -194,12 +194,13 @@ label:focus {
     background-color: #0082c8;
 }
 
-#pulseaudio {
+#pulseaudio.speaker,
+#pulseaudio.mic {
     background-color: #f1c40f;
     color: #000000;
 }
 
-#pulseaudio.muted {
+#pulseaudio.speaker.muted {
     background-color: #90b1b1;
     color: #2a5c45;
 }
