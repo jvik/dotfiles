@@ -204,6 +204,13 @@ label:focus {
     color: #2a5c45;
 }
 
+#custom-bt-profile {
+    background-color: #f1c40f;
+    color: #000000;
+    padding: 0 10px 0 10px;
+    /* margin-left: -4px; */
+}
+
 #wireplumber {
     background-color: #fff0f5;
     color: #000000;
