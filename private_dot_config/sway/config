@@ -158,6 +158,8 @@ pointer_accel 0.2
     bindsym $mod+Shift+Right move right
 
     bindsym $mod+Shift+m sticky toggle
+
+    bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 #
 # Workspaces:
 #

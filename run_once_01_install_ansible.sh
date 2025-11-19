@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check for internet connectivity
+if ! ping -c 1 8.8.8.8 &> /dev/null; then
+    echo "No internet connection detected. Skipping ansible installation."
+    exit 0
+fi
+
 install_on_fedora() {
     sudo dnf install -y ansible
 }
