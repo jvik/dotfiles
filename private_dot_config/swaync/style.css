@@ -23,10 +23,17 @@
   border-radius: 0;
 }
 
-.control-center .notification-row:focus,
 .control-center .notification-row:hover {
   opacity: 1;
-  background: @noti-bg-darker;
+  background: @noti-bg-hover;
+  box-shadow: inset 0 0 0 2px @blue-base;
+}
+
+.control-center .notification-row:focus {
+  opacity: 1;
+  background: @noti-bg-hover;
+  box-shadow: inset 0 0 0 3px @blue-base;
+  outline: 2px solid @blue-base;
 }
 
 .notification-row {
