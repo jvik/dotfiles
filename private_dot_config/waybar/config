@@ -177,7 +177,7 @@
         "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon}",
         "format-bluetooth-muted": "{icon}",
-        "format-muted": "{format_source}",
+        "format-muted": "{volume}% ",
         "format-source": "{volume}%",
         "format-source-muted": "",
         "format-icons": {
@@ -200,7 +200,7 @@
         "source": true,
         "format": "{format_source}",
         "format-source": " {volume}%",
-        "format-source-muted": "",
+        "format-source-muted": " {volume}%",
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
         "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",

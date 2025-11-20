@@ -12,6 +12,7 @@ prepend "$HOME/go/bin"
 prepend '/home/linuxbrew/.linuxbrew/bin'
 prepend "$HOME/.local/bin"
 prepend "$HOME/.cargo/bin"
+prepend "/nix/var/nix/profiles/default/bin/"
 
 if hash nvim 2>/dev/null; then
   export EDITOR=nvim
