@@ -1,3 +1,43 @@
+/* ============================================================================
+ * Color Definitions - GTK CSS Variables
+ * ============================================================================ */
+
+@define-color bg-primary rgba(43, 48, 59, 0.5);
+@define-color bg-border rgba(100, 114, 125, 0.5);
+@define-color bg-module #64727D;
+@define-color bg-battery #ffffff;
+@define-color bg-battery-charging #26A65B;
+@define-color bg-critical #f53c3c;
+@define-color bg-cpu #2ecc71;
+@define-color bg-memory #9b59b6;
+@define-color bg-disk #964B00;
+@define-color bg-muted #90b1b1;
+@define-color bg-network #1e5f8c;
+@define-color bg-weather #4a90a4;
+@define-color bg-bluetooth #0082c8;
+@define-color bg-bluetooth-disconnected #555555;
+@define-color bg-audio #f1c40f;
+@define-color bg-wireplumber #fff0f5;
+@define-color bg-media #66cc99;
+@define-color bg-media-vlc #ffa000;
+@define-color bg-temperature #f0932b;
+@define-color bg-tray #2980b9;
+@define-color bg-idle-inhibitor #5f8aa6;
+@define-color bg-idle-inhibitor-active #f39c12;
+@define-color bg-language #00b093;
+@define-color bg-keyboard #97e1ad;
+@define-color bg-notification #3c3836;
+
+@define-color text-primary #ffffff;
+@define-color text-dark #000000;
+@define-color text-audio-muted #2a5c45;
+@define-color text-language #740864;
+@define-color text-notification #ebdbb2;
+
+/* ============================================================================
+ * Global Styles
+ * ============================================================================ */
+
 * {
     /* `otf-font-awesome` is required to be installed for icons */
     font-family: 'Noto Sans Mono', 'Font Awesome 7 Free', 'Font Awesome 7 Brands', monospace;
@@ -5,9 +45,9 @@
 }
 
 window#waybar {
-    background-color: rgba(43, 48, 59, 0.5);
-    border-bottom: 3px solid rgba(100, 114, 125, 0.5);
-    color: #ffffff;
+    background-color: @bg-primary;
+    border-bottom: 3px solid @bg-border;
+    color: @text-primary;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -15,15 +55,6 @@ window#waybar {
 window#waybar.hidden {
     opacity: 0.2;
 }
-
-/*
-window#waybar.empty {
-    background-color: transparent;
-}
-window#waybar.solo {
-    background-color: #FFFFFF;
-}
-*/
 
 window#waybar.termite {
     background-color: #3F3F3F;
@@ -33,6 +64,10 @@ window#waybar.chromium {
     background-color: #000000;
     border: none;
 }
+
+/* ============================================================================
+ * Button & Workspace Styles
+ * ============================================================================ */
 
 button {
     /* Use box-shadow instead of border so the text isn't offset */
@@ -45,13 +80,13 @@ button {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 button:hover {
     background: inherit;
-    box-shadow: inset 0 -3px #ffffff;
+    box-shadow: inset 0 -3px @text-primary;
 }
 
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
-    color: #ffffff;
+    color: @text-primary;
 }
 
 #workspaces button:hover {
@@ -59,16 +94,12 @@ button:hover {
 }
 
 #workspaces button.focused {
-    background-color: #64727D;
-    box-shadow: inset 0 -3px #ffffff;
+    background-color: @bg-module;
+    box-shadow: inset 0 -3px @text-primary;
 }
 
 #workspaces button.visible {
-    background-color: #64727D;
-    /* padding: 0 5px; */
-    /* border-radius: 10px; */
-    /* color: #ff0000; */
-    /* margin: 0 0px; */
+    background-color: @bg-module;
 }
 
 #workspaces button.urgent {
@@ -76,9 +107,13 @@ button:hover {
 }
 
 #mode {
-    background-color: #64727D;
-    border-bottom: 3px solid #ffffff;
+    background-color: @bg-module;
+    border-bottom: 3px solid @text-primary;
 }
+
+/* ============================================================================
+ * Module Common Styles
+ * ============================================================================ */
 
 #clock,
 #battery,
@@ -100,7 +135,7 @@ button:hover {
 #mpd,
 #mpris {
     padding: 0 10px;
-    color: #ffffff;
+    color: @text-primary;
 }
 
 #window,
@@ -118,30 +153,35 @@ button:hover {
     margin-right: 0;
 }
 
+/* ============================================================================
+ * Module-Specific Styles
+ * ============================================================================ */
+
 #clock {
-    background-color: #64727D;
+    background-color: @bg-module;
 }
 
 #battery {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: @bg-battery;
+    color: @text-dark;
 }
 
-#battery.charging, #battery.plugged {
-    color: #ffffff;
-    background-color: #26A65B;
+#battery.charging,
+#battery.plugged {
+    color: @text-primary;
+    background-color: @bg-battery-charging;
 }
 
 @keyframes blink {
     to {
-        background-color: #ffffff;
-        color: #000000;
+        background-color: @bg-battery;
+        color: @text-dark;
     }
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
-    color: #ffffff;
+    background-color: @bg-critical;
+    color: @text-primary;
     animation-name: blink;
     animation-duration: 0.5s;
     animation-timing-function: linear;
@@ -150,101 +190,129 @@ button:hover {
 }
 
 label:focus {
-    background-color: #000000;
+    background-color: @text-dark;
 }
 
 #cpu {
-    background-color: #2ecc71;
-    color: #000000;
+    background-color: @bg-cpu;
+    color: @text-dark;
 }
 
 #memory {
-    background-color: #9b59b6;
+    background-color: @bg-memory;
 }
 
 #disk {
-    background-color: #964B00;
+    background-color: @bg-disk;
 }
 
 #backlight {
-    background-color: #90b1b1;
+    background-color: @bg-muted;
 }
 
 #network {
-    background-color: #1e5f8c;
+    background-color: @bg-network;
 }
 
 #network.disconnected {
-    background-color: #f53c3c;
+    background-color: @bg-critical;
 }
 
 #custom-weather {
-    background-color: #4a90a4;
+    background-color: @bg-weather;
 }
 
 #bluetooth {
-    background-color: #0082c8;
+    background-color: @bg-bluetooth;
 }
 
 #bluetooth.disconnected {
-    background-color: #555555;
+    background-color: @bg-bluetooth-disconnected;
 }
 
 #bluetooth.connected {
-    background-color: #0082c8;
+    background-color: @bg-bluetooth;
 }
+
+/* ============================================================================
+ * Audio & Media Styles
+ * ============================================================================ */
 
 #pulseaudio.speaker,
 #pulseaudio.mic {
-    background-color: #f1c40f;
-    color: #000000;
+    background-color: @bg-audio;
+    color: @text-dark;
 }
 
 #pulseaudio.speaker.muted {
-    background-color: #90b1b1;
-    color: #2a5c45;
+    background-color: @bg-muted;
+    color: @text-audio-muted;
 }
 
 #custom-bt-profile {
-    background-color: #f1c40f;
-    color: #000000;
-    padding: 0 10px 0 10px;
-    /* margin-left: -4px; */
+    background-color: @bg-audio;
+    color: @text-dark;
+    padding: 0 10px;
 }
 
 #wireplumber {
-    background-color: #fff0f5;
-    color: #000000;
+    background-color: @bg-wireplumber;
+    color: @text-dark;
 }
 
 #wireplumber.muted {
-    background-color: #f53c3c;
+    background-color: @bg-critical;
 }
 
-#custom-media {
-    background-color: #66cc99;
-    color: #2a5c45;
+#custom-media,
+#mpris {
+    background-color: @bg-media;
+    color: @text-audio-muted;
     min-width: 100px;
 }
 
-#custom-media.custom-spotify {
-    background-color: #66cc99;
+#custom-media.custom-spotify,
+#mpris.playing {
+    background-color: @bg-media;
 }
 
 #custom-media.custom-vlc {
-    background-color: #ffa000;
+    background-color: @bg-media-vlc;
 }
 
+#mpd {
+    background-color: @bg-media;
+    color: @text-audio-muted;
+}
+
+#mpd.disconnected {
+    background-color: @bg-critical;
+}
+
+#mpd.stopped,
+#mpis.stopped {
+    background-color: @bg-muted;
+}
+
+#mpd.paused,
+#mpris.paused {
+    background-color: #51a37a;
+}
+
+/* ============================================================================
+ * Thermals & System Styles
+ * ============================================================================ */
+
 #temperature {
-    background-color: #f0932b;
+    background-color: @bg-temperature;
 }
 
 #temperature.critical {
-    background-color: #eb4d4b;
+    background-color: @bg-critical;
 }
 
 #tray {
-    background-color: #2980b9;
+    background-color: @bg-tray;
 }
 
 #tray > .passive {
@@ -253,46 +321,33 @@ label:focus {
 
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
-    background-color: #eb4d4b;
+    background-color: @bg-critical;
 }
 
 #idle_inhibitor {
-    background-color: #5f8aa6;
+    background-color: @bg-idle-inhibitor;
 }
 
 #idle_inhibitor.activated {
-    background-color: #f39c12;
-    color: #000000;
+    background-color: @bg-idle-inhibitor-active;
+    color: @text-dark;
 }
 
-#mpd {
-    background-color: #66cc99;
-    color: #2a5c45;
-}
-
-#mpd.disconnected {
-    background-color: #f53c3c;
-}
-
-#mpd.stopped {
-    background-color: #90b1b1;
-}
-
-#mpd.paused {
-    background-color: #51a37a;
-}
+/* ============================================================================
+ * Input & System Info Styles
+ * ============================================================================ */
 
 #language {
-    background: #00b093;
-    color: #740864;
+    background: @bg-language;
+    color: @text-language;
     padding: 0 5px;
     margin: 0 5px;
     min-width: 16px;
 }
 
 #keyboard-state {
-    background: #97e1ad;
-    color: #000000;
+    background: @bg-keyboard;
+    color: @text-dark;
     padding: 0 0px;
     margin: 0 5px;
     min-width: 16px;
@@ -311,34 +366,18 @@ label:focus {
 }
 
 #scratchpad.empty {
-	background-color: transparent;
+    background-color: transparent;
 }
 
-#mpris {
-    background-color: #66cc99;
-    color: #2a5c45;
-    min-width: 100px;
-}
-
-#mpris.paused {
-    background-color: #51a37a;
-}
-
-#mpris.stopped {
-    background-color: #90b1b1;
-}
+/* ============================================================================
+ * Notification Styles
+ * ============================================================================ */
 
 #custom-notification {
-    background-color: #3c3836;
-    color: #ebdbb2;
+    background-color: @bg-notification;
+    color: @text-notification;
     padding: 0 10px;
     font-family: 'Font Awesome 7 Free', 'Noto Sans Mono', monospace;
     font-size: 14px;
     min-width: 20px;
 }
-
-
-
-/* #workspaces button.focused {
-    color: #8af0f0;
-}  */
