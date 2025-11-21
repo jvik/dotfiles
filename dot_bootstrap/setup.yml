@@ -163,6 +163,7 @@
           - wofi
           - SwayNotificationCenter
           - waybar
+          - wdisplays
       when: window_manager == "sway"
 
     - name: Add Flathub remote
