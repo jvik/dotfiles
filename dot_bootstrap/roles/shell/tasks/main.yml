@@ -8,7 +8,7 @@
 - name: Check if oh my zsh is already installed
   ansible.builtin.stat:
     path: '/home/{{ user }}/.oh-my-zsh'
-  register: oh_my_zsh_stat
+  register: shell_oh_my_zsh_stat
 
 - name: Install Oh-My-Zsh
   ansible.builtin.git:
@@ -17,4 +17,4 @@
     version: 'master'
     clone: true
     update: true
-  when: not oh_my_zsh_stat.stat.exists
+  when: not shell_oh_my_zsh_stat.stat.exists

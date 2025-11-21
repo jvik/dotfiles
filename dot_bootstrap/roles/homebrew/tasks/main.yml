@@ -3,11 +3,11 @@
   become: false
   ansible.builtin.stat:
     path: /home/linuxbrew/.linuxbrew/bin/brew
-  register: brew
+  register: homebrew_brew
 
 - name: Download & Install HomeBrew
   become: false
-  when: not brew.stat.exists
+  when: not homebrew_brew.stat.exists
   block:
     - name: Create tmp dir
       ansible.builtin.file:
@@ -29,8 +29,8 @@
 
 - name: Set LinuxBrew Executable Path
   ansible.builtin.set_fact:
-    linuxbrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
-    linuxbrew_path: /home/linuxbrew/.linuxbrew/bin
+    homebrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
+    homebrew_path: /home/linuxbrew/.linuxbrew/bin
 
 - name: Install Homebrew packages
   become: false
@@ -50,6 +50,7 @@
       - kubectl
       - kubectx
       - k9s
+      - helm
     state: present
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'

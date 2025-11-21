@@ -80,12 +80,12 @@
     - name: Remove Firefox snap installation
       ansible.builtin.command:
         cmd: snap remove firefox
-      register: snap_remove_result
+      register: repositories_snap_remove_result
       failed_when:
-        - snap_remove_result.rc != 0
-        - '"not installed" not in snap_remove_result.stderr'
-        - '"No such file or directory" not in snap_remove_result.stderr'
-      changed_when: snap_remove_result.rc == 0
+        - repositories_snap_remove_result.rc != 0
+        - '"not installed" not in repositories_snap_remove_result.stderr'
+        - '"No such file or directory" not in repositories_snap_remove_result.stderr'
+      changed_when: repositories_snap_remove_result.rc == 0
 
 - name: Configure RPM Fusion repositories
   when: ansible_distribution == 'Fedora'
