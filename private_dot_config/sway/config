@@ -325,6 +325,7 @@ for_window [app_id="nmwui"] floating enable, move position center
 for_window [app_id="Calculator|snap-store"] floating enable
 for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 60 ppt
 for_window [app_id="com.saivert.pwvucontrol"] floating enable
+for_window [app_id="snx-rs-gui"] floating enable
 for_window [title="^(?=.*Extension:)(?=.*Mozilla Firefox).*"] floating enable
 for_window [title="^(Picture-in-Picture)$"] floating enable
 for_window [title="Copying *"] floating enable
