@@ -204,7 +204,7 @@
         "format-source": " {volume}%",
         "format-source-muted": " {volume}%",
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
-        "on-click": "wpctl @DEFAULT_SOURCE@ toggle",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",
         "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ --limit 1.0",
         "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-"
