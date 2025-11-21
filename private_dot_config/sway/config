@@ -329,7 +329,7 @@ for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, border pixel 1
 for_window [app_id="com.saivert.pwvucontrol"] floating enable
 for_window [app_id="snx-rs-gui"] floating enable
 for_window [title="^(?=.*Extension:)(?=.*Mozilla Firefox).*"] floating enable
-for_window [title="^(Picture-in-Picture)$"] floating enable
+for_window [title="^(Picture-in-Picture)$"] floating enable, sticky enable
 for_window [title="Copying *"] floating enable
 for_window [title="Moving *"] floating enable
 # A window that both as rename and is spawned by thunar
