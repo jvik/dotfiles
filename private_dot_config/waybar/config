@@ -194,7 +194,9 @@
             ]
         },
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 4",
-        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl set-sink-volume @DEFAULT_SINK@ 100%",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
     },
     "pulseaudio#mic": {
         "source": true,
@@ -204,7 +206,7 @@
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
         "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",
-        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +5%",
+        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ 100%",
         "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%"
     },
     "mpris": {
