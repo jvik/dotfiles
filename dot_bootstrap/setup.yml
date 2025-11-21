@@ -306,10 +306,18 @@
 
     - name: Install uv tools
       block:
-        - name: Install tools with uv
+        - name: Install rofimoji with uv
           become: false
           ansible.builtin.command: >
-            /home/linuxbrew/.linuxbrew/bin/uv tool install rofimoji autotiling
+            /home/linuxbrew/.linuxbrew/bin/uv tool install rofimoji
+          environment:
+            PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+          changed_when: true
+
+        - name: Install autotiling with uv
+          become: false
+          ansible.builtin.command: >
+            /home/linuxbrew/.linuxbrew/bin/uv tool install autotiling
           environment:
             PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
           changed_when: true
