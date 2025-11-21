@@ -1,0 +1,67 @@
+---
+- name: Check if HomeBrew is installed
+  become: false
+  ansible.builtin.stat:
+    path: /home/linuxbrew/.linuxbrew/bin/brew
+  register: homebrew_brew
+
+- name: Download & Install HomeBrew
+  become: false
+  when: not homebrew_brew.stat.exists
+  block:
+    - name: Create tmp dir
+      ansible.builtin.file:
+        path: '/home/{{ user }}/temp'
+        state: directory
+        mode: '0755'
+
+    - name: Download Installer Script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
+        dest: /home/{{ user }}/temp/brew_install.sh
+        mode: '775'
+
+    - name: Run Installer Script
+      ansible.builtin.command: /home/{{ user }}/temp/brew_install.sh
+      environment:
+        NONINTERACTIVE: '1'
+      changed_when: true
+
+- name: Set LinuxBrew Executable Path
+  ansible.builtin.set_fact:
+    homebrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
+    homebrew_path: /home/linuxbrew/.linuxbrew/bin
+
+- name: Install Homebrew packages
+  become: false
+  community.general.homebrew:
+    name:
+      - ctop
+      - eza
+      - fzf
+      - gh
+      - just
+      - neofetch
+      - tfenv
+      - uv
+      - zoxide
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - kubectl
+      - kubectx
+      - k9s
+      - helm
+    state: present
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+
+- name: Install homebrew casks
+  become: false
+  community.general.homebrew_cask:
+    name:
+      - font-fontawesome
+      - font-jetbrains-mono
+      - font-jetbrains-mono-nerd-font
+    state: present
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'

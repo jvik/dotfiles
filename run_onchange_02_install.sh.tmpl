@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hash below ensures that script is only run when setup.yml is changed
-# setup.yaml: {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+# Hash below ensures that script is only run when dot_bootstrap folder changes
+# dot_bootstrap: {{ output "sh" "-c" "tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner --clamp-mtime -cf - dot_bootstrap/ | sha256sum | cut -d' ' -f1" }}
 
 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml
