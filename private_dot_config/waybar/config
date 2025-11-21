@@ -49,7 +49,7 @@
     "sway/workspaces": {
         "all-outputs": false,
         "disable-scroll-wraparound": true,
-        "smooth-scrolling-threshold": 4,
+        "smooth-scrolling-threshold": 1,
         "enable-bar-scroll": true,
         "format": "{name}: {icon}",
         "persistent-workspaces": {
