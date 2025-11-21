@@ -1,0 +1,20 @@
+---
+- name: Set user shell to zsh
+  ansible.builtin.user:
+    name: '{{ user }}'
+    shell: /bin/zsh
+  become: true
+
+- name: Check if oh my zsh is already installed
+  ansible.builtin.stat:
+    path: '/home/{{ user }}/.oh-my-zsh'
+  register: oh_my_zsh_stat
+
+- name: Install Oh-My-Zsh
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: /home/{{ user }}/.oh-my-zsh
+    version: 'master'
+    clone: true
+    update: true
+  when: not oh_my_zsh_stat.stat.exists

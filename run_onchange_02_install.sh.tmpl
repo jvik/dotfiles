@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hash below ensures that script is only run when setup.yml is changed
-# setup.yaml: {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+# Hash below ensures that script is only run when dot_bootstrap folder changes
+# dot_bootstrap: {{ glob "dot_bootstrap/**" | join "" | sha256sum }}
 
 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml

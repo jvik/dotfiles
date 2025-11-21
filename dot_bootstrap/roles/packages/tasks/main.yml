@@ -1,0 +1,63 @@
+---
+- name: Install Fedora specific packages
+  ansible.builtin.package:
+    name:
+      - 'NetworkManager-tui'
+    state: present
+  when: ansible_distribution == 'Fedora'
+
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - fd-find
+      - tree
+      - flatpak
+      - ansible-lint
+      - htop
+      - blueman
+      - unrar
+      - zsh
+      - git
+      - neovim
+      - code
+      - playerctl
+      - copyq
+      - wl-mirror
+      - firefox
+      - solaar
+    state: present
+    update_cache: true
+
+- name: Install sway packages
+  ansible.builtin.package:
+    name:
+      - sway
+      - wofi
+      - SwayNotificationCenter
+      - waybar
+      - wdisplays
+    state: present
+  when: window_manager == "sway"
+
+- name: Add Flathub remote
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+    method: system
+
+- name: Install Flatpak packages
+  community.general.flatpak:
+    name:
+      - org.videolan.VLC
+      - com.bitwarden.desktop/x86_64/stable
+      - com.fastmail.Fastmail/x86_64/stable
+      - com.github.tchx84.Flatseal/x86_64/stable
+      - com.mattjakeman.ExtensionManager/x86_64/stable
+      - com.mikrotik.WinBox/x86_64/stable
+      - com.plexamp.Plexamp/x86_64/stable
+      - com.saivert.pwvucontrol/x86_64/stable
+      - dev.vencord.Vesktop/x86_64/stable
+      - md.obsidian.Obsidian/x86_64/stable
+      - io.github.seadve.Kooha/x86_64/stable
+    state: present
