@@ -194,9 +194,9 @@
             ]
         },
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 4",
-        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5% && pactl set-sink-volume @DEFAULT_SINK@ 100%",
-        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%"
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
     },
     "pulseaudio#mic": {
         "source": true,
@@ -204,10 +204,10 @@
         "format-source": " {volume}%",
         "format-source-muted": " {volume}%",
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
-        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click": "wpctl @DEFAULT_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",
-        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ 100%",
-        "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%"
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ --limit 1.0",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-"
     },
     "mpris": {
         "format": "{status_icon} {dynamic} {player_icon}",
