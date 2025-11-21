@@ -161,6 +161,7 @@ pointer_accel 0.2
 
     bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
     bindsym $mod+Shift+d exec wdisplays
+    bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
 #
 # Workspaces:
 #

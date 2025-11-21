@@ -303,3 +303,13 @@
               - font-jetbrains-mono
               - font-jetbrains-mono-nerd-font
             state: present
+
+    - name: Install uv tools
+      block:
+        - name: Install tools with uv
+          become: false
+          ansible.builtin.command: >
+            /home/linuxbrew/.linuxbrew/bin/uv tool install rofimoji autotiling
+          environment:
+            PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+          changed_when: true
