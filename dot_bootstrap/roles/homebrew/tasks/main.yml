@@ -52,6 +52,8 @@
       - k9s
       - helm
       - sesh
+      - lazygit
+      - ranger
     state: present
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
