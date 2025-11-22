@@ -89,6 +89,7 @@ config.keys = {
 	{ key = "=", mods = "SHIFT|ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "%", mods = "SHIFT|ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "+", mods = "SHIFT|ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = "|", mods = "SHIFT|ALT", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
 	{ key = "h", mods = "SHIFT|ALT", action = act.ActivatePaneDirection("Left") },
 	{ key = "j", mods = "SHIFT|ALT", action = act.ActivatePaneDirection("Down") },
 	{ key = "k", mods = "SHIFT|ALT", action = act.ActivatePaneDirection("Up") },

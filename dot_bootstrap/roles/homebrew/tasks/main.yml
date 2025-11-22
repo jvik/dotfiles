@@ -51,6 +51,7 @@
       - kubectx
       - k9s
       - helm
+      - sesh
     state: present
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
