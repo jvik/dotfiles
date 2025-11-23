@@ -17,7 +17,6 @@
     ],
     "modules-right": [
         "mpris",
-        "power-profiles-daemon",
         "pulseaudio#speaker",
         "pulseaudio#mic",
         "custom/bt-profile",
@@ -32,6 +31,7 @@
         "custom/weather",
         "clock",
         "tray",
+        "power-profiles-daemon",
         "idle_inhibitor",
         "custom/notification"
     ],
@@ -81,7 +81,7 @@
     },
     "power-profiles-daemon": {
         "format": "{icon}",
-        "tooltip-format": "Power profile: {profile}nDriver: {driver}",
+        "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
         "tooltip": true,
         "format-icons": {
             "default": "",

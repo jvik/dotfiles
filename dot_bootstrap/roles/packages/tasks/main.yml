@@ -25,6 +25,7 @@
       - wl-mirror
       - firefox
       - solaar
+      - tuned-ppd # For power profiles daemon
     state: present
     update_cache: true
 

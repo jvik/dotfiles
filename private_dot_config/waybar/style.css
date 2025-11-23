@@ -27,6 +27,9 @@
 @define-color bg-language #00b093;
 @define-color bg-keyboard #97e1ad;
 @define-color bg-notification #3c3836;
+@define-color bg-power-performance #e74c3c;
+@define-color bg-power-balanced #3498db;
+@define-color bg-power-saver #27ae60;
 
 @define-color text-primary #ffffff;
 @define-color text-dark #000000;
@@ -133,7 +136,8 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #mpd,
-#mpris {
+#mpris,
+#power-profiles-daemon {
     padding: 0 10px;
     color: @text-primary;
 }
@@ -380,4 +384,29 @@ label:focus {
     font-family: 'Font Awesome 7 Free', 'Noto Sans Mono', monospace;
     font-size: 14px;
     min-width: 20px;
+}
+
+/* ============================================================================
+ * Power Profile Daemon Styles
+ * ============================================================================ */
+
+#power-profiles-daemon {
+    padding: 0 10px;
+    color: @text-primary;
+    background-color: @bg-power-balanced;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    min-width: 24px;
+}
+
+#power-profiles-daemon.performance {
+    background-color: @bg-power-performance;
+}
+
+#power-profiles-daemon.balanced {
+    background-color: @bg-power-balanced;
+}
+
+#power-profiles-daemon.power-saver {
+    background-color: @bg-power-saver;
 }
