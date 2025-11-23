@@ -9,18 +9,19 @@
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "mpris"
+        "sway/mode",
+        "custom/representation"
     ],
     "modules-center": [
         "sway/window"
     ],
     "modules-right": [
-        "idle_inhibitor",
+        "mpris",
         "power-profiles-daemon",
-        "bluetooth",
         "pulseaudio#speaker",
         "pulseaudio#mic",
         "custom/bt-profile",
+        "bluetooth",
         "network",
         "cpu",
         "memory",
@@ -31,6 +32,7 @@
         "custom/weather",
         "clock",
         "tray",
+        "idle_inhibitor",
         "custom/notification"
     ],
     "sway/mode": {
@@ -272,5 +274,10 @@
         "on-click": "swaync-client -t -sw",
         "on-click-right": "swaync-client -d -sw",
         "escape": true
+    },
+    "custom/representation": {
+        "interval": 1,
+        "exec": "swaymsg -t get_workspaces | jq -r '.[] | select(.focused==true)|.representation'",
+        "signal": 11
     }
 }

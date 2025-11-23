@@ -60,7 +60,7 @@ set $menu wofi --show drun
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
-bindsym $mod+z exec firefox
+bindsym $mod+Shift+f exec firefox
 bindsym $mod+x [urgent=latest] focus
 bindsym $mod+Control+l exec $lockman
 bindsym $mod+Shift+c reload
@@ -132,6 +132,7 @@ bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
+bindsym $mod+z focus child
 
 ## Scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -197,6 +198,8 @@ bar {
 ### Appearance
 default_border normal 2
 default_floating_border normal 2
+gaps inner 5
+gaps outer 1
 
 ### Window Rules
 
