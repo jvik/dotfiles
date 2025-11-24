@@ -9,14 +9,14 @@
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "sway/mode"
+        "sway/mode",
+        "mpris"
         // "custom/representation"
     ],
     // "modules-center": [
     //     "sway/window"
     // ],
     "modules-right": [
-        "mpris",
         "pulseaudio#speaker",
         "pulseaudio#mic",
         "custom/bt-profile",
@@ -108,10 +108,12 @@
     },
     "cpu": {
         "format": "{usage}% ",
-        "tooltip": false
+        "tooltip": false,
+        "on-click": "wezterm -e --class htop htop"
     },
     "memory": {
-        "format": "{}% "
+        "format": "{}% ",
+        "on-click": "wezterm -e --class htop htop"
     },
     "temperature": {
         // "thermal-zone": 2,
@@ -185,10 +187,10 @@
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon}",
         "format-bluetooth": "{volume}% {icon}",
-        "format-bluetooth-muted": "{icon}",
+        "format-bluetooth-muted": "{volume}% {icon}",
         "format-muted": "{volume}% ",
-        "format-source": "{volume}%",
-        "format-source-muted": "",
+        // "format-source": "{volume}%",
+        // "format-source-muted": "",
         "format-icons": {
             "headphone": "",
             "hands-free": "",
@@ -258,6 +260,7 @@
     "custom/bt-profile": {
         "format": "{}",
         "exec": "$HOME/scripts/waybar-bt-profile.sh",
+        "on-click": "$HOME/scripts/a2dp-toggle.sh",
         "interval": 1,
         "return-type": "text",
         "tooltip": false
