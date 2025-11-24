@@ -162,7 +162,13 @@
     },
     "bluetooth": {
         "on-click": "exec blueman-manager &",
-        "format": " {status}"
+        "format": " {status}",
+        "format-connected": " {device_alias} 🔋{device_battery_percentage}%",
+        "format-connected-battery": " {device_alias} 🔋{device_battery_percentage}%",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\tBatteri: {device_battery_percentage}%"
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
