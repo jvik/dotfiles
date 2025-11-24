@@ -162,9 +162,9 @@
     },
     "bluetooth": {
         "on-click": "exec blueman-manager &",
-        "format": " {status}",
-        "format-connected": " {status}",
-        "format-connected-battery": " 🔋{device_battery_percentage}%",
+        "format": "{status} ",
+        "format-connected": "{status} ",
+        "format-connected-battery": "{status} 🔋{device_battery_percentage}% ",
         "tooltip-format": "{controller_alias}\n{controller_address}",
         "tooltip-format-connected": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
@@ -209,8 +209,8 @@
     "pulseaudio#mic": {
         "source": true,
         "format": "{format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": " {volume}%",
+        "format-source": "{volume}% ",
+        "format-source-muted": "{volume}% ",
         "tooltip-format": "Microphone: {source_desc}, {volume}%",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "on-click-right": "flatpak run com.saivert.pwvucontrol -t 3",

@@ -6,10 +6,10 @@ profile=$(pactl list cards | grep -A 40 "bluez_card" | grep "Active Profile:" | 
 if [ -n "$profile" ]; then
     case "$profile" in
         a2dp-sink*)
-            echo "A2DP"
+            echo "A2DP "
             ;;
         headset-head-unit*)
-            echo "HSP/HFP"
+            echo "HSP/HFP "
             ;;
         off)
             echo ""
