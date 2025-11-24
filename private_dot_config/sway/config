@@ -231,6 +231,9 @@ assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
 assign [app_id="discord|vesktop"] 9
 
+## Bring app to current workspace or launch it if not running
+bindsym $mod+Shift+o exec "swaymsg '[class=\"obsidian\"] move container to workspace current, focus' || exec flatpak run md.obsidian.Obsidian"
+
 ### Workspace Configuration
 set $disp1 "eDP-1"
 set $disp2 "DP-7"
