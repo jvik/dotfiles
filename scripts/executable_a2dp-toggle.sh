@@ -26,7 +26,7 @@ echo "Current profile: $CURRENT_PROFILE"
 
 # Define preferred profile order
 A2DP_PROFILES=("a2dp-sink" "a2dp-sink-sbc_xq" "a2dp-sink-sbc")
-HSP_PROFILES=("headset-head-unit" "headset-head-unit-cvsd")
+HSP_PROFILES=("headset-head-unit-msbc" "headset-head-unit" "headset-head-unit-cvsd")
 
 # Read card info to confirm available profiles
 AVAILABLE=$(pactl list cards | sed -n "/Name: $CARD/,/Ports:/p")
