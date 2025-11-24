@@ -29,8 +29,8 @@
         // "sway/language",
         "battery",
         // "custom/weather",
-        "clock",
         "tray",
+        "clock",
         "power-profiles-daemon",
         "idle_inhibitor",
         "custom/notification"
