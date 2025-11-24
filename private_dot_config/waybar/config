@@ -9,12 +9,12 @@
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "sway/mode",
-        "custom/representation"
+        "sway/mode"
+        // "custom/representation"
     ],
-    "modules-center": [
-        "sway/window"
-    ],
+    // "modules-center": [
+    //     "sway/window"
+    // ],
     "modules-right": [
         "mpris",
         "pulseaudio#speaker",
@@ -164,7 +164,7 @@
         "on-click": "exec blueman-manager &",
         "format": "{status} ",
         "format-connected": "{status} ",
-        "format-connected-battery": "{status} 🔋{device_battery_percentage}% ",
+        "format-connected-battery": "🔋{device_battery_percentage}% ",
         "tooltip-format": "{controller_alias}\n{controller_address}",
         "tooltip-format-connected": "{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
@@ -172,9 +172,10 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-wifi": "{signalStrength}% ",
         "format-ethernet": "{ipaddr}/{cidr} ",
         "tooltip-format": "{ifname} via {gwaddr} ",
+        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
         "format-linked": "{ifname} (No IP) ",
         "format-disconnected": "Disconnected ⚠",
         "format-alt": "{ifname}: {ipaddr}/{cidr}",
