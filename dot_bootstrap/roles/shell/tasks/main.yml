@@ -2,7 +2,7 @@
 - name: Set user shell to zsh
   ansible.builtin.user:
     name: '{{ user }}'
-    shell: /bin/zsh
+    shell: /bin/fish
   become: true
 
 - name: Check if oh my zsh is already installed
