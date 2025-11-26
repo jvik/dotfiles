@@ -99,8 +99,8 @@ config.keys = {
 	{ key = "k", mods = "CTRL|SHIFT|ALT", action = act.AdjustPaneSize({ "Up", 5 }) },
 	{ key = "l", mods = "CTRL|SHIFT|ALT", action = act.AdjustPaneSize({ "Right", 5 }) },
 	{ key = "q", mods = "SHIFT|CTRL", action = wezterm.action.QuickSelect },
-	{ key = "PageUp", action = act.ScrollByPage(-0.5) },
-	{ key = "PageDown", action = act.ScrollByPage(0.5) },
+	--	{ key = "PageUp", action = act.ScrollByPage(-0.5) }, --
+	--	{ key = "PageDown", action = act.ScrollByPage(0.5) }, --
 	{
 		key = "W",
 		mods = "SHIFT|CTRL",

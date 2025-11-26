@@ -198,8 +198,6 @@ bar {
 ### Appearance
 default_border normal 2
 default_floating_border normal 2
-gaps inner 5
-gaps outer 1
 
 ### Window Rules
 
