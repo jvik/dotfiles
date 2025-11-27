@@ -1,23 +1,23 @@
 ---
-- name: Set user shell to zsh
+- name: Set user shell to fish
   ansible.builtin.user:
     name: '{{ user }}'
     shell: /bin/fish
   become: true
 
-- name: Check if oh my zsh is already installed
-  ansible.builtin.stat:
-    path: '/home/{{ user }}/.oh-my-zsh'
-  register: shell_oh_my_zsh_stat
+# - name: Check if oh my zsh is already installed
+#   ansible.builtin.stat:
+#     path: '/home/{{ user }}/.oh-my-zsh'
+#   register: shell_oh_my_zsh_stat
 
-- name: Install Oh-My-Zsh
-  ansible.builtin.git:
-    repo: https://github.com/ohmyzsh/ohmyzsh.git
-    dest: /home/{{ user }}/.oh-my-zsh
-    version: 'master'
-    clone: true
-    update: true
-  when: not shell_oh_my_zsh_stat.stat.exists
+# - name: Install Oh-My-Zsh
+#   ansible.builtin.git:
+#     repo: https://github.com/ohmyzsh/ohmyzsh.git
+#     dest: /home/{{ user }}/.oh-my-zsh
+#     version: 'master'
+#     clone: true
+#     update: true
+#   when: not shell_oh_my_zsh_stat.stat.exists
 
 - name: Check if tpm plugin manager exists
   ansible.builtin.stat:
@@ -33,3 +33,32 @@
     update: true
   become: false
   when: not shell_tpm_stat.stat.exists
+
+- name: Check if Fisher plugin manager exists
+  ansible.builtin.stat:
+    path: '/home/{{ user }}/.config/fish/functions/fisher.fish'
+  register: shell_fisher_stat
+
+- name: Install Fisher plugin manager
+  ansible.builtin.shell: |
+    set -o pipefail
+    fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+  args:
+    creates: '/home/{{ user }}/.config/fish/functions/fisher.fish'
+    executable: /bin/bash
+  become: false
+  when: not shell_fisher_stat.stat.exists
+
+- name: Check if fzf.fish plugin is installed
+  ansible.builtin.stat:
+    path: '/home/{{ user }}/.config/fish/conf.d/fzf.fish'
+  register: shell_fzf_fish_stat
+
+- name: Install fzf.fish plugin via Fisher
+  ansible.builtin.shell: |
+    fish -c "fisher install PatrickF1/fzf.fish"
+  args:
+    executable: /bin/bash
+  become: false
+  when: not shell_fzf_fish_stat.stat.exists
+  changed_when: true
