@@ -1,0 +1,9 @@
+# Local configuration example
+# Copy this file to local.fish and customize as needed
+# local.fish is gitignored and won't be tracked
+
+# Example: Machine-specific PATH additions
+# fish_add_path -p /custom/path
+
+# Example: Local environment variables
+# set -gx CUSTOM_VAR value
