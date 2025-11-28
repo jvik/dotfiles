@@ -1,3 +1,9 @@
+profile desktop {
+    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600 position 1920,0
+
+    exec swaymsg "output * adaptive_sync on"
+}
+
 profile desk {
     output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600 position 1920,0
 
