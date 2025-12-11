@@ -2,24 +2,23 @@ profile desktop {
     output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600 position 1920,0
 
     exec swaymsg "output * adaptive_sync on"
+    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output \"LG Electronics 38GN950 203NTAB86520\""; done'
 }
 
-profile desk {
-    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600 position 1920,0
-
+profile dp6 {
+    output DP-6 enable position 1920,0
     output eDP-1 enable mode 1920x1200 position 0,0
+    
+    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-6"; done'
+    exec swaymsg "workspace 10, move workspace to output eDP-1"
 }
 
-profile work_desk {
-    output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440 position 1920,0
-
+profile dp7 {
+    output DP-7 enable position 1920,0
     output eDP-1 enable mode 1920x1200 position 0,0
-}
-
-profile work_shared_rooms {
-    output "Samsung Electric Company LS49C95xU HNTX901777" enable mode 5120x1440 position 1920,0
-
-    output eDP-1 enable mode 1920x1200 position 0,0
+    
+    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-7"; done'
+    exec swaymsg "workspace 10, move workspace to output eDP-1"
 }
 
 profile laptop {

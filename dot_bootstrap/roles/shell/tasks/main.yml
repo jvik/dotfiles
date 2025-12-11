@@ -49,16 +49,11 @@
   become: false
   when: not shell_fisher_stat.stat.exists
 
-- name: Check if fzf.fish plugin is installed
-  ansible.builtin.stat:
-    path: '/home/{{ user }}/.config/fish/conf.d/fzf.fish'
-  register: shell_fzf_fish_stat
-
 - name: Install fzf.fish plugin via Fisher
   ansible.builtin.shell: |
-    fish -c "fisher install PatrickF1/fzf.fish"
+    fish -c "fisher install PatrickF1/fzf.fish lewisacidic/fish-git-abbr"
   args:
     executable: /bin/bash
+    creates: '/home/{{ user }}/.config/fish/fish_plugins'
   become: false
-  when: not shell_fzf_fish_stat.stat.exists
-  changed_when: true
+  when: shell_fisher_stat.stat.exists

@@ -54,6 +54,7 @@
       - sesh
       - lazygit
       - ranger
+      - ipython
     state: present
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
