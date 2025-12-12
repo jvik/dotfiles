@@ -1,0 +1,27 @@
+---
+- name: Install Homebrew packages
+  become: false
+  community.general.homebrew:
+    name:
+      - ctop
+      - eza
+      - fzf
+      - gh
+      - just
+      - neofetch
+      - tfenv
+      - uv
+      - zoxide
+      - zsh-autosuggestions
+      - zsh-syntax-highlighting
+      - kubectl
+      - kubectx
+      - k9s
+      - helm
+      - sesh
+      - lazygit
+      - ranger
+      - ipython
+    state: present
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'

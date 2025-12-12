@@ -1,0 +1,30 @@
+---
+- name: Check if rofimoji is installed
+  become: false
+  ansible.builtin.command: /home/linuxbrew/.linuxbrew/bin/uv tool list
+  register: uv_tool_list_rofimoji
+  changed_when: false
+  failed_when: false
+
+- name: Install rofimoji with uv
+  become: false
+  ansible.builtin.command: >
+    /home/linuxbrew/.linuxbrew/bin/uv tool install rofimoji
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+  when: "'rofimoji' not in uv_tool_list_rofimoji.stdout"
+
+- name: Check if autotiling is installed
+  become: false
+  ansible.builtin.command: /home/linuxbrew/.linuxbrew/bin/uv tool list
+  register: uv_tool_list_autotiling
+  changed_when: false
+  failed_when: false
+
+- name: Install autotiling with uv
+  become: false
+  ansible.builtin.command: >
+    /home/linuxbrew/.linuxbrew/bin/uv tool install autotiling
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
+  when: "'autotiling' not in uv_tool_list_autotiling.stdout"

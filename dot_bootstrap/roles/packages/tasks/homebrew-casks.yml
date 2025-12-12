@@ -1,0 +1,11 @@
+---
+- name: Install homebrew casks
+  become: false
+  community.general.homebrew_cask:
+    name:
+      - font-fontawesome
+      - font-jetbrains-mono
+      - font-jetbrains-mono-nerd-font
+    state: present
+  environment:
+    PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
