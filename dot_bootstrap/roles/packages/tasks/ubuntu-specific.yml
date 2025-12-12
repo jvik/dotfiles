@@ -1,0 +1,7 @@
+---
+- name: Install Ubuntu specific packages
+  ansible.builtin.package:
+    name:
+      - power-profiles-daemon # For power profiles daemon
+    state: present
+  when: ansible_distribution == 'Ubuntu'

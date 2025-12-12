@@ -1,71 +1,24 @@
 ---
-- name: Install Fedora specific packages
-  ansible.builtin.package:
-    name:
-      - 'NetworkManager-tui'
-      - tuned-ppd # For power profiles daemon
-    state: present
-  when: ansible_distribution == 'Fedora'
+- name: Include Homebrew installation
+  ansible.builtin.include_tasks: homebrew-install.yml
 
-- name: Install Ubuntu specific packages
-  ansible.builtin.package:
-    name:
-      - power-profiles-daemon # For power profiles daemon
-    state: present
-  when: ansible_distribution == 'Ubuntu'
+- name: Include Homebrew packages
+  ansible.builtin.include_tasks: homebrew-packages.yml
 
-- name: Install packages
-  ansible.builtin.package:
-    name:
-      - fd-find
-      - tree
-      - flatpak
-      - ansible-lint
-      - htop
-      - blueman
-      - unrar
-      - zsh
-      - git
-      - neovim
-      - code
-      - playerctl
-      - copyq
-      - wl-mirror
-      - firefox
-      - solaar
-    state: present
-    update_cache: true
+- name: Include Homebrew casks
+  ansible.builtin.include_tasks: homebrew-casks.yml
 
-- name: Install sway packages
-  ansible.builtin.package:
-    name:
-      - sway
-      - wofi
-      - SwayNotificationCenter
-      - waybar
-      - wdisplays
-    state: present
-  when: window_manager == "sway"
+- name: Include Fedora specific packages
+  ansible.builtin.include_tasks: fedora-specific.yml
 
-- name: Add Flathub remote
-  community.general.flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
-    method: system
+- name: Include Ubuntu specific packages
+  ansible.builtin.include_tasks: ubuntu-specific.yml
 
-- name: Install Flatpak packages
-  community.general.flatpak:
-    name:
-      - org.videolan.VLC
-      - com.bitwarden.desktop/x86_64/stable
-      - com.fastmail.Fastmail/x86_64/stable
-      - com.github.tchx84.Flatseal/x86_64/stable
-      - com.mattjakeman.ExtensionManager/x86_64/stable
-      - com.mikrotik.WinBox/x86_64/stable
-      - com.plexamp.Plexamp/x86_64/stable
-      - com.saivert.pwvucontrol/x86_64/stable
-      - dev.vencord.Vesktop/x86_64/stable
-      - md.obsidian.Obsidian/x86_64/stable
-      - io.github.seadve.Kooha/x86_64/stable
-    state: present
+- name: Include native packages
+  ansible.builtin.include_tasks: native-packages.yml
+
+- name: Include sway packages
+  ansible.builtin.include_tasks: sway-packages.yml
+
+- name: Include Flatpak packages
+  ansible.builtin.include_tasks: flatpak-packages.yml

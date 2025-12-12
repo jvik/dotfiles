@@ -1,0 +1,59 @@
+---
+- name: Set user shell to fish
+  ansible.builtin.user:
+    name: '{{ user }}'
+    shell: /bin/fish
+  become: true
+
+# - name: Check if oh my zsh is already installed
+#   ansible.builtin.stat:
+#     path: '/home/{{ user }}/.oh-my-zsh'
+#   register: shell_oh_my_zsh_stat
+
+# - name: Install Oh-My-Zsh
+#   ansible.builtin.git:
+#     repo: https://github.com/ohmyzsh/ohmyzsh.git
+#     dest: /home/{{ user }}/.oh-my-zsh
+#     version: 'master'
+#     clone: true
+#     update: true
+#   when: not shell_oh_my_zsh_stat.stat.exists
+
+- name: Check if tpm plugin manager exists
+  ansible.builtin.stat:
+    path: '/home/{{ user }}/.config/tmux/plugins/tpm'
+  register: shell_tpm_stat
+
+- name: Install tpm plugin manager
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: '/home/{{ user }}/.config/tmux/plugins/tpm'
+    version: 'master'
+    clone: true
+    update: true
+  become: false
+  when: not shell_tpm_stat.stat.exists
+
+- name: Check if Fisher plugin manager exists
+  ansible.builtin.stat:
+    path: '/home/{{ user }}/.config/fish/functions/fisher.fish'
+  register: shell_fisher_stat
+
+- name: Install Fisher plugin manager
+  ansible.builtin.shell: |
+    set -o pipefail
+    fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+  args:
+    creates: '/home/{{ user }}/.config/fish/functions/fisher.fish'
+    executable: /bin/bash
+  become: false
+  when: not shell_fisher_stat.stat.exists
+
+- name: Install fzf.fish plugin via Fisher
+  ansible.builtin.shell: |
+    fish -c "fisher install PatrickF1/fzf.fish lewisacidic/fish-git-abbr"
+  args:
+    executable: /bin/bash
+    creates: '/home/{{ user }}/.config/fish/fish_plugins'
+  become: false
+  when: shell_fisher_stat.stat.exists

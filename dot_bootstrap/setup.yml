@@ -8,7 +8,6 @@
   roles:
     - repositories
     - packages
-    - homebrew
     - shell
     - dev_tools
     - system

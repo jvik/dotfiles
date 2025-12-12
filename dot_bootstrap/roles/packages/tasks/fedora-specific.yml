@@ -1,0 +1,8 @@
+---
+- name: Install Fedora specific packages
+  ansible.builtin.package:
+    name:
+      - 'NetworkManager-tui'
+      - tuned-ppd # For power profiles daemon
+    state: present
+  when: ansible_distribution == 'Fedora'

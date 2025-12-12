@@ -1,0 +1,25 @@
+---
+- name: Install packages
+  ansible.builtin.package:
+    name:
+      - fd-find
+      - tree
+      - flatpak
+      - ansible-lint
+      - htop
+      - blueman
+      - unrar
+      - zsh
+      - git
+      - neovim
+      - code
+      - playerctl
+      - copyq
+      - wl-mirror
+      - firefox
+      - solaar
+      - libreoffice
+      - libreoffice-langpack-nn
+      - libreoffice-langpack-nb
+    state: present
+    update_cache: true

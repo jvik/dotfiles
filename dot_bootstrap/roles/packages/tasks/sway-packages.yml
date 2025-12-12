@@ -1,0 +1,11 @@
+---
+- name: Install sway packages
+  ansible.builtin.package:
+    name:
+      - sway
+      - wofi
+      - SwayNotificationCenter
+      - waybar
+      - wdisplays
+    state: present
+  when: window_manager == "sway"
