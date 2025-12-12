@@ -45,12 +45,12 @@ exec_always killall swayidle; swayidle -w \
 input * {
     xkb_layout "no"
     xkb_options "caps:swapescape,altwin:swap_lalt_lwin"
-    middle_emulation enabled
 }
 
 input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad" {
     tap enabled
     pointer_accel 0.2
+    middle_emulation enabled
 }
 
 
