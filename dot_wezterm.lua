@@ -11,21 +11,38 @@ if wezterm.config_builder then
 	config = wezterm.config_builder()
 end
 
--- Toggle dark/light mode
-wezterm.on("toggle-dark-mode", function(window, pane)
-	local light_scheme = "rose-pine-dawn"
-	local dark_scheme = "rose-pine"
-	local overrides = window:get_config_overrides() or {}
-	wezterm.log_info("Current color scheme is: ", overrides.color_scheme)
-	if overrides.color_scheme == light_scheme then
-		wezterm.log_info("Switching to dark scheme")
-		overrides.color_scheme = dark_scheme
-	else
-		wezterm.log_info("Switching to light scheme")
-		overrides.color_scheme = light_scheme
+-- wezterm.gui is not available to the mux server, so take care to
+-- do something reasonable when this config is evaluated by the mux
+function get_appearance()
+	if wezterm.gui then
+		return wezterm.gui.get_appearance()
 	end
-	window:set_config_overrides(overrides)
-end)
+	return "Dark"
+end
+
+function scheme_for_appearance(appearance)
+	if appearance:find("Dark") then
+		return "Catppuccin Frappe"
+	else
+		return "Gruvbox Light"
+	end
+end
+
+-- Toggle dark/light mode (DISABLED - using automatic detection instead)
+-- wezterm.on("toggle-dark-mode", function(window, pane)
+-- 	local light_scheme = "rose-pine-dawn"
+-- 	local dark_scheme = "rose-pine"
+-- 	local overrides = window:get_config_overrides() or {}
+-- 	wezterm.log_info("Current color scheme is: ", overrides.color_scheme)
+-- 	if overrides.color_scheme == light_scheme then
+-- 		wezterm.log_info("Switching to dark scheme")
+-- 		overrides.color_scheme = dark_scheme
+-- 	else
+-- 		wezterm.log_info("Switching to light scheme")
+-- 		overrides.color_scheme = light_scheme
+-- 	end
+-- 	window:set_config_overrides(overrides)
+-- end)
 
 config.max_fps = 120
 
@@ -34,7 +51,9 @@ config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"
 
 -- color config --
-config.color_scheme = "Gruvbox (Gogh)"
+-- Automatically detect system appearance (dark/light mode)
+config.color_scheme = scheme_for_appearance(get_appearance())
+--config.color_scheme = "Gruvbox (Gogh)"
 --config.color_scheme = "Catppuccin Frappe"
 --config.color_scheme = "Catppuccin Latte"
 --config.color_scheme = "rose-pine-dawn"

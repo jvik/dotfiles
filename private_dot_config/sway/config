@@ -63,7 +63,7 @@ bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+f exec firefox
-bindsym $mod+Shift+i exec wezterm -e --class ipython /home/linuxbrew/.linuxbrew/bin/ipython
+bindsym $mod+Shift+i exec ~/scripts/toggle-dark-mode.sh
 bindsym $mod+x [urgent=latest] focus
 bindsym $mod+Control+l exec $lockman
 bindsym $mod+Shift+c reload
