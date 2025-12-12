@@ -1,0 +1,9 @@
+---
+- name: Include Homebrew installation
+  ansible.builtin.include_tasks: homebrew-install.yml
+
+- name: Include Homebrew packages
+  ansible.builtin.include_tasks: homebrew-packages.yml
+
+- name: Include Homebrew casks
+  ansible.builtin.include_tasks: homebrew-casks.yml
