@@ -18,8 +18,5 @@
       - wl-mirror
       - firefox
       - solaar
-      - libreoffice
-      - libreoffice-langpack-nn
-      - libreoffice-langpack-nb
     state: present
     update_cache: true

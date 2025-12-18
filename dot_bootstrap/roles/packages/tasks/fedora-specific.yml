@@ -3,6 +3,9 @@
   ansible.builtin.package:
     name:
       - 'NetworkManager-tui'
+      - libreoffice
+      - libreoffice-langpack-nn
+      - libreoffice-langpack-nb
       - tuned-ppd # For power profiles daemon
     state: present
   when: ansible_distribution == 'Fedora'
