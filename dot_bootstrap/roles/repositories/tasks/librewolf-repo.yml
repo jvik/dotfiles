@@ -1,0 +1,16 @@
+---
+- name: Configure LibreWolf repository for Fedora
+  when: ansible_distribution == 'Fedora'
+  block:
+    - name: Add LibreWolf repository
+      ansible.builtin.get_url:
+        url: https://repo.librewolf.net/librewolf.repo
+        dest: /etc/yum.repos.d/librewolf.repo
+        mode: '0644'
+        owner: root
+        group: root
+
+    - name: Install LibreWolf
+      ansible.builtin.dnf:
+        name: librewolf
+        state: present

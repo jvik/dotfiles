@@ -5,6 +5,8 @@ set $down j
 set $up k
 set $right l
 
+set $browser librewolf
+
 ### Theme
 include ~/.config/sway/colors/gruvbox
 
@@ -62,7 +64,7 @@ set $menu wofi --show drun
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
 bindsym $mod+d exec $menu
-bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+f exec $browser
 bindsym $mod+Shift+i exec ~/scripts/toggle-dark-mode.sh
 bindsym $mod+x [urgent=latest] focus
 bindsym $mod+Control+l exec $lockman
@@ -221,6 +223,7 @@ for_window [title="Copying *"] floating enable
 for_window [title="Moving *"] floating enable
 for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
+for_window [title="LibreWolf — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 

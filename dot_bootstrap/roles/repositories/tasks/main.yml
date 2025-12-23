@@ -5,5 +5,8 @@
 - name: Include Firefox repository setup
   ansible.builtin.include_tasks: firefox-repo.yml
 
+- name: Include LibreWolf repository setup
+  ansible.builtin.include_tasks: librewolf-repo.yml
+
 - name: Include RPM Fusion repository setup
   ansible.builtin.include_tasks: rpmfusion-repo.yml
