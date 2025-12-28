@@ -1,0 +1,12 @@
+---
+- name: Configure Jottacloud CLI repository
+  when: ansible_distribution == 'Fedora'
+  block:
+    - name: Add Jottacloud CLI repository
+      ansible.builtin.yum_repository:
+        name: jotta-cli
+        description: Jottacloud CLI
+        baseurl: https://repo.jotta.cloud/redhat
+        gpgcheck: true
+        gpgkey: https://repo.jotta.cloud/public.gpg
+        enabled: true

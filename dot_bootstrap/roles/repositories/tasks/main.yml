@@ -10,3 +10,6 @@
 
 - name: Include RPM Fusion repository setup
   ansible.builtin.include_tasks: rpmfusion-repo.yml
+
+- name: Include Jottacloud CLI repository setup
+  ansible.builtin.include_tasks: jotta-cli-repo.yml
