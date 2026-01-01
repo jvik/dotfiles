@@ -7,5 +7,6 @@
       - SwayNotificationCenter
       - waybar
       - wdisplays
+      - lxpolkit
     state: present
   when: window_manager == "sway"

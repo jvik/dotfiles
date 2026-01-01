@@ -12,6 +12,7 @@ include ~/.config/sway/colors/gruvbox
 
 ### Startup Commands
 exec --no-startup-id dbus-update-activation-environment --all
+exec --no-startup-id lxpolkit
 exec flatpak run com.bitwarden.desktop
 # start copyq
 exec /usr/bin/copyq --start-server
