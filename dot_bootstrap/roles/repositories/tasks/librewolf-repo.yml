@@ -14,3 +14,26 @@
       ansible.builtin.dnf:
         name: librewolf
         state: present
+
+- name: Configure LibreWolf repository for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Install extrepo
+      ansible.builtin.apt:
+        name: extrepo
+        state: present
+        update_cache: true
+
+    - name: Enable LibreWolf repository with extrepo
+      ansible.builtin.command:
+        cmd: extrepo enable librewolf
+        creates: /etc/apt/sources.list.d/extrepo_librewolf.sources
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install LibreWolf
+      ansible.builtin.apt:
+        name: librewolf
+        state: present
