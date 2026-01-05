@@ -18,6 +18,5 @@
       - wl-mirror
       - firefox
       - solaar
-      - jotta-cli
     state: present
     update_cache: true
