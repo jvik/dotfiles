@@ -230,7 +230,7 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
-assign [class="Slack"] 4
+assign [class="Slack"] 5
 assign [title="Plexamp"] 8
 assign [app_id="spotify"] 8
 assign [app_id="signal"] 9

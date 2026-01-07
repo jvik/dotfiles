@@ -205,7 +205,7 @@ for_window [class="com.saivert.pwvucontrol"] floating enable
 assign [title="Plexamp"] 10
 assign [class="Signal"] 4
 assign [class="teams-for-linux"] 2
-assign [class="Slack"] 2
+assign [class="Slack"] 5
 assign [class="blueman-manager"] 2
 
 
