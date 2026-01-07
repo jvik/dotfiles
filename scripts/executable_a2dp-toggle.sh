@@ -24,8 +24,8 @@ CURRENT_PROFILE=$(pactl list cards | awk -v card="$CARD" '
 
 echo "Current profile: $CURRENT_PROFILE"
 
-# Define preferred profile order
-A2DP_PROFILES=("a2dp-sink" "a2dp-sink-sbc_xq" "a2dp-sink-sbc")
+# Define preferred profile order (highest quality first)
+A2DP_PROFILES=("a2dp-sink-sbc_xq" "a2dp-sink-sbc" "a2dp-sink")
 HSP_PROFILES=("headset-head-unit-msbc" "headset-head-unit" "headset-head-unit-cvsd")
 
 # Read card info to confirm available profiles
