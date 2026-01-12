@@ -33,7 +33,7 @@ exec_always "killall autotiling; $HOME/.local/bin/autotiling"
 output * bg ~/.wallpaper fill
 
 ### Idle Configuration
-set $locker 'swaylock -f'
+set $locker swaylock -f
 set $lockman exec bash ~/.config/sway/lockman.sh
 set $monitorDisableTimeout 300
 set $lockerTimeout 360
@@ -41,8 +41,10 @@ set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ]; then echo 600
 
 exec_always killall swayidle; swayidle -w \
     timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout $lockerTimeout $locker \
-    timeout $suspendTimeout 'systemctl suspend' before-sleep $locker before-sleep $locker
+    timeout $lockerTimeout '$locker' \
+    timeout $suspendTimeout 'systemctl suspend' \
+    before-sleep '$locker' \
+    lock '$locker'
 
 ### Input Configuration
 input * {
