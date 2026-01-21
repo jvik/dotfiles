@@ -241,21 +241,6 @@ assign [app_id="discord|vesktop"] 9
 ## Bring app to current workspace or launch it if not running
 bindsym $mod+Shift+o exec "swaymsg '[class=\"obsidian\"] move container to workspace current, focus' || exec flatpak run md.obsidian.Obsidian"
 
-### Workspace Configuration
-set $disp1 "eDP-1"
-set $disp2 "DP-7"
-
-workspace 1 output $disp2
-workspace 2 output $disp2
-workspace 3 output $disp2
-workspace 4 output $disp2
-workspace 5 output $disp2
-workspace 6 output $disp2
-workspace 7 output $disp2
-workspace 8 output $disp2
-workspace 9 output $disp2
-workspace 10 output $disp1
-
 workspace_auto_back_and_forth no
 focus_on_window_activation focus
 
