@@ -19,7 +19,7 @@ set -gx USE_EDITOR $EDITOR
 set -gx VISUAL $EDITOR
 
 # Browser
-set -gx BROWSER /usr/bin/firefox
+set -gx BROWSER /usr/bin/librewolf
 
 # Enable colors
 set -gx CLICOLOR 1
