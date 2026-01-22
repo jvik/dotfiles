@@ -10,10 +10,14 @@ source $HOME/.config/fish/abbr.fish
 # Source aliases
 source $HOME/.config/fish/aliases.fish
 
+# Source key bindings
+source $HOME/.config/fish/keybindings.fish
+
 # Source functions are automatically loaded from functions/ directory
 
 # Enable Vi mode
 fish_vi_key_bindings
+
 
 # Color scheme and syntax highlighting
 set -g fish_color_normal normal
