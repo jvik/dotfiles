@@ -1,0 +1,8 @@
+---
+- name: Enable kanshi systemd user service
+  ansible.builtin.systemd:
+    name: kanshi.service
+    enabled: true
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
