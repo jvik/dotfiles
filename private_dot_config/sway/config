@@ -185,8 +185,10 @@ bindsym --locked XF86AudioPlay exec playerctl play-pause
 bindsym --locked XF86AudioNext exec playerctl next
 
 ## Screenshots
+
 bindsym Print exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy --type image/png
 bindsym $mod+p exec grim -g "$(slurp)" - | wl-copy --type image/png
+bindsym $mod+Control+p exec ~/scripts/screenshot-to-file.sh
 
 ## Clipboard Manager
 bindsym $mod+Shift+v exec copyq toggle
