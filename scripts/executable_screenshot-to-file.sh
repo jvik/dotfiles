@@ -12,8 +12,5 @@ region=$(slurp)
 grim -g "$region" "$outfile"
 
 # Prefer swaync-client for notification if available, else fallback to notify-send
-if command -v swaync-client >/dev/null 2>&1; then
-	swaync-client -s -t info -a screenshot "Screenshot saved" "Saved to: $outfile"
-else
-	notify-send "Screenshot saved" "Saved to: $outfile"
-fi
+
+notify-send "Screenshot saved" "Saved to: $outfile"
