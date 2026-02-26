@@ -119,6 +119,7 @@ button:hover {
  * ============================================================================ */
 
 #clock,
+#custom-clock,
 #battery,
 #cpu,
 #memory,
@@ -161,7 +162,8 @@ button:hover {
  * Module-Specific Styles
  * ============================================================================ */
 
-#clock {
+#clock,
+#custom-clock {
     background-color: @bg-module;
 }
 
