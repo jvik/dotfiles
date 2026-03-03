@@ -1,3 +1,4 @@
 ---
 window_manager: {{- if eq (env "TILING_MANAGER") "sway" }} sway{{- else if eq (env "TILING_MANAGER") "i3" }} i3{{- end }}
 user: {{ .chezmoi.username }}
+private_machine: {{ eq (env "PRIVATE_MACHINE") "true" }}

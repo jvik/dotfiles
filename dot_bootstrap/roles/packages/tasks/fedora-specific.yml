@@ -9,3 +9,21 @@
       - tuned-ppd # For power profiles daemon
     state: present
   when: ansible_distribution == 'Fedora'
+
+- name: Add Mullvad repository (Fedora 41+)
+  ansible.builtin.command:
+    cmd: sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
+    creates: /etc/yum.repos.d/mullvad.repo
+  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is version('41', '>=') and private_machine
+
+- name: Add Mullvad repository (Fedora 40 and earlier)
+  ansible.builtin.command:
+    cmd: sudo dnf config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo
+    creates: /etc/yum.repos.d/mullvad.repo
+  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is version('41', '<') and private_machine
+
+- name: Install Mullvad VPN
+  ansible.builtin.package:
+    name: mullvad-vpn
+    state: present
+  when: ansible_distribution == 'Fedora' and private_machine
