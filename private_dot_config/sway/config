@@ -23,7 +23,7 @@ exec_always {
 
 exec systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
-exec_always "killall autotiling; $HOME/.local/bin/autotiling"
+# exec_always "killall autotiling; $HOME/.local/bin/autotiling"
 exec swaymsg 'workspace number 10; exec wezterm'
 
 ### Output Configuration
@@ -230,6 +230,8 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
 assign [class="Slack"] 4
+for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] layout tabbed
+for_window [class="Slack"] layout tabbed
 assign [title="Plexamp"] 8
 assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
