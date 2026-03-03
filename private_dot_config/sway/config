@@ -102,7 +102,6 @@ bindsym $mod+1 workspace number 1
 bindsym $mod+2 workspace number 2
 bindsym $mod+3 workspace number 3
 bindsym $mod+4 workspace number 4
-bindsym $mod+5 workspace number 5
 bindsym $mod+6 workspace number 6
 bindsym $mod+7 workspace number 7
 bindsym $mod+8 workspace number 8
@@ -114,7 +113,6 @@ bindsym $mod+Shift+1 move container to workspace number 1
 bindsym $mod+Shift+2 move container to workspace number 2
 bindsym $mod+Shift+3 move container to workspace number 3
 bindsym $mod+Shift+4 move container to workspace number 4
-bindsym $mod+Shift+5 move container to workspace number 5
 bindsym $mod+Shift+6 move container to workspace number 6
 bindsym $mod+Shift+7 move container to workspace number 7
 bindsym $mod+Shift+8 move container to workspace number 8
@@ -230,7 +228,7 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
-assign [class="Slack"] 5
+assign [class="Slack"] 4
 assign [title="Plexamp"] 8
 assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
