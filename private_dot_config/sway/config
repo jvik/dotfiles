@@ -24,6 +24,7 @@ exec_always {
 exec systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
 exec_always "killall autotiling; $HOME/.local/bin/autotiling"
+exec swaymsg 'workspace number 10; exec wezterm'
 
 ### Output Configuration
 output * bg ~/.wallpaper fill
