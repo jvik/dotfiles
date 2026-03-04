@@ -9,7 +9,6 @@
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "sway/mode",
         "mpris"
         // "custom/representation"
     ],
@@ -24,7 +23,7 @@
         "network",
         "cpu",
         "memory",
-        "temperature",
+        "custom/temperature",
         "backlight",
         // "sway/language",
         "battery",
@@ -112,17 +111,11 @@
         "format": "{}% ",
         "on-click": "wezterm -e --class htop htop"
     },
-    "temperature": {
-        // "thermal-zone": 2,
-        "hwmon-path": "/sys/class/hwmon/hwmon5/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{temperatureC}°C {icon}",
-        "format-icons": [
-            "",
-            "",
-            ""
-        ]
+    "custom/temperature": {
+        "exec": "$HOME/.config/waybar/scripts/temperature.sh",
+        "return-type": "json",
+        "interval": 5,
+        "format": "{}"
     },
     "backlight": {
         // "device": "acpi_video1",
@@ -232,7 +225,7 @@
             "firefox": "",
             "chromium": "",
             "google-chrome": "",
-            "mpv": "�",
+            "mpv": "🎬",
             "spotify": "",
             "vlc": "🎬",
             "plexamp": "🎵",

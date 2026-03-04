@@ -124,7 +124,7 @@ button:hover {
 #cpu,
 #memory,
 #disk,
-#temperature,
+#custom-temperature,
 #backlight,
 #network,
 #bluetooth,
@@ -309,11 +309,11 @@ label:focus {
  * Thermals & System Styles
  * ============================================================================ */
 
-#temperature {
+#custom-temperature {
     background-color: @bg-temperature;
 }
 
-#temperature.critical {
+#custom-temperature.critical {
     background-color: @bg-critical;
 }
 
