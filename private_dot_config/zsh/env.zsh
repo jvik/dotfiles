@@ -25,8 +25,7 @@ fi
 export USE_EDITOR="$EDITOR"
 export VISUAL="$EDITOR"
 
-# export BROWSER=/usr/bin/firefox
-export BROWSER=librewolf
+export BROWSER=firefox
 
 
 export NVM_DIR="$HOME/.nvm"
