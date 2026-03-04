@@ -311,6 +311,8 @@ label:focus {
 
 #custom-temperature {
     background-color: @bg-temperature;
+    padding: 0 10px;
+    margin-left: 2px;
 }
 
 #custom-temperature.critical {

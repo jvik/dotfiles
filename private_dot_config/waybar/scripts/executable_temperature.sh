@@ -17,7 +17,7 @@ for hwmon in /sys/class/hwmon/hwmon*; do
                 elif [ "$temp" -ge 60 ]; then
                     icon="󰔏"
                 else
-                    icon="�"
+                    icon="󰔏"
                 fi
                 class=""
                 [ "$temp" -ge "$CRITICAL" ] && class="critical"
