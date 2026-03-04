@@ -7,3 +7,6 @@
 
 # Example: Local environment variables
 # set -gx CUSTOM_VAR value
+
+# Machine-specific settings
+set -gx PRIVATE_MACHINE true
