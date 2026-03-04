@@ -225,7 +225,6 @@ for_window [title="Copying *"] floating enable
 for_window [title="Moving *"] floating enable
 for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
-for_window [title="LibreWolf — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 

@@ -5,11 +5,9 @@
 - name: Include Firefox repository setup
   ansible.builtin.include_tasks: firefox-repo.yml
 
-- name: Include LibreWolf repository setup
-  ansible.builtin.include_tasks: librewolf-repo.yml
-
-- name: Include RPM Fusion repository setup
-  ansible.builtin.include_tasks: rpmfusion-repo.yml
+# Disable librewolf, as we have transitioned to arkenwolf user.js for Firefox
+#- name: Include RPM Fusion repository setup
+#  ansible.builtin.include_tasks: rpmfusion-repo.yml
 
 - name: Include Jottacloud CLI repository setup
   ansible.builtin.include_tasks: jotta-cli-repo.yml
