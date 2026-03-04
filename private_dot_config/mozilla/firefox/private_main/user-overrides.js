@@ -4,6 +4,11 @@
 //
 // Run updater.sh after editing this file to regenerate user.js
 
+// Disable AI chatbot (Firefox sidebar)
+user_pref("browser.ml.chat.enabled", false);
+user_pref("browser.ml.chat.shortcuts", false);
+user_pref("browser.ml.chat.shortcuts.longPress", false);
+
 /* [EXAMPLE OVERRIDES - uncomment and adjust as needed]
 
 // Keep your language (arkenfox forces en-US)
