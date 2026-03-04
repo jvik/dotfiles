@@ -4,3 +4,6 @@
 
 - name: Include systemd user services setup
   ansible.builtin.include_tasks: systemd-user-services.yml
+
+- name: Include Firefox arkenfox setup
+  ansible.builtin.include_tasks: firefox-arkenfox.yml

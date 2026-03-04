@@ -1,0 +1,15 @@
+{
+  "policies": {
+    "SearchEngines": {
+      "Default": "Startpage",
+      "Add": [
+        {
+          "Name": "Startpage",
+          "URLTemplate": "https://www.startpage.com/search?q={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://www.startpage.com/favicon.ico"
+        }
+      ]
+    }
+  }
+}
