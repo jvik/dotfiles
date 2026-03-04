@@ -10,6 +10,8 @@
   become: false
   ansible.builtin.command: >
     /home/linuxbrew/.linuxbrew/bin/uv tool install rofimoji
+  register: uv_tool_install_rofimoji
+  changed_when: uv_tool_install_rofimoji.rc == 0
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
   when: "'rofimoji' not in uv_tool_list_rofimoji.stdout"
@@ -25,6 +27,8 @@
   become: false
   ansible.builtin.command: >
     /home/linuxbrew/.linuxbrew/bin/uv tool install autotiling
+  register: uv_tool_install_autotiling
+  changed_when: uv_tool_install_autotiling.rc == 0
   environment:
     PATH: '/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}'
   when: "'autotiling' not in uv_tool_list_autotiling.stdout"
