@@ -3,5 +3,6 @@
   ansible.builtin.package:
     name:
       - power-profiles-daemon # For power profiles daemon
+      - ncal
     state: present
   when: ansible_distribution == 'Ubuntu'

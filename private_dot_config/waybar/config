@@ -29,7 +29,7 @@
         "battery",
         // "custom/weather",
         "tray",
-        "custom/clock",
+        "clock",
         "power-profiles-daemon",
         "idle_inhibitor",
         "custom/notification"
@@ -94,12 +94,9 @@
         // "icon-size": 21,
         "spacing": 10
     },
-    "custom/clock": {
-        "format": "{}",
-        "exec": "$HOME/.config/waybar/scripts/clock.sh",
-        "interval": 1,
-        "signal": 8,
-        "on-click": "$HOME/.config/waybar/scripts/clock.sh toggle-date",
+    "clock": {
+        "format": "{:%H:%M}",
+        "on-click": "$HOME/.config/waybar/scripts/calendar-toggle.sh",
         "tooltip": false
     },
     "cpu": {
