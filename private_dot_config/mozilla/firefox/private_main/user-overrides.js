@@ -25,7 +25,7 @@ user_pref("intl.accept_languages", "nb-NO, nb, no, en-US, en");
 
 user_pref("extensions.pocket.enabled", false); //fully disable pocket
 user_pref("identity.fxaccounts.enabled", true); //enable sync
-user_pref("places.history.enabled", false); // disables history entirely
+user_pref("places.history.enabled", true); // enable history
 user_pref("javascript.options.ion", false); //javascript "hardening", might cause slowdowns/breakage
 user_pref("javascript.options.asmjs", false); //same as above
 user_pref("javascript.options.wasm", false); //WebAssembly support. Completly disables WASM, for the security gain and speed loss
@@ -35,7 +35,7 @@ user_pref("browser.safebrowsing.downloads.remote.enabled", false); //disabled sa
 user_pref("browser.safebrowsing.phishing.enabled", false); //same as above
 user_pref("browser.safebrowsing.malware.enabled", false); // -||-
 user_pref("dom.webnotifications.enabled", true); // fully disabled notifications
-user_pref("browser.urlbar.suggest.history", false); //no suggestions from history
+user_pref("browser.urlbar.suggest.history", true); //suggestions from history
 user_pref("browser.urlbar.suggest.openpage", true); //no suggestions deom open pages
 user_pref("browser.urlbar.suggest.topsites", false); //no top sites in the suggestions
 user_pref("signon.management.page.breach-alerts.enabled", false); //no breach alerts

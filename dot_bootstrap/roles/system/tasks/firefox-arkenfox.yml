@@ -14,5 +14,6 @@
 - name: Generate arkenfox user.js
   ansible.builtin.command:
     cmd: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main/updater.sh -u -s"
-    creates: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main/user.js"
+    chdir: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main"
   when: firefox_profile.stat.exists
+  changed_when: true
