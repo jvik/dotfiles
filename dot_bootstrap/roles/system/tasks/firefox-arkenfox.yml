@@ -1,19 +1,18 @@
 ---
-- name: Check if Firefox main profile exists
-  ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main"
-  register: firefox_profile
+- name: Ensure Firefox main profile directory exists
+  ansible.builtin.file:
+    path: "/home/{{ user }}/.config/mozilla/firefox/main"
+    state: directory
+    mode: "0700"
 
 - name: Download arkenfox updater.sh
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/arkenfox/user.js/master/updater.sh
-    dest: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main/updater.sh"
+    dest: "/home/{{ user }}/.config/mozilla/firefox/main/updater.sh"
     mode: "0755"
-  when: firefox_profile.stat.exists
 
 - name: Generate arkenfox user.js
   ansible.builtin.command:
-    cmd: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main/updater.sh -u -s"
-    chdir: "{{ ansible_env.HOME }}/.config/mozilla/firefox/main"
-  when: firefox_profile.stat.exists
+    cmd: "/home/{{ user }}/.config/mozilla/firefox/main/updater.sh -u -s"
+    chdir: "/home/{{ user }}/.config/mozilla/firefox/main"
   changed_when: true
