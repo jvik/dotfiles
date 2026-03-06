@@ -40,6 +40,12 @@ The goal is safe, minimal, and idempotent changes.
 - Do not remove `executable_` prefixes or rename scripts without a clear reason.
 - Avoid introducing interactive behavior in scripts used by status bars/hooks.
 
+### Documentation (`readme.md`)
+
+- Keep [readme.md](readme.md) up-to-date when making significant changes to the repository structure or configuration.
+- Document new roles, major features, or configuration sections in the readme.
+- Maintain accuracy of any setup or usage instructions.
+
 ## Security and secrets
 
 - **Never** commit tokens, passwords, or API keys in plain text.
