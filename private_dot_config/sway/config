@@ -134,6 +134,7 @@ bindsym $mod+v splitv
 # bindsym $mod+s exec ~/.config/sway/scripts/layout.sh stacking
 bindsym $mod+w exec ~/.config/sway/scripts/layout.sh tabbed
 bindsym $mod+e exec ~/.config/sway/scripts/layout.sh toggle split
+bindsym $mod+s layout stacking
 bindsym $mod+f fullscreen
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
@@ -233,8 +234,8 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
 assign [class="Slack"] 4
-for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] layout tabbed
-for_window [class="Slack"] layout tabbed
+#for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] layout tabbed
+#for_window [class="Slack"] layout tabbed
 assign [title="Plexamp"] 8
 assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
