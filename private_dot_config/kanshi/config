@@ -47,9 +47,14 @@ profile samsung-ls49-dp3 {
     exec swaymsg "workspace 10, move workspace to output eDP-1"
 }
 
-profile common-pos-1 {
+profile common-row-1-pos-east {
     output "Samsung Electric Company LS49C95xU HNTX901777" enable mode 5120x1440@59.968Hz position 0,0
     output eDP-1 enable mode 1920x1200@60Hz position 5120,0
+}
+
+profile common-row-3-pos-east {
+    output "Samsung Electric Company LS49C95xU HNTWB01215" enable mode 5120x1440@59.968Hz position 1920,0
+    output eDP-1 enable mode 1920x1200@60Hz position 0,0
 }
 
 profile laptop {
