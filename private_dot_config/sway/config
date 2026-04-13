@@ -21,7 +21,7 @@ exec_always {
     rm /run/user/1000/pipectl.1000.wl-present.pipe 
 }
 
-exec systemctl --user restart kanshi.service
+exec_always systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
 # exec_always "killall autotiling; $HOME/.local/bin/autotiling"
 exec swaymsg 'workspace number 10; exec wezterm'
