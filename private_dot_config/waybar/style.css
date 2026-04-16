@@ -251,6 +251,7 @@ label:focus {
     padding-right: 10px;
 }
 
+#custom-network-wlan,
 #custom-network-lan,
 #custom-network-tether {
     min-width: 1.4em;
@@ -278,7 +279,7 @@ label:focus {
 
 #custom-network-wlan.disconnected {
     background-color: @bg-critical;
-    padding: 0 10px;
+    padding: 0 14px 0 10px;
 }
 
 #custom-network-wlan-detail.disconnected {
