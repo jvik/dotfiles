@@ -259,8 +259,8 @@ label:focus {
 #custom-network-wlan-detail,
 #custom-network-lan-detail,
 #custom-network-tether-detail {
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 10px;
+    padding-right: 0px;
 }
 
 #custom-network-wlan.network-detail,
