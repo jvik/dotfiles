@@ -244,11 +244,18 @@ label:focus {
     background-color: transparent;
 }
 
+#custom-network-wlan,
+#custom-network-lan,
+#custom-network-tether {
+    padding-left: 4px;
+    padding-right: 10px;
+}
+
 #custom-network-wlan-detail,
 #custom-network-lan-detail,
 #custom-network-tether-detail {
-    padding-left: 0;
-    padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 4px;
 }
 
 #custom-network-wlan.network-detail,
