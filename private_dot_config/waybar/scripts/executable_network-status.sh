@@ -156,7 +156,14 @@ if [ -z "$iface" ] || ! has_global_ip "$iface"; then
     case "$kind" in
         wlan)
             if [ "$variant" = "leader" ]; then
-                print_json '󰯡 no wlan' 'disconnected' ''
+                print_json '󰯡 ' 'disconnected' ''
+            else
+                print_json '' 'disconnected detail' ''
+            fi
+            ;;
+        tether)
+            if [ "$variant" = "leader" ]; then
+                print_json '' 'disconnected' ''
             else
                 print_json '' 'disconnected detail' ''
             fi
