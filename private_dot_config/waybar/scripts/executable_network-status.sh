@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 kind=$1
+variant=${2:-leader}
 
 matches_kind() {
     module_kind=$1
@@ -140,12 +141,25 @@ case "$kind" in
         ;;
 esac
 
+case "$variant" in
+    leader|detail)
+        ;;
+    *)
+        print_json "" "invalid" ""
+        exit 1
+        ;;
+esac
+
 iface=$(select_iface "$kind")
 
 if [ -z "$iface" ] || ! has_global_ip "$iface"; then
     case "$kind" in
         wlan)
-            print_json '󰯡 no wlan' 'disconnected' ''
+            if [ "$variant" = "leader" ]; then
+                print_json '󰯡 no wlan' 'disconnected' ''
+            else
+                print_json '' 'disconnected detail' ''
+            fi
             ;;
         *)
             print_json '' 'disconnected' ''
@@ -162,7 +176,13 @@ case "$kind" in
         essid=$(get_essid "$iface")
         signal_percent=$(get_signal_percent "$iface")
 
-        if [ -n "$essid" ] && [ -n "$signal_percent" ]; then
+        if [ "$variant" = "detail" ]; then
+            if [ -n "$signal_percent" ]; then
+                text="$address ($signal_percent%)"
+            else
+                text="$address"
+            fi
+        elif [ -n "$essid" ] && [ -n "$signal_percent" ]; then
             text="󰀂 $essid($signal_percent%)"
         elif [ -n "$essid" ]; then
             text="󰀂 $essid"
@@ -170,12 +190,24 @@ case "$kind" in
             text="󰀂 $iface"
         fi
 
-        print_json "$text" 'wifi' "$tooltip"
+        print_json "$text" "$variant" "$tooltip"
         ;;
     tether)
-        print_json " $address" 'tether' "$tooltip"
+        if [ "$variant" = "detail" ]; then
+            text="$address"
+        else
+            text=''
+        fi
+
+        print_json "$text" "$variant" "$tooltip"
         ;;
     lan)
-        print_json "󰱔 $address" 'lan' "$tooltip"
+        if [ "$variant" = "detail" ]; then
+            text="$address"
+        else
+            text='󰱔'
+        fi
+
+        print_json "$text" "$variant" "$tooltip"
         ;;
 esac
