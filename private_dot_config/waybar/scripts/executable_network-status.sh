@@ -173,7 +173,7 @@ case "$kind" in
         print_json "$text" 'wifi' "$tooltip"
         ;;
     tether)
-        print_json "󰱔 $address" 'tether' "$tooltip"
+        print_json " $address" 'tether' "$tooltip"
         ;;
     lan)
         print_json "󰱔 $address" 'lan' "$tooltip"

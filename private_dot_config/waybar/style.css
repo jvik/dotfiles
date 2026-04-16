@@ -233,7 +233,11 @@ label:focus {
     background-color: @bg-critical;
 }
 
-#custom-network-wlan.disconnected,
+#custom-network-wlan.disconnected {
+    background-color: @bg-critical;
+    padding: 0 10px;
+}
+
 #custom-network-lan.disconnected,
 #custom-network-tether.disconnected {
     background-color: transparent;
