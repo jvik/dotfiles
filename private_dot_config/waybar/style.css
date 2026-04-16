@@ -286,12 +286,16 @@ label:focus {
     padding: 0;
 }
 
-#custom-network-lan.disconnected,
 #custom-network-lan-detail.disconnected,
-#custom-network-tether.disconnected,
 #custom-network-tether-detail.disconnected {
     background-color: transparent;
     padding: 0;
+}
+
+#custom-network-lan.disconnected,
+#custom-network-tether.disconnected {
+    background-color: @bg-critical;
+    padding: 0 10px;
 }
 
 #custom-weather {
