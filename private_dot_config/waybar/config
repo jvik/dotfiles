@@ -20,7 +20,9 @@
         "pulseaudio#mic",
         "custom/bt-profile",
         "bluetooth",
-        "network",
+        "network#wlan",
+        "network#lan",
+        "network#tether",
         "cpu",
         "memory",
         "custom/temperature",
@@ -159,16 +161,38 @@
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\nBattery: {device_battery_percentage}%"
     },
-    "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "{signalStrength}% ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "tooltip-format": "{ifname} via {gwaddr} ",
-        "tooltip-format-wifi": "{essid} ({signalStrength}%) ",
-        "format-linked": "{ifname} (No IP) ",
-        "format-disconnected": "Disconnected ⚠",
-        "format-alt": "{ifname}: {ipaddr}/{cidr}",
-        "on-click-right": "wezterm -e --class nmwui nmtui"
+    "network#lan": {
+        "interval": 2,
+        "interface": "enp0s31f6",
+        "max-length": 50,
+        "format": "",
+        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
+        "format-disconnected": "",
+        "tooltip-format": "",
+        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
+        "tooltip-format-disconnected": ""
+    },
+    "network#tether": {
+        "interval": 2,
+        "interface": "enx9602b4be3e21",
+        "max-length": 50,
+        "format": "",
+        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
+        "format-disconnected": "",
+        "tooltip-format": "",
+        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
+        "tooltip-format-disconnected": ""
+    },
+    "network#wlan": {
+        "interval": 2,
+        "interface": "wlp0s20f3",
+        "max-length": 50,
+        "format": "",
+        "format-wifi": "<span foreground='#93b259'>󰀂 </span>{essid}({signalStrength}%)",
+        "format-disconnected": "<span foreground='#ffffff'>󰯡 </span>no wlan",
+        "tooltip-format": "",
+        "tooltip-format-wifi": "Ifname:\t{ifname}\nIPv4:\t{ipaddr}/{cidr}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
+        "tooltip-format-disconnected": ""
     },
     "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
