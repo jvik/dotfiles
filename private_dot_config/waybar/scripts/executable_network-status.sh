@@ -167,8 +167,13 @@ if [ -z "$iface" ] || ! has_global_ip "$iface"; then
             else
                 print_json '' 'disconnected detail' ''
             fi
-            ;;
-        *)
+            ;;        lan)
+            if [ "$variant" = "leader" ]; then
+                print_json '' 'disconnected' ''
+            else
+                print_json '' 'disconnected detail' ''
+            fi
+            ;;        *)
             print_json '' 'disconnected' ''
             ;;
     esac
