@@ -103,11 +103,12 @@
     },
     "cpu": {
         "format": "{usage}% ",
-        "tooltip": false,
+        "tooltip": true,
         "on-click": "wezterm -e --class htop htop"
     },
     "memory": {
-        "format": "{}% ",
+        "format": "{}% ",
+        "tooltip-format": "{used:0.1f}G / {total:0.1f}G RAM\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
         "on-click": "wezterm -e --class htop htop"
     },
     "custom/temperature": {
@@ -143,6 +144,9 @@
         "format-alt": "{time} {icon}",
         "format-good": "", // An empty format will hide the module
         "format-full": "",
+        "tooltip-format": "{time} remaining\n{power:.1f}W",
+        "tooltip-format-charging": "Charging: {capacity}%\n{power:.1f}W",
+        "tooltip-format-plugged": "Plugged in: {capacity}%",
         "format-icons": [
             "",
             "",
