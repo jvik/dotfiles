@@ -20,9 +20,9 @@
         "pulseaudio#mic",
         "custom/bt-profile",
         "bluetooth",
-        "network#wlan",
-        "network#lan",
-        "network#tether",
+        "group/network-wlan",
+        "group/network-lan",
+        "group/network-tether",
         "cpu",
         "memory",
         "custom/temperature",
@@ -107,7 +107,7 @@
         "on-click": "wezterm -e --class htop htop"
     },
     "memory": {
-        "format": "{}% ",
+        "format": "{}% ",
         "tooltip-format": "{used:0.1f}G / {total:0.1f}G RAM\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G",
         "on-click": "wezterm -e --class htop htop"
     },
@@ -165,38 +165,77 @@
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\nBattery: {device_battery_percentage}%"
     },
-    "network#lan": {
-        "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enp\\|^eth'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
-        "format-disconnected": "",
-        "tooltip-format": "",
-        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+    "group/network-wlan": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/network-wlan",
+            "custom/network-wlan-detail"
+        ],
+        "drawer": {
+            "transition-duration": 250,
+            "transition-left-to-right": false,
+            "children-class": "network-detail"
+        }
     },
-    "network#tether": {
-        "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enx'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
-        "format-disconnected": "",
-        "tooltip-format": "",
-        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+    "group/network-lan": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/network-lan",
+            "custom/network-lan-detail"
+        ],
+        "drawer": {
+            "transition-duration": 250,
+            "transition-left-to-right": false,
+            "children-class": "network-detail"
+        }
     },
-    "network#wlan": {
+    "group/network-tether": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/network-tether",
+            "custom/network-tether-detail"
+        ],
+        "drawer": {
+            "transition-duration": 250,
+            "transition-left-to-right": false,
+            "children-class": "network-detail"
+        }
+    },
+    "custom/network-lan": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh lan",
+        "return-type": "json",
         "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^wl'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-wifi": "<span foreground='#93b259'>󰀂 </span>{essid}({signalStrength}%)",
-        "format-disconnected": "<span foreground='#ffffff'>󰯡 </span>no wlan",
-        "tooltip-format": "",
-        "tooltip-format-wifi": "Ifname:\t{ifname}\nIPv4:\t{ipaddr}/{cidr}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+        "format": "{}"
+    },
+    "custom/network-lan-detail": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh lan detail",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
+    "custom/network-tether": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh tether",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
+    "custom/network-tether-detail": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh tether detail",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
+    "custom/network-wlan": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
+    "custom/network-wlan-detail": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan detail",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
     },
     "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float

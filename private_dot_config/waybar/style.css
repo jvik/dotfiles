@@ -127,6 +127,12 @@ button:hover {
 #custom-temperature,
 #backlight,
 #network,
+#custom-network-wlan,
+#custom-network-wlan-detail,
+#custom-network-lan,
+#custom-network-lan-detail,
+#custom-network-tether,
+#custom-network-tether-detail,
 #bluetooth,
 #pulseaudio,
 #wireplumber,
@@ -220,8 +226,77 @@ label:focus {
     background-color: @bg-network;
 }
 
+#network-wlan,
+#network-lan,
+#network-tether,
+#custom-network-wlan,
+#custom-network-wlan-detail,
+#custom-network-lan,
+#custom-network-lan-detail,
+#custom-network-tether,
+#custom-network-tether-detail {
+    background-color: @bg-network;
+}
+
+#network-wlan,
+#network-lan,
+#network-tether {
+    background-color: transparent;
+}
+
+#custom-network-wlan,
+#custom-network-lan,
+#custom-network-tether {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#custom-network-wlan,
+#custom-network-lan,
+#custom-network-tether {
+    min-width: 1.4em;
+}
+
+#custom-network-wlan-detail,
+#custom-network-lan-detail,
+#custom-network-tether-detail {
+    padding-left: 10px;
+    padding-right: 0px;
+}
+
+#custom-network-wlan.network-detail,
+#custom-network-lan.network-detail,
+#custom-network-tether.network-detail,
+#custom-network-wlan-detail.network-detail,
+#custom-network-lan-detail.network-detail,
+#custom-network-tether-detail.network-detail {
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
 #network.disconnected {
     background-color: @bg-critical;
+}
+
+#custom-network-wlan.disconnected {
+    background-color: @bg-critical;
+    padding: 0 14px 0 10px;
+}
+
+#custom-network-wlan-detail.disconnected {
+    background-color: @bg-critical;
+    padding: 0;
+}
+
+#custom-network-lan-detail.disconnected,
+#custom-network-tether-detail.disconnected {
+    background-color: transparent;
+    padding: 0;
+}
+
+#custom-network-lan.disconnected,
+#custom-network-tether.disconnected {
+    background-color: @bg-critical;
+    padding: 0 10px;
 }
 
 #custom-weather {
