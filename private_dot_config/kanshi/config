@@ -57,6 +57,11 @@ profile common-row-3-pos-east {
     output eDP-1 enable mode 1920x1200@60Hz position 0,0
 }
 
+profile common-row-2-pos-east {
+    output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.968Hz position 0,0
+    output eDP-1 enable mode 1920x1200@60Hz position 5120,0
+}
+
 profile laptop {
     output eDP-1 enable mode 1920x1200 position 0,0
 }
