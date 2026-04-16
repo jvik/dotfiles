@@ -127,6 +127,9 @@ button:hover {
 #custom-temperature,
 #backlight,
 #network,
+#custom-network-wlan,
+#custom-network-lan,
+#custom-network-tether,
 #bluetooth,
 #pulseaudio,
 #wireplumber,
@@ -220,8 +223,21 @@ label:focus {
     background-color: @bg-network;
 }
 
+#custom-network-wlan,
+#custom-network-lan,
+#custom-network-tether {
+    background-color: @bg-network;
+}
+
 #network.disconnected {
     background-color: @bg-critical;
+}
+
+#custom-network-wlan.disconnected,
+#custom-network-lan.disconnected,
+#custom-network-tether.disconnected {
+    background-color: transparent;
+    padding: 0;
 }
 
 #custom-weather {
