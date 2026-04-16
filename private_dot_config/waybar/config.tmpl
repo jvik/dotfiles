@@ -163,7 +163,7 @@
     },
     "network#lan": {
         "interval": 2,
-        "interface": "enp0s31f6",
+        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enp\\|^eth'" | trim }}",
         "max-length": 50,
         "format": "",
         "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
@@ -174,7 +174,7 @@
     },
     "network#tether": {
         "interval": 2,
-        "interface": "enx9602b4be3e21",
+        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enx'" | trim }}",
         "max-length": 50,
         "format": "",
         "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
@@ -185,7 +185,7 @@
     },
     "network#wlan": {
         "interval": 2,
-        "interface": "wlp0s20f3",
+        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^wl'" | trim }}",
         "max-length": 50,
         "format": "",
         "format-wifi": "<span foreground='#93b259'>󰀂 </span>{essid}({signalStrength}%)",
