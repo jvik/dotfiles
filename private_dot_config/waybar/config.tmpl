@@ -20,9 +20,9 @@
         "pulseaudio#mic",
         "custom/bt-profile",
         "bluetooth",
-        "network#wlan",
-        "network#lan",
-        "network#tether",
+        "custom/network-wlan",
+        "custom/network-lan",
+        "custom/network-tether",
         "cpu",
         "memory",
         "custom/temperature",
@@ -165,38 +165,23 @@
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\nBattery: {device_battery_percentage}%"
     },
-    "network#lan": {
+    "custom/network-lan": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh lan",
+        "return-type": "json",
         "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enp\\|^eth'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
-        "format-disconnected": "",
-        "tooltip-format": "",
-        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+        "format": "{}"
     },
-    "network#tether": {
+    "custom/network-tether": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh tether",
+        "return-type": "json",
         "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^enx'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-ethernet": "<span foreground='#829181'>󰱔 </span>{ipaddr}/{cidr}",
-        "format-disconnected": "",
-        "tooltip-format": "",
-        "tooltip-format-ethernet": "Ifname:\t{ifname}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+        "format": "{}"
     },
-    "network#wlan": {
+    "custom/network-wlan": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
+        "return-type": "json",
         "interval": 2,
-        "interface": "{{ output "sh" "-c" "ls /sys/class/net/ | grep -m1 '^wl'" | trim }}",
-        "max-length": 50,
-        "format": "",
-        "format-wifi": "<span foreground='#93b259'>󰀂 </span>{essid}({signalStrength}%)",
-        "format-disconnected": "<span foreground='#ffffff'>󰯡 </span>no wlan",
-        "tooltip-format": "",
-        "tooltip-format-wifi": "Ifname:\t{ifname}\nIPv4:\t{ipaddr}/{cidr}\nNMask:\t{netmask}\nDown:\t{bandwidthDownBits}\nUp:\t{bandwidthUpBits}",
-        "tooltip-format-disconnected": ""
+        "format": "{}"
     },
     "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
