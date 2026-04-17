@@ -22,7 +22,7 @@
         "bluetooth",
         "group/network-wlan",
         "group/network-lan",
-        "group/network-tether",
+        "group/network-usb",
         "cpu",
         "memory",
         "custom/temperature",
@@ -189,11 +189,11 @@
             "children-class": "network-detail"
         }
     },
-    "group/network-tether": {
+    "group/network-usb": {
         "orientation": "inherit",
         "modules": [
-            "custom/network-tether",
-            "custom/network-tether-detail"
+            "custom/network-usb",
+            "custom/network-usb-detail"
         ],
         "drawer": {
             "transition-duration": 250,
@@ -213,14 +213,14 @@
         "interval": 2,
         "format": "{}"
     },
-    "custom/network-tether": {
-        "exec": "$HOME/.config/waybar/scripts/network-status.sh tether",
+    "custom/network-usb": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh usb",
         "return-type": "json",
         "interval": 2,
         "format": "{}"
     },
-    "custom/network-tether-detail": {
-        "exec": "$HOME/.config/waybar/scripts/network-status.sh tether detail",
+    "custom/network-usb-detail": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh usb detail",
         "return-type": "json",
         "interval": 2,
         "format": "{}"

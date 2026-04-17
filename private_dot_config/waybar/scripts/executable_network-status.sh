@@ -13,7 +13,7 @@ matches_kind() {
                 wl*) return 0 ;;
             esac
             ;;
-        tether)
+        usb)
             case "$iface" in
                 enx*|usb*|rndis*|enp*u[0-9]*) return 0 ;;
             esac
@@ -133,7 +133,7 @@ build_tooltip() {
 }
 
 case "$kind" in
-    wlan|lan|tether)
+    wlan|lan|usb)
         ;;
     *)
         print_json "" "invalid" ""
@@ -156,20 +156,20 @@ if [ -z "$iface" ] || ! has_global_ip "$iface"; then
     case "$kind" in
         wlan)
             if [ "$variant" = "leader" ]; then
-                print_json '󰯡' 'disconnected' ''
+                print_json '󰯡 wlan' 'disconnected' ''
             else
                 print_json '' 'disconnected detail' ''
             fi
             ;;
-        tether)
+        usb)
             if [ "$variant" = "leader" ]; then
-                print_json '' 'disconnected' ''
+                print_json ' usb' 'disconnected' ''
             else
                 print_json '' 'disconnected detail' ''
             fi
             ;;        lan)
             if [ "$variant" = "leader" ]; then
-                print_json '' 'disconnected' ''
+                print_json ' lan' 'disconnected' ''
             else
                 print_json '' 'disconnected detail' ''
             fi
@@ -204,11 +204,11 @@ case "$kind" in
 
         print_json "$text" "$variant" "$tooltip"
         ;;
-    tether)
+    usb)
         if [ "$variant" = "detail" ]; then
             text="$address"
         else
-            text=''
+            text=''
         fi
 
         print_json "$text" "$variant" "$tooltip"

@@ -131,8 +131,8 @@ button:hover {
 #custom-network-wlan-detail,
 #custom-network-lan,
 #custom-network-lan-detail,
-#custom-network-tether,
-#custom-network-tether-detail,
+#custom-network-usb,
+#custom-network-usb-detail,
 #bluetooth,
 #pulseaudio,
 #wireplumber,
@@ -155,12 +155,12 @@ button:hover {
 }
 
 /* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
+.modules-left>widget:first-child>#workspaces {
     margin-left: 0;
 }
 
 /* If workspaces is the rightmost module, omit right margin */
-.modules-right > widget:last-child > #workspaces {
+.modules-right>widget:last-child>#workspaces {
     margin-right: 0;
 }
 
@@ -228,48 +228,48 @@ label:focus {
 
 #network-wlan,
 #network-lan,
-#network-tether,
+#network-usb,
 #custom-network-wlan,
 #custom-network-wlan-detail,
 #custom-network-lan,
 #custom-network-lan-detail,
-#custom-network-tether,
-#custom-network-tether-detail {
+#custom-network-usb,
+#custom-network-usb-detail {
     background-color: @bg-network;
 }
 
 #network-wlan,
 #network-lan,
-#network-tether {
+#network-usb {
     background-color: transparent;
 }
 
 #custom-network-wlan,
 #custom-network-lan,
-#custom-network-tether {
+#custom-network-usb {
     padding-left: 10px;
     padding-right: 10px;
 }
 
 #custom-network-wlan,
 #custom-network-lan,
-#custom-network-tether {
+#custom-network-usb {
     min-width: 1.4em;
 }
 
 #custom-network-wlan-detail,
 #custom-network-lan-detail,
-#custom-network-tether-detail {
+#custom-network-usb-detail {
     padding-left: 10px;
     padding-right: 0px;
 }
 
 #custom-network-wlan.network-detail,
 #custom-network-lan.network-detail,
-#custom-network-tether.network-detail,
+#custom-network-usb.network-detail,
 #custom-network-wlan-detail.network-detail,
 #custom-network-lan-detail.network-detail,
-#custom-network-tether-detail.network-detail {
+#custom-network-usb-detail.network-detail {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
@@ -288,13 +288,13 @@ label:focus {
 }
 
 #custom-network-lan-detail.disconnected,
-#custom-network-tether-detail.disconnected {
+#custom-network-usb-detail.disconnected {
     background-color: transparent;
     padding: 0;
 }
 
 #custom-network-lan.disconnected,
-#custom-network-tether.disconnected {
+#custom-network-usb.disconnected {
     background-color: @bg-critical;
     padding: 0 10px;
 }
@@ -398,11 +398,11 @@ label:focus {
     background-color: @bg-tray;
 }
 
-#tray > .passive {
+#tray>.passive {
     -gtk-icon-effect: dim;
 }
 
-#tray > .needs-attention {
+#tray>.needs-attention {
     -gtk-icon-effect: highlight;
     background-color: @bg-critical;
 }
@@ -436,11 +436,11 @@ label:focus {
     min-width: 16px;
 }
 
-#keyboard-state > label {
+#keyboard-state>label {
     padding: 0 5px;
 }
 
-#keyboard-state > label.locked {
+#keyboard-state>label.locked {
     background: rgba(0, 0, 0, 0.2);
 }
 
