@@ -21,12 +21,10 @@
         "pulseaudio#mic",
         "custom/bt-profile",
         "bluetooth",
-
         // Connectivity
         "group/network-wlan",
         "group/network-lan",
         "group/network-usb",
-
         // System status
         "cpu",
         "memory",
@@ -35,7 +33,6 @@
         // "sway/language",
         "battery",
         // "custom/weather",
-
         // Session controls
         "tray",
         "clock",
@@ -43,7 +40,6 @@
         "idle_inhibitor",
         "custom/notification"
     ],
-
     // Sway state
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
@@ -83,7 +79,6 @@
             "default": ""
         }
     },
-
     // Session state
     "power-profiles-daemon": {
         "format": "{icon}",
@@ -112,7 +107,6 @@
         "on-click": "$HOME/.config/waybar/scripts/calendar-toggle.sh",
         "tooltip": false
     },
-
     // System status
     "cpu": {
         "format": "{usage}% ",
@@ -168,7 +162,6 @@
             ""
         ]
     },
-
     // Connectivity
     "bluetooth": {
         "on-click": "exec blueman-manager &",
@@ -180,7 +173,6 @@
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\nBattery: {device_battery_percentage}%"
     },
-
     // Waybar JSON does not support shared fragments, so these network blocks stay
     // intentionally parallel and are kept adjacent to make the repetition easier to scan.
     "group/network-wlan": {
@@ -255,7 +247,6 @@
         "interval": 2,
         "format": "{}"
     },
-
     // Audio and media
     "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
@@ -323,7 +314,6 @@
         "ignored-players": [],
         "tooltip-format": "{player} ({status}): {dynamic}"
     },
-
     // Custom modules
     "custom/weather": {
         "format": "{}",
