@@ -74,3 +74,11 @@ profile mirror-hdmi {
     # alternatively, for wl-mirror < 0.16.4
     # exec wl-present mirror eDP-1 & sleep .5; wl-present fullscreen-output HDMI-A-1; wl-present fullscreen
 }
+
+# Generated profiles
+
+
+profile dp-3 {
+    output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,124
+}

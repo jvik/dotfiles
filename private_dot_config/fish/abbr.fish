@@ -46,6 +46,7 @@ abbr -a tmuxa 'tmux attach || tmux new-session'
 
 # I3/Sway config
 abbr -a i3config 'nvim ~/.config/i3/config'
+abbr -a kanshi-gen '~/scripts/kanshi-append-config.sh'
 
 # Audio
 abbr -a audio alsamixer
