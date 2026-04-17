@@ -16,13 +16,18 @@
     //     "sway/window"
     // ],
     "modules-right": [
+        // Audio and device controls
         "pulseaudio#speaker",
         "pulseaudio#mic",
         "custom/bt-profile",
         "bluetooth",
+
+        // Connectivity
         "group/network-wlan",
         "group/network-lan",
         "group/network-usb",
+
+        // System status
         "cpu",
         "memory",
         "custom/temperature",
@@ -30,12 +35,16 @@
         // "sway/language",
         "battery",
         // "custom/weather",
+
+        // Session controls
         "tray",
         "clock",
         "power-profiles-daemon",
         "idle_inhibitor",
         "custom/notification"
     ],
+
+    // Sway state
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
@@ -74,6 +83,8 @@
             "default": ""
         }
     },
+
+    // Session state
     "power-profiles-daemon": {
         "format": "{icon}",
         "tooltip-format": "Power profile: {profile}\nDriver: {driver}",
@@ -101,6 +112,8 @@
         "on-click": "$HOME/.config/waybar/scripts/calendar-toggle.sh",
         "tooltip": false
     },
+
+    // System status
     "cpu": {
         "format": "{usage}% ",
         "tooltip": true,
@@ -155,6 +168,8 @@
             ""
         ]
     },
+
+    // Connectivity
     "bluetooth": {
         "on-click": "exec blueman-manager &",
         "format": "{status} ",
@@ -165,6 +180,9 @@
         "tooltip-format-enumerate-connected": "{device_alias}\n{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_alias}\n{device_address}\nBattery: {device_battery_percentage}%"
     },
+
+    // Waybar JSON does not support shared fragments, so these network blocks stay
+    // intentionally parallel and are kept adjacent to make the repetition easier to scan.
     "group/network-wlan": {
         "orientation": "inherit",
         "modules": [
@@ -177,23 +195,23 @@
             "children-class": "network-detail"
         }
     },
+    "custom/network-wlan": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
+    "custom/network-wlan-detail": {
+        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan detail",
+        "return-type": "json",
+        "interval": 2,
+        "format": "{}"
+    },
     "group/network-lan": {
         "orientation": "inherit",
         "modules": [
             "custom/network-lan",
             "custom/network-lan-detail"
-        ],
-        "drawer": {
-            "transition-duration": 250,
-            "transition-left-to-right": false,
-            "children-class": "network-detail"
-        }
-    },
-    "group/network-usb": {
-        "orientation": "inherit",
-        "modules": [
-            "custom/network-usb",
-            "custom/network-usb-detail"
         ],
         "drawer": {
             "transition-duration": 250,
@@ -213,6 +231,18 @@
         "interval": 2,
         "format": "{}"
     },
+    "group/network-usb": {
+        "orientation": "inherit",
+        "modules": [
+            "custom/network-usb",
+            "custom/network-usb-detail"
+        ],
+        "drawer": {
+            "transition-duration": 250,
+            "transition-left-to-right": false,
+            "children-class": "network-detail"
+        }
+    },
     "custom/network-usb": {
         "exec": "$HOME/.config/waybar/scripts/network-status.sh usb",
         "return-type": "json",
@@ -225,18 +255,8 @@
         "interval": 2,
         "format": "{}"
     },
-    "custom/network-wlan": {
-        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
-        "return-type": "json",
-        "interval": 2,
-        "format": "{}"
-    },
-    "custom/network-wlan-detail": {
-        "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan detail",
-        "return-type": "json",
-        "interval": 2,
-        "format": "{}"
-    },
+
+    // Audio and media
     "pulseaudio#speaker": {
         // "scroll-step": 1, // %, can be a float
         "format": "{volume}% {icon}",
@@ -303,6 +323,8 @@
         "ignored-players": [],
         "tooltip-format": "{player} ({status}): {dynamic}"
     },
+
+    // Custom modules
     "custom/weather": {
         "format": "{}",
         "exec": "$HOME/scripts/waybar-weather.sh",

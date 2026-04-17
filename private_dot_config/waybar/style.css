@@ -145,7 +145,8 @@ button:hover {
 #scratchpad,
 #mpd,
 #mpris,
-#power-profiles-daemon {
+#power-profiles-daemon,
+#custom-bt-profile {
     padding: 0 10px;
     color: @text-primary;
 }
@@ -223,46 +224,27 @@ label:focus {
     background-color: @bg-muted;
 }
 
-#network {
-    background-color: @bg-network;
-}
-
-#network-wlan,
-#network-lan,
-#network-usb,
+/* Network modules use paired leader/detail widgets inside Waybar drawer groups. */
 #custom-network-wlan,
-#custom-network-wlan-detail,
 #custom-network-lan,
-#custom-network-lan-detail,
 #custom-network-usb,
+#custom-network-wlan-detail,
+#custom-network-lan-detail,
 #custom-network-usb-detail {
     background-color: @bg-network;
 }
 
-#network-wlan,
-#network-lan,
-#network-usb {
-    background-color: transparent;
-}
-
 #custom-network-wlan,
 #custom-network-lan,
 #custom-network-usb {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-#custom-network-wlan,
-#custom-network-lan,
-#custom-network-usb {
+    padding: 0 10px;
     min-width: 1.4em;
 }
 
 #custom-network-wlan-detail,
 #custom-network-lan-detail,
 #custom-network-usb-detail {
-    padding-left: 10px;
-    padding-right: 0px;
+    padding: 0 0 0 10px;
 }
 
 #custom-network-wlan.network-detail,
@@ -274,17 +256,17 @@ label:focus {
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-#network.disconnected {
+#custom-network-wlan.disconnected,
+#custom-network-lan.disconnected,
+#custom-network-usb.disconnected {
     background-color: @bg-network-disconnected;
 }
 
 #custom-network-wlan.disconnected {
-    background-color: @bg-network-disconnected;
     padding: 0 14px 0 10px;
 }
 
 #custom-network-wlan-detail.disconnected {
-    background-color: @bg-network-disconnected;
     padding: 0;
 }
 
@@ -296,7 +278,6 @@ label:focus {
 
 #custom-network-lan.disconnected,
 #custom-network-usb.disconnected {
-    background-color: @bg-network-disconnected;
     padding: 0 10px;
 }
 
@@ -334,7 +315,6 @@ label:focus {
 #custom-bt-profile {
     background-color: @bg-audio;
     color: @text-dark;
-    padding: 0 10px;
 }
 
 #wireplumber {
@@ -387,7 +367,6 @@ label:focus {
 
 #custom-temperature {
     background-color: @bg-temperature;
-    padding: 0 10px;
     margin-left: 2px;
 }
 
@@ -471,8 +450,6 @@ label:focus {
  * ============================================================================ */
 
 #power-profiles-daemon {
-    padding: 0 10px;
-    color: @text-primary;
     background-color: @bg-power-balanced;
     font-weight: bold;
     transition: background-color 0.3s ease;
