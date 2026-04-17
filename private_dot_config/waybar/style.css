@@ -13,6 +13,7 @@
 @define-color bg-disk #964B00;
 @define-color bg-muted #90b1b1;
 @define-color bg-network #1e5f8c;
+@define-color bg-network-disconnected #555555;
 @define-color bg-weather #4a90a4;
 @define-color bg-bluetooth #0082c8;
 @define-color bg-bluetooth-disconnected #555555;
@@ -274,16 +275,16 @@ label:focus {
 }
 
 #network.disconnected {
-    background-color: @bg-critical;
+    background-color: @bg-network-disconnected;
 }
 
 #custom-network-wlan.disconnected {
-    background-color: @bg-critical;
+    background-color: @bg-network-disconnected;
     padding: 0 14px 0 10px;
 }
 
 #custom-network-wlan-detail.disconnected {
-    background-color: @bg-critical;
+    background-color: @bg-network-disconnected;
     padding: 0;
 }
 
@@ -295,7 +296,7 @@ label:focus {
 
 #custom-network-lan.disconnected,
 #custom-network-usb.disconnected {
-    background-color: @bg-critical;
+    background-color: @bg-network-disconnected;
     padding: 0 10px;
 }
 
