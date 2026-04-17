@@ -39,29 +39,6 @@ profile dp7 {
     exec swaymsg "workspace 10, move workspace to output eDP-1"
 }
 
-profile samsung-ls49-dp3 {
-    output "Samsung Electric Company LS49C95xU HNTX500522" enable mode 5120x1440@59.968Hz position 1920,0
-    output eDP-1 enable mode 1920x1200@60Hz position 0,0
-
-    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output \"Samsung Electric Company LS49C95xU HNTX500522\""; done'
-    exec swaymsg "workspace 10, move workspace to output eDP-1"
-}
-
-profile common-row-1-pos-east {
-    output "Samsung Electric Company LS49C95xU HNTX901777" enable mode 5120x1440@59.968Hz position 0,0
-    output eDP-1 enable mode 1920x1200@60Hz position 5120,0
-}
-
-profile common-row-3-pos-east {
-    output "Samsung Electric Company LS49C95xU HNTWB01215" enable mode 5120x1440@59.968Hz position 1920,0
-    output eDP-1 enable mode 1920x1200@60Hz position 0,0
-}
-
-profile common-row-2-pos-east {
-    output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.968Hz position 0,0
-    output eDP-1 enable mode 1920x1200@60Hz position 5120,0
-}
-
 profile laptop {
     output eDP-1 enable mode 1920x1200 position 0,0
 }
@@ -78,7 +55,13 @@ profile mirror-hdmi {
 # Generated profiles
 
 
-profile dp-3 {
+profile HNTX901781 {
     output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,124
+}
+
+
+profile HNTX201175 {
+    output "Samsung Electric Company LS49C95xU HNTX201175" enable mode 5120x1440@59.999Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }

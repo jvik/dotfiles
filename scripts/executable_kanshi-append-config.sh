@@ -26,8 +26,7 @@ require_cmd() {
 sanitize_name() {
     local raw="$1"
 
-    raw=$(printf '%s' "$raw" | tr '[:upper:]' '[:lower:]')
-    raw=$(printf '%s' "$raw" | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
+    raw=$(printf '%s' "$raw" | sed -E 's/[^A-Za-z0-9]+/-/g; s/^-+//; s/-+$//; s/-+/-/g')
 
     if [ -z "$raw" ]; then
         raw="generated-profile"
@@ -108,6 +107,13 @@ main() {
         profile_base=$(sanitize_name "$requested_name")
     else
         external_joined=$(printf '%s' "$outputs_json" | jq -r '
+            def source_id:
+                if (.serial // "") != "" and .serial != "Unknown" then
+                    .serial
+                else
+                    .name
+                end;
+
             [
                 .[]
                 | select(.active == true and .current_mode != null)
@@ -115,7 +121,7 @@ main() {
                 | select((.name | test("^eDP")) | not)
             ]
             | sort_by((if .position != null then .position.x else .rect.x end), (if .position != null then .position.y else .rect.y end), .name)
-            | map(.name)
+            | map(source_id)
             | join("-")
         ')
 
