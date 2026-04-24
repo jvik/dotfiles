@@ -1,0 +1,46 @@
+---
+- name: Detect battery-backed system
+  ansible.builtin.find:
+    paths: /sys/class/power_supply
+    patterns: BAT*
+    file_type: any
+  register: system_battery_paths
+
+- name: Set machine power profile fact
+  ansible.builtin.set_fact:
+    system_is_laptop_power_host: "{{ (system_battery_paths.matched | default(0) | int) > 0 }}"
+
+- name: Ensure systemd-logind drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: not system_is_laptop_power_host
+
+- name: Disable idle sleep on desktop hosts
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/99-desktop-no-idle-sleep.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      [Login]
+      IdleAction=ignore
+  when: not system_is_laptop_power_host
+  register: system_desktop_logind_policy
+
+- name: Remove desktop idle sleep override on laptop hosts
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d/99-desktop-no-idle-sleep.conf
+    state: absent
+  when: system_is_laptop_power_host
+  register: system_laptop_logind_policy_cleanup
+
+- name: Restart systemd-logind when policy changes
+  ansible.builtin.systemd:
+    name: systemd-logind
+    state: restarted
+    daemon_reload: true
+  when: (system_desktop_logind_policy is changed) or (system_laptop_logind_policy_cleanup is changed)

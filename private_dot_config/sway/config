@@ -34,8 +34,7 @@ set $locker swaylock -f
 set $lockman exec bash ~/.config/sway/lockman.sh
 set $monitorDisableTimeout 300
 set $lockerTimeout 360
-#set $suspendTimeout $(if [ -f /sys/class/power_supply/AC/online ]; then echo 600; else echo 0; fi)
-set $suspendTimeout 600
+set $suspendTimeout $(if ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then echo 600; else echo 0; fi)
 
 exec_always killall swayidle; swayidle -w \
     timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
