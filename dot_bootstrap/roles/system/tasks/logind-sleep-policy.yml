@@ -16,7 +16,7 @@
     state: directory
     owner: root
     group: root
-    mode: '0755'
+    mode: "0755"
   when: not system_is_laptop_power_host
 
 - name: Disable idle sleep on desktop hosts
@@ -24,7 +24,7 @@
     dest: /etc/systemd/logind.conf.d/99-desktop-no-idle-sleep.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
     content: |
       [Login]
       IdleAction=ignore
@@ -43,4 +43,5 @@
     name: systemd-logind
     state: restarted
     daemon_reload: true
-  when: (system_desktop_logind_policy is changed) or (system_laptop_logind_policy_cleanup is changed)
+  when: (system_desktop_logind_policy is changed) or
+    (system_laptop_logind_policy_cleanup is changed)
