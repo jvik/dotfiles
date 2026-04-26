@@ -2,8 +2,8 @@
 - name: Install Fedora specific packages
   ansible.builtin.package:
     name:
-      - 'NetworkManager-tui'
-      - util-linux # provides ncal
+      - "NetworkManager-tui"
+      - util-linux # provides cal on Fedora
       - libreoffice
       - libreoffice-langpack-nn
       - libreoffice-langpack-nb
@@ -13,15 +13,19 @@
 
 - name: Add Mullvad repository (Fedora 41+)
   ansible.builtin.command:
-    cmd: sudo dnf config-manager addrepo --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
+    cmd: sudo dnf config-manager addrepo
+      --from-repofile=https://repository.mullvad.net/rpm/stable/mullvad.repo
     creates: /etc/yum.repos.d/mullvad.repo
-  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is version('41', '>=') and private_machine
+  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is
+    version('41', '>=') and private_machine
 
 - name: Add Mullvad repository (Fedora 40 and earlier)
   ansible.builtin.command:
-    cmd: sudo dnf config-manager --add-repo https://repository.mullvad.net/rpm/stable/mullvad.repo
+    cmd: sudo dnf config-manager --add-repo
+      https://repository.mullvad.net/rpm/stable/mullvad.repo
     creates: /etc/yum.repos.d/mullvad.repo
-  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is version('41', '<') and private_machine
+  when: ansible_distribution == 'Fedora' and ansible_distribution_major_version is
+    version('41', '<') and private_machine
 
 - name: Install Mullvad VPN
   ansible.builtin.package:
