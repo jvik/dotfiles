@@ -3,7 +3,7 @@
   ansible.builtin.package:
     name:
       - 'NetworkManager-tui'
-      - util-linux # provides ncal
+      - util-linux # provides cal on Fedora
       - libreoffice
       - libreoffice-langpack-nn
       - libreoffice-langpack-nb
