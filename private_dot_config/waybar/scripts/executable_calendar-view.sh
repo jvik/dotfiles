@@ -10,7 +10,11 @@ show_month() {
     local month year
     month=$(echo "$target" | cut -d' ' -f1)
     year=$(echo "$target"  | cut -d' ' -f2)
-    ncal -b -w -M "$month" "$year"
+    if command -v ncal >/dev/null 2>&1; then
+        ncal -b -w -M "$month" "$year"
+    else
+        cal -w -m "$month" "$year"
+    fi
     printf '\n ← → : forrige/neste'
     printf '\n q : lukk\n'
 }
