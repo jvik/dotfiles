@@ -97,6 +97,8 @@ bindsym $mod+Shift+m sticky toggle
 ## Utility Bindings
 bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
+bindsym $mod+Shift+t exec flatpak run com.github.IsmaelMartinez.teams_for_linux
+bindsym $mod+Shift+s exec slack
 bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
 
 ## Workspaces
