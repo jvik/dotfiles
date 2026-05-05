@@ -1,7 +1,6 @@
----
-- name: Install packages
-  ansible.builtin.package:
-    name:
+- name: Install native packages on Fedora
+  vars:
+    native_packages:
       - fd-find
       - tree
       - flatpak
@@ -18,5 +17,81 @@
       - wl-mirror
       - firefox
       - solaar
+  block:
+    - name: Update dnf cache
+      ansible.builtin.dnf:
+        update_cache: true
+        lock_timeout: 180
+
+    - name: Install packages with dnf
+      ansible.builtin.dnf:
+        name: "{{ item }}"
+        state: present
+        lock_timeout: 180
+      loop: "{{ native_packages }}"
+      loop_control:
+        label: "{{ item }}"
+  when: ansible_distribution == 'Fedora'
+
+- name: Install native packages on Ubuntu
+  vars:
+    native_packages:
+      - fd-find
+      - tree
+      - flatpak
+      - ansible-lint
+      - htop
+      - blueman
+      - unrar
+      - zsh
+      - git
+      - neovim
+      - code
+      - playerctl
+      - copyq
+      - wl-mirror
+      - firefox
+      - solaar
+  block:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        lock_timeout: 180
+
+    - name: Install packages with apt
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        lock_timeout: 180
+      loop: "{{ native_packages }}"
+      loop_control:
+        label: "{{ item }}"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Install native packages on other distributions
+  vars:
+    native_packages:
+      - fd-find
+      - tree
+      - flatpak
+      - ansible-lint
+      - htop
+      - blueman
+      - unrar
+      - zsh
+      - git
+      - neovim
+      - code
+      - playerctl
+      - copyq
+      - wl-mirror
+      - firefox
+      - solaar
+  ansible.builtin.package:
+    name: "{{ item }}"
     state: present
-    update_cache: true
+  loop: "{{ native_packages }}"
+  loop_control:
+    label: "{{ item }}"
+  when: ansible_distribution not in ['Fedora', 'Ubuntu']

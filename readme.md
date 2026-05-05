@@ -31,6 +31,13 @@ Then run the bootstrap playbook (if not already done):
 ~/.local/share/chezmoi/run_install_02.sh   # executes ansible-playbook with privilege escalation prompt
 ```
 
+The install script defaults to `ANSIBLE_VERBOSITY=1` for extra task output. For deeper troubleshooting, increase it temporarily:
+
+```bash
+ANSIBLE_VERBOSITY=2 ~/.local/share/chezmoi/run_install_02.sh
+ANSIBLE_VERBOSITY=3 ~/.local/share/chezmoi/run_install_02.sh
+```
+
 You can re-run safely; tasks are idempotent.
 
 ---
