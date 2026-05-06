@@ -46,6 +46,10 @@ user_pref("permissions.default.geo", 2); //deny location access
 user_pref("geo.enabled", false); //fullly disable location acces
 user_pref("media.navigator.enabled", false); //disabled some media features
 
+// Fix disappearing menus on sway with fractional scaling
+// https://www.reddit.com/r/swaywm/comments/1sxzyfv/sway_and_firefox_disappearing_menus/
+user_pref("widget.wayland.fractional-scale.enabled", false);
+
 
 
 //Section 2: Re-enabled features
