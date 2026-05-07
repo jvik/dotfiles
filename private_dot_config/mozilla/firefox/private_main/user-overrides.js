@@ -9,6 +9,9 @@ user_pref("browser.ml.chat.enabled", false);
 user_pref("browser.ml.chat.shortcuts", false);
 user_pref("browser.ml.chat.shortcuts.longPress", false);
 
+// Suppress "older version" warning when using Firefox ESR with an existing profile
+user_pref("browser.startup.upgradeDialog.enabled", false);
+
 /* [EXAMPLE OVERRIDES - uncomment and adjust as needed]
 
 // Keep your language (arkenfox forces en-US)
