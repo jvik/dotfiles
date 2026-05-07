@@ -30,6 +30,11 @@ set -gx HISTSIZE 10000
 # SSH Auth Socket
 set -gx SSH_AUTH_SOCK $HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
 
+# GitHub token
+if type -q gh
+    set -x GITHUB_TOKEN (gh auth token)
+end
+
 # PATH configuration
 fish_add_path -p /usr/local/bin
 fish_add_path -p /opt/homebrew/bin
