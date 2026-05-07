@@ -1,0 +1,4 @@
+{
+    "notificationMethod": "electron",
+    "defaultNotificationUrgency": "normal"
+}
