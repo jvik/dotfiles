@@ -63,3 +63,5 @@ abbr cgw "cd (git rev-parse --show-toplevel)/.github/workflows"
 abbr cte "cd (git rev-parse --show-toplevel)/terraform"
 abbr che "cd (git rev-parse --show-toplevel)/helmfile.d"
 abbr cre "cd (git rev-parse --show-toplevel)/_rendered"
+
+abbr cop "cplt -- --mode plan --agent platform-dev:platform-dev --add-dir (git rev-parse --show-toplevel 2>/dev/null; or pwd)"
