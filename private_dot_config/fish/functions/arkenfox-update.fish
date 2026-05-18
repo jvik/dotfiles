@@ -5,5 +5,5 @@ function arkenfox-update --description "Update arkenfox user.js for Firefox"
         curl -fsSL https://raw.githubusercontent.com/arkenfox/user.js/master/updater.sh -o $updater
         chmod +x $updater
     end
-    $updater
+    $updater -e -p ~/.config/mozilla/firefox/main
 end

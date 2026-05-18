@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 
-set $browser firefox
+set $browser firefox-esr
 
 ### Theme
 include ~/.config/sway/colors/gruvbox
@@ -99,7 +99,8 @@ bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
 bindsym $mod+Shift+t exec "swaymsg '[app_id=\"com.github.IsmaelMartinez.teams_for_linux\"] focus' || flatpak run com.github.IsmaelMartinez.teams_for_linux"
 bindsym $mod+Shift+s exec "swaymsg '[app_id=\"com.slack.Slack\"] focus' || flatpak run com.slack.Slack"
-bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
+#bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
+bindsym $mod+period exec "flatpak run it.mijorus.smile"
 
 ## Workspaces
 bindsym $mod+1 workspace number 1
@@ -232,6 +233,7 @@ for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
+for_window [app_id="it.mijorus.smile"] floating enable, resize set width 600px height 400px, move position center
 
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4

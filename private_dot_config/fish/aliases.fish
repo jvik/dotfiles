@@ -6,5 +6,8 @@ alias screen='screen -U'
 # Tmux with custom config
 alias tmux="tmux -2 -f '$XDG_CONFIG_HOME/tmux/tmux.conf'"
 
+# Launch Firefox ESR with the correct profile
+alias firefox-esr='firefox-esr --profile ~/.config/mozilla/firefox/main'
+
 # Update arkenfox user.js for Firefox
 alias arkenfox-update='~/.config/mozilla/firefox/main/updater.sh'

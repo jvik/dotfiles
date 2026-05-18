@@ -66,3 +66,8 @@ profile HNTX302740 {
     output "Samsung Electric Company LS49C95xU HNTX302740" enable mode 5120x1440@59.999Hz position 448,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5568,240
 }
+
+profile HNTT800981 {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
+    output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
+}
