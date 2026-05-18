@@ -5,6 +5,9 @@
 - name: Include systemd user services setup
   ansible.builtin.include_tasks: systemd-user-services.yml
 
+- name: Include logind sleep policy setup
+  ansible.builtin.include_tasks: logind-sleep-policy.yml
+
 - name: Include Firefox arkenfox setup
   ansible.builtin.include_tasks:
     file: firefox-arkenfox.yml
