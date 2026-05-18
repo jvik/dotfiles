@@ -232,7 +232,7 @@ for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
-for_window [app_id="it.mijorus.smile"] floating enable, resize set width 600px height 400px, move position center
+for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
 
 ## Workspace Assignments
 assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
