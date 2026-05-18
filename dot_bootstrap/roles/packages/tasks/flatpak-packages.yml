@@ -20,4 +20,7 @@
       - dev.vencord.Vesktop/x86_64/stable
       - md.obsidian.Obsidian/x86_64/stable
       - io.github.seadve.Kooha/x86_64/stable
+      - com.github.jeromerobert.pdfarranger/x86_64/stable
+      - it.mijorus.smile/x86_64/stable
+      - io.github.peazip.PeaZip/x86_64/stable
     state: present
