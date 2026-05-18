@@ -55,7 +55,7 @@ abbr -a audio alsamixer
 abbr -a bw 'flatpak run --command=bw com.bitwarden.desktop'
 
 # Chezmoi / Bootstrap
-abbr -a bootstrap 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
+abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
 
 # Git project root shortcuts
 abbr cg "cd (git rev-parse --show-toplevel)"
@@ -63,3 +63,5 @@ abbr cgw "cd (git rev-parse --show-toplevel)/.github/workflows"
 abbr cte "cd (git rev-parse --show-toplevel)/terraform"
 abbr che "cd (git rev-parse --show-toplevel)/helmfile.d"
 abbr cre "cd (git rev-parse --show-toplevel)/_rendered"
+
+abbr cop "cplt -- --mode plan --agent platform-dev:platform-dev --add-dir (git rev-parse --show-toplevel 2>/dev/null; or pwd)"

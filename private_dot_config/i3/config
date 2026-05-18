@@ -187,6 +187,8 @@ bindsym $mod+r mode "resize"
 bindsym $mod+d exec rofi -show drun
 bindsym $mod+p exec autorandr --change
 bindsym $mod+Control+l exec i3lock
+bindsym $mod+Shift+t exec flatpak run com.github.IsmaelMartinez.teams_for_linux
+bindsym $mod+Shift+s exec flatpak run com.slack.Slack
 
 bindsym $mod+control+Right resize grow width 1 px or 1 ppt
 bindsym $mod+control+Left resize shrink width 1 px or 1 ppt

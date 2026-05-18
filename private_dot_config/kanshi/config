@@ -43,15 +43,6 @@ profile laptop {
     output eDP-1 enable mode 1920x1200 position 0,0
 }
 
-profile mirror-hdmi {
-    output eDP-1 enable mode 1920x1200 position 0,0
-    output HDMI-A-1 enable mode 1920x1080 position 1920,0
-    exec wl-present mirror eDP-1 --fullscreen-output HDMI-A-1 --fullscreen
-
-    # alternatively, for wl-mirror < 0.16.4
-    # exec wl-present mirror eDP-1 & sleep .5; wl-present fullscreen-output HDMI-A-1; wl-present fullscreen
-}
-
 # Generated profiles
 
 
@@ -64,4 +55,19 @@ profile HNTX901781 {
 profile HNTX201175 {
     output "Samsung Electric Company LS49C95xU HNTX201175" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+}
+
+profile HNTX700148 {
+    output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.999Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+}
+
+profile HNTX302740 {
+    output "Samsung Electric Company LS49C95xU HNTX302740" enable mode 5120x1440@59.999Hz position 448,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 5568,240
+}
+
+profile HNTT800981 {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
+    output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
 }

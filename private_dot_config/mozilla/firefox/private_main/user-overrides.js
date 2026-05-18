@@ -9,6 +9,9 @@ user_pref("browser.ml.chat.enabled", false);
 user_pref("browser.ml.chat.shortcuts", false);
 user_pref("browser.ml.chat.shortcuts.longPress", false);
 
+// Suppress "older version" warning when using Firefox ESR with an existing profile
+user_pref("browser.startup.upgradeDialog.enabled", false);
+
 /* [EXAMPLE OVERRIDES - uncomment and adjust as needed]
 
 // Keep your language (arkenfox forces en-US)
@@ -45,6 +48,10 @@ user_pref("signon.rememberSignons", false); //never ask to save passwords
 user_pref("permissions.default.geo", 2); //deny location access
 user_pref("geo.enabled", false); //fullly disable location acces
 user_pref("media.navigator.enabled", false); //disabled some media features
+
+// Fix disappearing menus on sway with fractional scaling
+// https://www.reddit.com/r/swaywm/comments/1sxzyfv/sway_and_firefox_disappearing_menus/
+user_pref("widget.wayland.fractional-scale.enabled", false);
 
 
 

@@ -3,4 +3,11 @@
 # Hash below ensures that script is only run when dot_bootstrap folder changes
 # dot_bootstrap: {{ output "sh" "-c" (print "tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner --clamp-mtime -cf - -C " .chezmoi.sourceDir " dot_bootstrap | sha256sum | cut -d' ' -f1") }}
 
+# Default to readable progress output. Override as needed.
+export ANSIBLE_VERBOSITY="${ANSIBLE_VERBOSITY:-2}"
+export ANSIBLE_STDOUT_CALLBACK="${ANSIBLE_STDOUT_CALLBACK:-ansible.builtin.default}"
+export ANSIBLE_CALLBACK_RESULT_FORMAT="${ANSIBLE_CALLBACK_RESULT_FORMAT:-yaml}"
+export ANSIBLE_CALLBACKS_ENABLED="${ANSIBLE_CALLBACKS_ENABLED:-profile_tasks,timer}"
+export ANSIBLE_DISPLAY_FAILED_STDERR="${ANSIBLE_DISPLAY_FAILED_STDERR:-true}"
+
 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml
