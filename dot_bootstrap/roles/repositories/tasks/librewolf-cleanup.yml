@@ -1,0 +1,30 @@
+---
+- name: Remove LibreWolf repository and package for Fedora
+  when: ansible_distribution == 'Fedora'
+  block:
+    - name: Uninstall LibreWolf
+      ansible.builtin.dnf:
+        name: librewolf
+        state: absent
+
+    - name: Remove LibreWolf repository file
+      ansible.builtin.file:
+        path: /etc/yum.repos.d/librewolf.repo
+        state: absent
+
+- name: Remove LibreWolf repository and package for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Uninstall LibreWolf
+      ansible.builtin.apt:
+        name: librewolf
+        state: absent
+
+    - name: Disable LibreWolf extrepo source
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/extrepo_librewolf.sources
+        state: absent
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true

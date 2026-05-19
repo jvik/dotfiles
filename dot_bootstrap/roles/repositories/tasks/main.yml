@@ -10,6 +10,9 @@
 # - name: Include LibreWolf repository setup
 #   ansible.builtin.include_tasks: librewolf-repo.yml
 
+- name: Clean up LibreWolf repository and package
+  ansible.builtin.include_tasks: librewolf-cleanup.yml
+
 # RPM Fusion repository setup currently disabled
 # - name: Include RPM Fusion repository setup
 #   ansible.builtin.include_tasks: rpmfusion-repo.yml
