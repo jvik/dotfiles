@@ -1,0 +1,7 @@
+@import url("style.css");
+
+/* Light appearance overrides to keep the bar readable on bright wallpapers. */
+@define-color bg-primary rgba(39, 45, 56, 0.92);
+@define-color bg-border rgba(57, 65, 80, 0.95);
+@define-color bg-module #4f5c6e;
+@define-color text-primary #f7f9fc;
