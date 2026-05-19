@@ -56,6 +56,9 @@ abbr -a bw 'flatpak run --command=bw com.bitwarden.desktop'
 
 # Chezmoi / Bootstrap
 abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
+abbr -a sysup 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml'
+abbr -a sysup-all 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml --tags system,brew,uv,npm,mise,fisher'
+abbr -a sysup-check 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml --tags check'
 
 # Git project root shortcuts
 abbr cg "cd (git rev-parse --show-toplevel)"

@@ -1,0 +1,236 @@
+---
+# Update all packages across all package managers.
+#
+# Usage:
+#   sysup                              # system (dnf/apt + flatpak) + any non-never tags
+#   sysup --tags system                # system only (dnf/apt + flatpak)
+#   sysup --tags brew                  # Homebrew packages & casks only
+#   sysup --tags uv                    # uv tools only
+#   sysup --tags npm                   # npm global packages only
+#   sysup --tags mise                  # mise runtimes only
+#   sysup --tags fisher                # fish plugins only
+#   sysup --tags system,brew,uv,npm,mise,fisher  # everything (same as sysup-all)
+#   sysup --tags check                 # dry-run: show available updates per manager
+#
+- name: Update all packages
+  hosts: localhost
+  become: true
+  gather_facts: true
+  vars_files:
+    - ~/.bootstrap/vars.yml
+  vars:
+    homebrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
+    homebrew_path: /home/linuxbrew/.linuxbrew/bin
+
+  tasks:
+    # ── System packages (always run) ──────────────────────────────────────────
+
+    - name: Update dnf packages
+      ansible.builtin.dnf: # noqa: package-latest
+        name: "*"
+        state: latest
+        update_cache: true
+        lock_timeout: 180
+      when: ansible_distribution == 'Fedora'
+      tags: [system]
+
+    - name: Update apt packages
+      ansible.builtin.apt:
+        upgrade: full
+        update_cache: true
+        lock_timeout: 180
+      when: ansible_distribution == 'Ubuntu'
+      tags: [system]
+
+    - name: Update Flatpak packages
+      ansible.builtin.command:
+        cmd: flatpak update --noninteractive
+      register: update_flatpak_result
+      changed_when: "'Nothing to do' not in update_flatpak_result.stdout"
+      tags: [system]
+
+    # ── Homebrew (opt-in: --tags brew) ────────────────────────────────────────
+
+    - name: Update Homebrew packages
+      become: true
+      become_user: "{{ ansible_env.SUDO_USER }}"
+      community.general.homebrew:
+        update_homebrew: true
+        upgrade_all: true
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      tags: [brew, never]
+
+    - name: Update Homebrew casks
+      become: true
+      become_user: "{{ ansible_env.SUDO_USER }}"
+      community.general.homebrew_cask:
+        upgrade_all: true
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      tags: [brew, never]
+
+    # ── uv tools (opt-in: --tags uv) ──────────────────────────────────────────
+
+    - name: Update uv tools
+      become: false
+      ansible.builtin.command:
+        cmd: "{{ homebrew_executable }} exec uv tool upgrade --all"
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      changed_when: true
+      tags: [uv, never]
+
+    # ── npm global packages (opt-in: --tags npm) ──────────────────────────────
+
+    - name: Check if npm is available
+      become: false
+      ansible.builtin.command:
+        cmd: which npm
+      register: update_npm_which
+      changed_when: false
+      failed_when: false
+      tags: [npm, never]
+
+    - name: Update npm global packages
+      become: false
+      ansible.builtin.command:
+        cmd: npm update -g
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      changed_when: true
+      when: update_npm_which.rc == 0
+      tags: [npm, never]
+
+    # ── mise runtimes (opt-in: --tags mise) ───────────────────────────────────
+
+    - name: Update mise runtimes
+      become: false
+      ansible.builtin.command:
+        cmd: "{{ homebrew_path }}/mise upgrade"
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      changed_when: true
+      tags: [mise, never]
+
+    # ── Fisher fish plugins (opt-in: --tags fisher) ───────────────────────────
+
+    - name: Update Fisher plugins
+      become: false
+      ansible.builtin.shell:
+        cmd: fish -c "fisher update"
+        executable: /bin/bash
+      changed_when: true
+      tags: [fisher, never]
+
+    # ── Check / dry-run: show available updates (opt-in: --tags check) ──────────
+
+    - name: Check available dnf updates
+      become: false
+      ansible.builtin.command:
+        cmd: dnf check-update
+      register: check_dnf_result
+      changed_when: false
+      failed_when: check_dnf_result.rc not in [0, 100] # 100 = updates available
+      when: ansible_distribution == 'Fedora'
+      tags: [check, never]
+
+    - name: Show available dnf updates
+      ansible.builtin.debug:
+        msg: "{{ check_dnf_result.stdout | default('(none)') }}"
+      when: ansible_distribution == 'Fedora'
+      tags: [check, never]
+
+    - name: Check available apt updates
+      become: false
+      ansible.builtin.command:
+        cmd: apt list --upgradable
+      register: check_apt_result
+      changed_when: false
+      failed_when: false
+      when: ansible_distribution == 'Ubuntu'
+      tags: [check, never]
+
+    - name: Show available apt updates
+      ansible.builtin.debug:
+        msg: "{{ check_apt_result.stdout | default('(none)') }}"
+      when: ansible_distribution == 'Ubuntu'
+      tags: [check, never]
+
+    - name: Check available Flatpak updates
+      become: false
+      ansible.builtin.command:
+        cmd: flatpak remote-ls --updates
+      register: check_flatpak_result
+      changed_when: false
+      failed_when: false
+      tags: [check, never]
+
+    - name: Show available Flatpak updates
+      ansible.builtin.debug:
+        msg: "{{ check_flatpak_result.stdout | default('(none)') }}"
+      tags: [check, never]
+
+    - name: Check available Homebrew package updates
+      become: false
+      ansible.builtin.command:
+        cmd: brew outdated
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      register: check_brew_result
+      changed_when: false
+      failed_when: false
+      tags: [check, never]
+
+    - name: Show available Homebrew package updates
+      ansible.builtin.debug:
+        msg: "{{ check_brew_result.stdout | default('(none)') }}"
+      tags: [check, never]
+
+    - name: Check available Homebrew cask updates
+      become: false
+      ansible.builtin.command:
+        cmd: brew outdated --cask
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      register: check_brew_cask_result
+      changed_when: false
+      failed_when: false
+      tags: [check, never]
+
+    - name: Show available Homebrew cask updates
+      ansible.builtin.debug:
+        msg: "{{ check_brew_cask_result.stdout | default('(none)') }}"
+      tags: [check, never]
+
+    - name: Check available npm global updates
+      become: false
+      ansible.builtin.command:
+        cmd: npm outdated -g
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      register: check_npm_result
+      changed_when: false
+      failed_when: false # exits 1 when outdated packages exist
+      tags: [check, never]
+
+    - name: Show available npm global updates
+      ansible.builtin.debug:
+        msg: "{{ check_npm_result.stdout | default('(none)') }}"
+      tags: [check, never]
+
+    - name: Check available mise runtime updates
+      become: false
+      ansible.builtin.command:
+        cmd: "{{ homebrew_path }}/mise outdated"
+      environment:
+        PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
+      register: check_mise_result
+      changed_when: false
+      failed_when: false
+      tags: [check, never]
+
+    - name: Show available mise runtime updates
+      ansible.builtin.debug:
+        msg: "{{ check_mise_result.stdout | default('(none)') }}"
+      tags: [check, never]
