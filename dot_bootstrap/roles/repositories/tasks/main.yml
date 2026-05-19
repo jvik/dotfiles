@@ -3,8 +3,8 @@
   ansible.builtin.include_tasks: vscode-repo.yml
 
 # Firefox ESR is installed from Ubuntu's standard repos; Mozilla PPA not needed
-# - name: Include Firefox repository setup
-#   ansible.builtin.include_tasks: firefox-repo.yml
+- name: Include Firefox repository setup
+  ansible.builtin.include_tasks: firefox-repo.yml
 
 # LibreWolf disabled, migrated to Firefox + arkenfox user.js
 # - name: Include LibreWolf repository setup
