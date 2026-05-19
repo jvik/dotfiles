@@ -78,7 +78,8 @@
         cmd: "{{ homebrew_executable }} exec uv tool upgrade --all"
       environment:
         PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
-      changed_when: true
+      register: update_uv_result
+      changed_when: update_uv_result.stderr | trim | length > 0
       tags: [uv, never]
 
     # ── npm global packages (opt-in: --tags npm) ──────────────────────────────
@@ -98,7 +99,8 @@
         cmd: npm update -g
       environment:
         PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
-      changed_when: true
+      register: update_npm_result
+      changed_when: update_npm_result.stdout | trim | length > 0
       when: update_npm_which.rc == 0
       tags: [npm, never]
 
@@ -110,7 +112,8 @@
         cmd: "{{ homebrew_path }}/mise upgrade"
       environment:
         PATH: "{{ homebrew_path }}:{{ ansible_env.PATH }}"
-      changed_when: true
+      register: update_mise_result
+      changed_when: "'All tools are up to date' not in update_mise_result.stderr"
       tags: [mise, never]
 
     # ── Fisher fish plugins (opt-in: --tags fisher) ───────────────────────────
@@ -120,7 +123,8 @@
       ansible.builtin.shell:
         cmd: fish -c "fisher update"
         executable: /bin/bash
-      changed_when: true
+      register: update_fisher_result
+      changed_when: update_fisher_result.stdout | regex_search('Updated [1-9]') is not none
       tags: [fisher, never]
 
     # ── Check / dry-run: show available updates (opt-in: --tags check) ──────────
