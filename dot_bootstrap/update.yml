@@ -141,7 +141,7 @@
 
     - name: Show available dnf updates
       ansible.builtin.debug:
-        msg: "{{ check_dnf_result.stdout | default('(none)') }}"
+        msg: "{{ check_dnf_result.stdout | trim or '(up to date)' }}"
       when: ansible_distribution == 'Fedora'
       tags: [check, never]
 
@@ -157,7 +157,7 @@
 
     - name: Show available apt updates
       ansible.builtin.debug:
-        msg: "{{ check_apt_result.stdout | default('(none)') }}"
+        msg: "{{ check_apt_result.stdout_lines | default([]) | reject('match', '^Listing') | list | join('\n') or '(up to date)' }}"
       when: ansible_distribution == 'Ubuntu'
       tags: [check, never]
 
@@ -172,7 +172,7 @@
 
     - name: Show available Flatpak updates
       ansible.builtin.debug:
-        msg: "{{ check_flatpak_result.stdout | default('(none)') }}"
+        msg: "{{ check_flatpak_result.stdout | trim or '(up to date)' }}"
       tags: [check, never]
 
     - name: Check available Homebrew package updates
@@ -188,7 +188,7 @@
 
     - name: Show available Homebrew package updates
       ansible.builtin.debug:
-        msg: "{{ check_brew_result.stdout | default('(none)') }}"
+        msg: "{{ check_brew_result.stdout | trim or '(up to date)' }}"
       tags: [check, never]
 
     - name: Check available Homebrew cask updates
@@ -204,7 +204,7 @@
 
     - name: Show available Homebrew cask updates
       ansible.builtin.debug:
-        msg: "{{ check_brew_cask_result.stdout | default('(none)') }}"
+        msg: "{{ check_brew_cask_result.stdout | trim or '(up to date)' }}"
       tags: [check, never]
 
     - name: Check available npm global updates
@@ -220,7 +220,7 @@
 
     - name: Show available npm global updates
       ansible.builtin.debug:
-        msg: "{{ check_npm_result.stdout | default('(none)') }}"
+        msg: "{{ check_npm_result.stdout | trim or '(up to date)' }}"
       tags: [check, never]
 
     - name: Check available mise runtime updates
@@ -236,5 +236,5 @@
 
     - name: Show available mise runtime updates
       ansible.builtin.debug:
-        msg: "{{ check_mise_result.stdout | default('(none)') }}"
+        msg: "{{ check_mise_result.stdout | trim or '(up to date)' }}"
       tags: [check, never]
