@@ -5,7 +5,7 @@ set $down j
 set $up k
 set $right l
 
-set $browser firefox
+set $browser firefox --profile ~/.config/mozilla/firefox/main
 
 ### Theme
 include ~/.config/sway/colors/gruvbox
