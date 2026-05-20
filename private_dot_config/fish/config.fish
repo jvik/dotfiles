@@ -18,6 +18,17 @@ source $HOME/.config/fish/keybindings.fish
 # Enable Vi mode
 fish_vi_key_bindings
 
+# Restore fzf bindings after vi mode (vi mode resets all key bindings)
+if functions -q fzf_configure_bindings
+    fzf_configure_bindings
+end
+
+# Explicitly bind Ctrl+R for fzf history search in vi insert and normal mode
+if functions -q _fzf_search_history
+    bind -M insert \cr _fzf_search_history
+    bind \cr _fzf_search_history
+end
+
 
 # Color scheme and syntax highlighting
 set -g fish_color_normal normal
