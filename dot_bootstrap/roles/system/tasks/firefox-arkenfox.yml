@@ -16,3 +16,27 @@
     cmd: "/home/{{ user }}/.config/mozilla/firefox/main/updater.sh -u -s"
     chdir: "/home/{{ user }}/.config/mozilla/firefox/main"
   changed_when: true
+
+- name: Ensure applications directory exists
+  ansible.builtin.file:
+    path: "/home/{{ user }}/.config/applications"
+    state: directory
+    mode: "0755"
+
+- name: Create Firefox desktop entry with custom profile
+  ansible.builtin.copy:
+    content: |
+      [Desktop Entry]
+      Name=Firefox
+      Comment=Web Browser
+      Exec=firefox --profile ~/.config/mozilla/firefox/main %u
+      Icon=firefox
+      Type=Application
+      Categories=Network;WebBrowser;
+      MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+      StartupNotify=true
+      StartupWMClass=firefox
+    dest: "/home/{{ user }}/.config/applications/Firefox.desktop"
+    mode: "0644"
+    owner: "{{ user }}"
+    group: "{{ user }}"
