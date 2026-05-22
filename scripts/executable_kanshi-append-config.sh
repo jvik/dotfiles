@@ -188,9 +188,19 @@ main() {
     ensure_generated_marker "$config_path"
     profile_name=$(find_unique_profile_name "$profile_base" "$config_path")
 
+    # Check if there are external (non-eDP) outputs
+    local has_external
+    has_external=$(printf '%s' "$outputs_json" | jq -r '
+        [.[] | select(.active and .current_mode != null) | select((.name | test("^eDP")) | not)]
+        | length
+    ')
+
     {
         printf '\nprofile %s {\n' "$profile_name"
         printf '%s\n' "$output_lines"
+        if [ "$has_external" -gt 0 ]; then
+            printf '    exec %s\n' "$HOME/.config/sway/scripts/move-workspaces.sh"
+        fi
         printf '}\n'
     } >> "$config_path"
 

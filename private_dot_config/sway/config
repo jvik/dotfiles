@@ -96,6 +96,7 @@ bindsym $mod+Shift+m sticky toggle
 ## Utility Bindings
 bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
+bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
 bindsym $mod+Shift+t exec "swaymsg '[app_id=\"com.github.IsmaelMartinez.teams_for_linux\"] focus' || flatpak run com.github.IsmaelMartinez.teams_for_linux"
 bindsym $mod+Shift+s exec "swaymsg '[app_id=\"com.slack.Slack\"] focus' || flatpak run com.slack.Slack"
 #bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
