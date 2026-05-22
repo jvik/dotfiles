@@ -24,10 +24,11 @@ exec_always {
 exec_always systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
 # exec_always "killall autotiling; $HOME/.local/bin/autotiling"
-exec swaymsg 'workspace number 10; exec wezterm'
+exec ~/.config/sway/scripts/keep-workspace-10.sh
 
 ### Output Configuration
 output * bg ~/.wallpaper fill
+workspace 10 output eDP-1
 
 ### Idle Configuration
 set $locker swaylock -f
