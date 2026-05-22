@@ -36,6 +36,8 @@ main() {
     if [ -n "$laptop_output" ]; then
         swaymsg "workspace 10, move workspace to output '$laptop_output'" 2>/dev/null || true
     fi
+
+    swaymsg "workspace 1" 2>/dev/null || true
 }
 
 main "$@"
