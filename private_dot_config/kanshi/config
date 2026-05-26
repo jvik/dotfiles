@@ -49,25 +49,30 @@ profile laptop {
 profile HNTX901781 {
     output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,124
+    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 
 profile HNTX201175 {
     output "Samsung Electric Company LS49C95xU HNTX201175" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTX700148 {
     output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTX302740 {
     output "Samsung Electric Company LS49C95xU HNTX302740" enable mode 5120x1440@59.999Hz position 448,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5568,240
+    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTT800981 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
     output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
+    exec ~/.config/sway/scripts/move-workspaces.sh
 }

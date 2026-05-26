@@ -24,10 +24,11 @@ exec_always {
 exec_always systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
 # exec_always "killall autotiling; $HOME/.local/bin/autotiling"
-exec swaymsg 'workspace number 10; exec wezterm'
+exec ~/.config/sway/scripts/keep-workspace-10.sh
 
 ### Output Configuration
 output * bg ~/.wallpaper fill
+workspace 10 output eDP-1
 
 ### Idle Configuration
 set $locker swaylock -f
@@ -96,6 +97,7 @@ bindsym $mod+Shift+m sticky toggle
 ## Utility Bindings
 bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
+bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
 bindsym $mod+Shift+t exec "swaymsg '[app_id=\"com.github.IsmaelMartinez.teams_for_linux\"] focus' || flatpak run com.github.IsmaelMartinez.teams_for_linux"
 bindsym $mod+Shift+s exec "swaymsg '[app_id=\"com.slack.Slack\"] focus' || flatpak run com.slack.Slack"
 #bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
