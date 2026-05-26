@@ -25,6 +25,10 @@
             "Default": "Startpage EU"
         },
         "ExtensionSettings": {
+            "uBlock0@raymondhill.net": {
+                "installation_mode": "force_installed",
+                "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+            },
             "google@search.mozilla.org": {
                 "installation_mode": "blocked"
             },
@@ -47,19 +51,69 @@
                 "installation_mode": "blocked"
             }
         },
+        "3rdparty": {
+            "Extensions": {
+                "uBlock0@raymondhill.net": {
+                    "adminSettings": {
+                        "advancedSettings": [
+                            [
+                                "disableWebAssembly",
+                                "true"
+                            ],
+                            [
+                                "uiTheme",
+                                "dark"
+                            ]
+                        ],
+                        "advancedUserEnabled": "true",
+                        "externalLists": [
+                            "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
+                            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
+                        ],
+                        "importedLists": [
+                            "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
+                            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
+                        ],
+                        "dynamicFilteringEnabled": "true",
+                        "dynamicFilteringString": "* google-analytics.com * block\n* googletagmanager.com * block\n* * 3p-script block*\n* * 3p-frame block",
+                        "popupPanelSections": "31",
+                        "hostnameSwitchesString": "no-large-media: behind-the-scene false\nno-csp-reports: * true",
+                        "userFilters": "! fonts\n!*$font,third-party\n!*$font,third-party,domain=~example.com|~example2.net\n\n! all stackoverflow annoying consent banners\n##.js-consent-banner\n\n! some annoying banners\n##.banner > [href]\n",
+                        "selectedFilterLists": [
+                            "ublock-quick-fixes",
+                            "user-filters",
+                            "ublock-filters",
+                            "ublock-badware",
+                            "ublock-privacy",
+                            "ublock-abuse",
+                            "ublock-unbreak",
+                            "adguard-generic",
+                            "adguard-social",
+                            "adguard-mobile",
+                            "adguard-mobile-app-banners",
+                            "easylist",
+                            "easyprivacy",
+                            "urlhaus-1",
+                            "adguard-annoyance",
+                            "fanboy-annoyance",
+                            "ublock-annoyances",
+                            "plowe-0",
+                            "NOR-0",
+                            "curben-phishing",
+                            "adguard-other-annoyances",
+                            "adguard-popup-overlays",
+                            "adguard-widgets",
+                            "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
+                            "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
+                        ]
+                    }
+                }
+            }
+        },
         "AppAutoUpdate": false,
         "DisableFirefoxStudies": true,
         "DisableTelemetry": true,
         "DontCheckDefaultBrowser": true,
-        "EnableTrackingProtection": {
-            "Value": true,
-            "Cryptomining": true,
-            "Fingerprinting": true,
-            "EmailTracking": true,
-            "Exceptions": [
-                "https://netflix.com"
-            ]
-        },
         "FirefoxHome": {
             "Search": true,
             "TopSites": false,
