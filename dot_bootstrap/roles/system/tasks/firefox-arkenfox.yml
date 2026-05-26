@@ -17,6 +17,22 @@
     chdir: "/home/{{ user }}/.config/mozilla/firefox/main"
   changed_when: true
 
+- name: Ensure Firefox enterprise policies directory exists
+  become: true
+  ansible.builtin.file:
+    path: /etc/firefox/policies
+    state: directory
+    mode: "0755"
+
+- name: Install Firefox enterprise policies
+  become: true
+  ansible.builtin.copy:
+    src: firefox/policies.json
+    dest: /etc/firefox/policies/policies.json
+    owner: root
+    group: root
+    mode: "0644"
+
 - name: Ensure applications directory exists
   ansible.builtin.file:
     path: "/home/{{ user }}/.config/applications"

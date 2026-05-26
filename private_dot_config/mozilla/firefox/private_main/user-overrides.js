@@ -42,12 +42,17 @@ user_pref("dom.webnotifications.enabled", true); // enable notifications
 user_pref("browser.urlbar.suggest.history", true); //suggestions from history
 user_pref("browser.urlbar.suggest.openpage", true); // suggestions from open pages
 user_pref("browser.urlbar.suggest.topsites", false); //no top sites in the suggestions
+user_pref("browser.formfill.enable", false); // disable form history suggestions
 user_pref("signon.management.page.breach-alerts.enabled", true);
 user_pref("layout.spellcheckDefault", 0); //no spell-check
 user_pref("signon.rememberSignons", false); //never ask to save passwords
 user_pref("permissions.default.geo", 2); //deny location access
 user_pref("geo.enabled", false); //fullly disable location acces
 user_pref("media.navigator.enabled", false); //disabled some media features
+// user_pref("media.peerconnection.enabled", false); // disable WebRTC (privacy)
+// user_pref("dom.security.https_only_mode", true); // enforce HTTPS-Only mode
+// user_pref("dom.security.https_only_mode_ever_enabled", true);
+user_pref("network.IDN_show_punycode", true); // show punycode to reduce IDN spoof risk
 
 // Fix disappearing menus on sway with fractional scaling
 // https://www.reddit.com/r/swaywm/comments/1sxzyfv/sway_and_firefox_disappearing_menus/
@@ -57,9 +62,9 @@ user_pref("widget.wayland.fractional-scale.enabled", false);
 
 //Section 2: Re-enabled features
 user_pref("keyword.enabled", true); //search from the urlbar
-user_pref("browser.startup.page", 0); //Browser starts on the Homepage
+user_pref("browser.startup.page", 1); //start on homepage
 user_pref("browser.startup.homepage", "about:home"); //Sets homepage
-user_pref("browser.newtabpage.enabled", false); //use default NTP
+user_pref("browser.newtabpage.enabled", true); //enable Firefox Home for new tabs
 user_pref("browser.download.useDownloadDir", false); //always download files to the System Download Directory
 user_pref("browser.urlbar.suggest.searches", false); //disables search suggestions in the url-bar
 
