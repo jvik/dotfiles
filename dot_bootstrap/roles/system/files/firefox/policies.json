@@ -150,7 +150,6 @@
             "Locked": false
         },
         "PostQuantumKeyAgreementEnabled": true,
-        "PasswordManagerEnabled": false,
         "UserMessaging": {
             "ExtensionRecommendations": false,
             "UrlbarInterventions": false,
