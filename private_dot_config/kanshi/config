@@ -76,3 +76,9 @@ profile HNTT800981 {
     output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
     exec ~/.config/sway/scripts/move-workspaces.sh
 }
+
+profile HNTX401574 {
+    output "Samsung Electric Company LS49C95xU HNTX401574" enable mode 5120x1440@59.999Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
+}
