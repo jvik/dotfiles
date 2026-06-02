@@ -1,0 +1,14 @@
+! fonts
+!*$font,third-party
+!*$font,third-party,domain=~example.com|~example2.net
+
+! all stackoverflow annoying consent banners
+##.js-consent-banner
+
+! some annoying banners
+##.banner > [href]
+
+! vg.no broken cookie notice scroll lock
+||cmp.vg.no^
+vg.no##div[id^="sp_message_container_"]:remove()
+vg.no##body:style(position: static !important; overflow: visible !important; height: auto !important; top: auto !important)

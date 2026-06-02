@@ -83,7 +83,7 @@
                         "dynamicFilteringString": "* google-analytics.com * block\n* googletagmanager.com * block\n* * 3p-script block*\n* * 3p-frame block",
                         "popupPanelSections": "31",
                         "hostnameSwitchesString": "no-large-media: behind-the-scene false\nno-csp-reports: * true",
-                        "userFilters": "! fonts\n!*$font,third-party\n!*$font,third-party,domain=~example.com|~example2.net\n\n! all stackoverflow annoying consent banners\n##.js-consent-banner\n\n! some annoying banners\n##.banner > [href]\n",
+                        "userFilters": {{ lookup('file', role_path ~ '/files/firefox/ublock-user-filters.txt') | to_json }},
                         "selectedFilterLists": [
                             "ublock-quick-fixes",
                             "user-filters",
@@ -108,6 +108,10 @@
                             "adguard-other-annoyances",
                             "adguard-popup-overlays",
                             "adguard-widgets",
+                            "fanboy-cookiemonster",
+                            "ublock-cookies-easylist",
+                            "adguard-cookies",
+                            "ublock-cookies-adguard",
                             "https://raw.githubusercontent.com/AdguardTeam/FiltersRegistry/master/filters/filter_17_TrackParam/filter.txt",
                             "https://raw.githubusercontent.com/DandelionSprout/adfilt/master/LegitimateURLShortener.txt"
                         ]
