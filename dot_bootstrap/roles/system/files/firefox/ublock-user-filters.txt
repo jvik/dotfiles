@@ -9,6 +9,5 @@
 ##.banner > [href]
 
 ! vg.no broken cookie notice scroll lock
-||cmp.vg.no^
-vg.no##div[id^="sp_message_container_"]:remove()
-vg.no##body:style(position: static !important; overflow: visible !important; height: auto !important; top: auto !important)
+vg.no,e24.no,minmote.no,godt.no,vektklubb.no,tek.no,aftenposten.no,bt.no,aftenbladet.no,finn.no,prisjakt.no##div[id^="sp_message_container_"]:remove()
+vg.no,e24.no,minmote.no,godt.no,vektklubb.no,tek.no,aftenposten.no,bt.no,aftenbladet.no,finn.no,prisjakt.no##body:style(position: static !important; overflow: visible !important; height: auto !important; top: auto !important)
