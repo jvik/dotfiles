@@ -189,11 +189,7 @@ case "$kind" in
         signal_percent=$(get_signal_percent "$iface")
 
         if [ "$variant" = "detail" ]; then
-            if [ -n "$signal_percent" ]; then
-                text="$address ($signal_percent%)"
-            else
-                text="$address"
-            fi
+            text="$address"
         elif [ -n "$essid" ] && [ -n "$signal_percent" ]; then
             text="󰀂 $essid($signal_percent%)"
         elif [ -n "$essid" ]; then
