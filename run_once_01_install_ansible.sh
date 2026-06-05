@@ -12,7 +12,8 @@ install_on_fedora() {
 
 install_on_ubuntu() {
     sudo apt-get update
-    sudo apt-get install -y ansible
+    sudo apt-get install -y python3-pip
+    pip3 install --user 'ansible-core>=2.18' ansible
 }
 
 install_on_mac() {
