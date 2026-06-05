@@ -8,17 +8,24 @@
 ! some annoying banners
 ##.banner > [href]
 
-! Schibsted cookie-avviser (VG, E24, Tek, MinMote)
-! 1. Skjul banneret og bakgrunnen umiddelbart
-tek.no,e24.no,minmote.no,vg.no##div[id^="sp_message_container_"]:style(z-index: -1 !important;)
-tek.no,e24.no,minmote.no,vg.no##div[id^="sp_message_container_"]:style(position: fixed !important; left: -9999px !important;)
-cmp.tek.no,cmp.e24.no,cmp.minmote.no,cmp.vg.no##.sp_veil:style(display: none !important;)
-! 2. Gjør "Lagre"-knappen synlig og aktivér den
-cmp.tek.no,cmp.e24.no,cmp.minmote.no,cmp.vg.no##.tcfv2-stack .pur-buttons-container > button:style(display: inline-block !important;)
-cmp.tek.no,cmp.e24.no,cmp.minmote.no,cmp.vg.no##button.sp_choice_type_SAVE_AND_EXIT:remove-attr(/^(aria-)?disabled$/)
-! 3. Lås opp rulling på nettsiden permanent
-e24.no,minmote.no,tek.no,vg.no##+js(remove-class, sp-message-open modal-open scroll-locked, body, stay)
-e24.no,minmote.no,tek.no,vg.no##body, html:style(overflow: auto !important;)
-! 4. Automatisk klikk-sekvens (med pauser for å la elementene laste inn)
-cmp.e24.no,cmp.minmote.no,cmp.tek.no,cmp.vg.no##+js(trusted-click-element, .btns-container > button[title="Tilpass cookies"], 1000)
-cmp.e24.no,cmp.minmote.no,cmp.tek.no,cmp.vg.no##+js(trusted-click-element, '2000,.pm-main > .type-box:nth-of-type(1) .tcfv2-stack .pur-buttons-container > button:nth-of-type(2),100,.pm-main > .type-box:nth-of-type(2) .tcfv2-stack .pur-buttons-container > button:nth-of-type(2),100,.pm-main > .type-box:nth-of-type(3) .tcfv2-stack .pur-buttons-container > button:nth-of-type(2),100,.pm-main > .type-box:nth-of-type(4) .tcfv2-stack .pur-buttons-container > button:nth-of-type(2),100,button.sp_choice_type_SAVE_AND_EXIT')
+! ==============================
+! VG / E24 / Tek / MinMote – FULL FIX (scroll + CMP)
+! ==============================
+
+! 1. Fjern CMP visuelt
+tek.no,e24.no,minmote.no,vg.no##div[id^="sp_message_container_"]:style(position:fixed!important;left:-9999px!important;z-index:-1!important;)
+cmp.tek.no,cmp.e24.no,cmp.minmote.no,cmp.vg.no##.sp_veil:style(display:none!important;)
+
+! 2. HARD unlock av scroll
+e24.no,minmote.no,tek.no,vg.no##+js(remove-class, sp-message-open modal-open scroll-locked no-scroll, body, stay)
+e24.no,minmote.no,tek.no,vg.no##+js(remove-attr, style, body, stay)
+e24.no,minmote.no,tek.no,vg.no##+js(remove-attr, style, html, stay)
+e24.no,minmote.no,tek.no,vg.no##body,html:style(overflow:auto!important;position:static!important;height:auto!important;)
+
+! 3. Fjern overlay som fanger scroll
+e24.no,minmote.no,tek.no,vg.no##.ReactModal__Overlay:style(display:none!important;)
+e24.no,minmote.no,tek.no,vg.no##.ReactModal__Body--open:style(overflow:auto!important;)
+
+! 4. Safety: sørg for scroll kontinuerlig
+e24.no,minmote.no,tek.no,vg.no##+js(set, document.body.style.overflow, auto)
+e24.no,minmote.no,tek.no,vg.no##+js(set, document.documentElement.style.overflow, auto)
