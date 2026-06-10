@@ -27,7 +27,6 @@ exec_always "killall swaync; swaync"
 exec ~/.config/sway/scripts/keep-workspace-10.sh
 
 ### Output Configuration
-output * bg ~/.wallpaper fill
 workspace 10 output eDP-1
 
 ### Idle Configuration
@@ -255,3 +254,6 @@ focus_on_window_activation focus
 ### System Includes
 include /etc/sway/config.d/*
 include ~/.config/sway/config.local
+
+# Override system default wallpaper (from /etc/sway/config.d/40-sway-background.conf)
+output * bg /home/jorgen/.wallpaper fill
