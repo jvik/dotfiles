@@ -1,42 +1,6 @@
 profile desktop {
     output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600 position 1920,0
-
     exec swaymsg "output * adaptive_sync on"
-    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output \"LG Electronics 38GN950 203NTAB86520\""; done'
-}
-
-profile samsung-pip-dp67 {
-    output DP-6 mode 2560x1440 position 1920,0
-    output DP-7 mode 2560x1440 position 4480,0
-    output eDP-1 enable mode 1920x1200@60Hz position 0,0
-
-    exec sh -c 'for i in 1 2 3; do swaymsg "workspace $i, move workspace to output DP-6"; done'
-    exec sh -c 'for i in 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-7"; done'
-    exec swaymsg "workspace 10, move workspace to output eDP-1"
-}
-
-profile samsung-pip-dp78 {
-    output DP-7 mode 2560x1440 position 1920,0
-    output DP-8 mode 2560x1440 position 4480,0
-    output eDP-1 enable mode 1920x1200@60Hz position 0,0
-
-    exec sh -c 'for i in 1 2 3; do swaymsg "workspace $i, move workspace to output DP-7"; done'
-    exec sh -c 'for i in 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-8"; done'
-    exec swaymsg "workspace 10, move workspace to output eDP-1"
-}
-
-profile dp6 {
-    output DP-6 enable position 1920,0
-    output eDP-1 enable mode 1920x1200 position 0,0
-    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-6"; done'
-    exec swaymsg "workspace 10, move workspace to output eDP-1"
-}
-
-profile dp7 {
-    output DP-7 enable position 1920,0
-    output eDP-1 enable mode 1920x1200 position 0,0
-    exec sh -c 'for i in 1 2 3 4 5 6 7 8 9; do swaymsg "workspace $i, move workspace to output DP-7"; done'
-    exec swaymsg "workspace 10, move workspace to output eDP-1"
 }
 
 profile laptop {
@@ -49,48 +13,40 @@ profile laptop {
 profile HNTX901781 {
     output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,124
-    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 
 profile HNTX201175 {
     output "Samsung Electric Company LS49C95xU HNTX201175" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTX700148 {
     output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTX302740 {
     output "Samsung Electric Company LS49C95xU HNTX302740" enable mode 5120x1440@59.999Hz position 448,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5568,240
-    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTT800981 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
     output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
-    exec ~/.config/sway/scripts/move-workspaces.sh
 }
 
 profile HNTX401574 {
     output "Samsung Electric Company LS49C95xU HNTX401574" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
 }
 
 profile H4ZT400405 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
     output "Samsung Electric Company LS49A950U H4ZT400405" enable mode 5120x1440@59.977Hz position 1920,0
-    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
 }
 
 profile CNC4522K6S {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
     output "HP Inc. HP E45c G5 CNC4522K6S" enable mode 5120x1440@120Hz position 1920,0
-    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
 }

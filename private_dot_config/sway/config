@@ -23,6 +23,8 @@ exec_always {
 
 exec_always systemctl --user restart kanshi.service
 exec_always "killall swaync; swaync"
+exec_always "pkill -f fix-tiling-on-output-change.sh; ~/.config/sway/scripts/fix-tiling-on-output-change.sh"
+exec_always ~/.config/sway/scripts/move-workspaces.sh
 # exec_always "killall autotiling; $HOME/.local/bin/autotiling"
 exec ~/.config/sway/scripts/keep-workspace-10.sh
 

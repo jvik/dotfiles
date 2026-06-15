@@ -29,6 +29,9 @@ main() {
 
     [ -n "$external_output" ] || exit 0
 
+    local current_workspace
+    current_workspace=$(swaymsg -t get_workspaces 2>/dev/null | jq -r '.[] | select(.focused) | .name')
+
     for i in 1 2 3 4 5 6 7 8 9; do
         swaymsg "workspace $i, move workspace to output '$external_output'" 2>/dev/null || true
     done
@@ -37,7 +40,7 @@ main() {
         swaymsg "workspace 10, move workspace to output '$laptop_output'" 2>/dev/null || true
     fi
 
-    swaymsg "workspace 1" 2>/dev/null || true
+    swaymsg "workspace ${current_workspace:-1}" 2>/dev/null || true
 }
 
 main "$@"
