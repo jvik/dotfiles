@@ -82,3 +82,15 @@ profile HNTX401574 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
     exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
 }
+
+profile H4ZT400405 {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
+    output "Samsung Electric Company LS49A950U H4ZT400405" enable mode 5120x1440@59.977Hz position 1920,0
+    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
+}
+
+profile CNC4522K6S {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
+    output "HP Inc. HP E45c G5 CNC4522K6S" enable mode 5120x1440@165.001Hz position 1920,0
+    exec /home/jorgen/.config/sway/scripts/move-workspaces.sh
+}
