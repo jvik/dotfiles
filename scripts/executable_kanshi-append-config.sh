@@ -198,9 +198,6 @@ main() {
     {
         printf '\nprofile %s {\n' "$profile_name"
         printf '%s\n' "$output_lines"
-        if [ "$has_external" -gt 0 ]; then
-            printf '    exec %s\n' "$HOME/.config/sway/scripts/move-workspaces.sh"
-        fi
         printf '}\n'
     } >> "$config_path"
 
