@@ -16,6 +16,7 @@ exec --no-startup-id lxpolkit
 exec flatpak run com.bitwarden.desktop
 # start copyq
 exec /usr/bin/copyq --start-server
+exec_always pgrep -x solaar || solaar --battery-icons=symbolic --window=hide
 
 exec_always {
     rm /run/user/1000/pipectl.1000.wl-present.pipe 
