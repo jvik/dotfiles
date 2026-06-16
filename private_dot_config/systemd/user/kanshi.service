@@ -7,6 +7,8 @@ Wants=graphical-session-pre.target
 
 [Service]
 Type=simple
+# Sway always uses wayland-1 as primary compositor
+Environment=WAYLAND_DISPLAY=wayland-1
 ExecStart=/usr/bin/kanshi
 Restart=always
 RestartSec=1
