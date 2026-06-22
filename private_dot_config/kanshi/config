@@ -55,3 +55,13 @@ profile HNTW203395 {
     output "Samsung Electric Company LS49A950U HNTW203395" enable mode 5120x1440@59.977Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }
+
+profile HNTTA00442 {
+    output "Samsung Electric Company LS49A950U HNTTA00442" enable mode 5120x1440@59.977Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+}
+
+profile H4ZT601342 {
+    output "Samsung Electric Company C49J89x H4ZT601342" enable mode 3840x1080@143.999Hz position 0,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 3840,0
+}
