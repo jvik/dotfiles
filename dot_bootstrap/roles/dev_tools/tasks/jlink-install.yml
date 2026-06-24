@@ -1,0 +1,11 @@
+---
+- name: Check if jlink is installed
+  ansible.builtin.command: which jlink
+  register: jlink_check
+  changed_when: false
+  failed_when: false
+
+- name: Install jLink from jvik fork
+  ansible.builtin.shell: >
+    curl -so- https://raw.githubusercontent.com/jvik/jLink/main/install.sh | bash
+  when: jlink_check.rc != 0

@@ -6,6 +6,11 @@ THRESHOLD=15
 STATE_DIR="${XDG_RUNTIME_DIR:-/tmp}/battery-check"
 mkdir -p "$STATE_DIR"
 
+if [[ "${1:-}" == "--clear-state" ]]; then
+    find "$STATE_DIR" -name '*.state' -delete 2>/dev/null
+    rm -f "$STATE_DIR/.last_reset"
+fi
+
 # Reset state once per day so devices re-notify after recovering and dropping again
 RESET_STAMP="$STATE_DIR/.last_reset"
 if [[ ! -f "$RESET_STAMP" ]] || (( $(date +%s) - $(stat -c %Y "$RESET_STAMP") > 86400 )); then
@@ -74,4 +79,17 @@ if command -v solaar &>/dev/null; then
         fi
     done < "$SOLAAR_TMP"
     rm -f "$SOLAAR_TMP"
+fi
+
+# --- jLink devices (Jabra headsets) ---
+if command -v jlink &>/dev/null; then
+    jlink_output=$(jlink --battery 2>/dev/null)
+    if [[ -n "$jlink_output" ]]; then
+        level=$(echo "$jlink_output" | grep -oP '"level":\s*\K\d+')
+        device=$(echo "$jlink_output" | grep -oP '"device":\s*"\K[^"]+')
+        if [[ -n "$level" && -n "$device" ]]; then
+            device_id="jlink_$(echo "$device" | tr -dc '[:alnum:]_-')"
+            notify_if_low "$device_id" "$device" "$level"
+        fi
+    fi
 fi
