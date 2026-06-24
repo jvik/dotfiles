@@ -40,6 +40,12 @@ The goal is safe, minimal, and idempotent changes.
 - Do not remove `executable_` prefixes or rename scripts without a clear reason.
 - Avoid introducing interactive behavior in scripts used by status bars/hooks.
 
+### Terminal/shell environment
+
+- The user's interactive shell is **fish**. All commands suggested or run in the terminal must be fish-compliant.
+- Do not use Bash-only syntax (e.g. `[[ ]]`, `export VAR=val`, `$(...)` in assignments) when writing commands to run interactively.
+- Use fish syntax: `set VAR val`, `string` builtins, `(command)` substitution, etc.
+
 ### Documentation (`readme.md`)
 
 - Keep [readme.md](readme.md) up-to-date when making significant changes to the repository structure or configuration.
