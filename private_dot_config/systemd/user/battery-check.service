@@ -1,0 +1,9 @@
+[Unit]
+Description=Battery level check
+After=graphical-session-pre.target
+Wants=graphical-session-pre.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/scripts/battery-check.sh

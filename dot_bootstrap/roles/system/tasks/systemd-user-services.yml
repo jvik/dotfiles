@@ -6,3 +6,12 @@
     scope: user
   become: false
   become_user: "{{ ansible_user_id }}"
+
+- name: Enable battery-check systemd user timer
+  ansible.builtin.systemd:
+    name: battery-check.timer
+    enabled: true
+    state: started
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
