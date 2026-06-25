@@ -7,8 +7,9 @@
 
 - name: Download arkenfox updater.sh
   ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/arkenfox/user.js/master/updater.sh
+    url: https://raw.githubusercontent.com/arkenfox/user.js/8fe9905c35a1025d1e6df69479f7625585fd956d/updater.sh
     dest: "/home/{{ user }}/.config/mozilla/firefox/main/updater.sh"
+    checksum: sha256:e606cfae18b1703be0f22567ff9fe6f71b3c3a529cf80f07d670d9e2d93b5c07
     mode: "0755"
 
 - name: Generate arkenfox user.js
