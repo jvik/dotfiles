@@ -5,6 +5,12 @@
   gather_facts: true
   vars_files:
     - ~/.bootstrap/vars.yml
+  pre_tasks:
+    - name: Verify sudo credentials
+      ansible.builtin.command: whoami
+      become: true
+      changed_when: false
+
   roles:
     - repositories
     - packages

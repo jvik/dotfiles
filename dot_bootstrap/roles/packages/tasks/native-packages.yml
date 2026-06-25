@@ -8,6 +8,7 @@
       - htop
       - blueman
       - unrar
+      - fish
       - zsh
       - git
       - neovim
@@ -43,6 +44,7 @@
       - htop
       - blueman
       - unrar
+      - fish
       - zsh
       - git
       - neovim
@@ -79,6 +81,7 @@
       - htop
       - blueman
       - unrar
+      - fish
       - zsh
       - git
       - neovim

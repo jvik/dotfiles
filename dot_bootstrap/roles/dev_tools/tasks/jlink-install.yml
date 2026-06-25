@@ -7,5 +7,11 @@
 
 - name: Install jLink from jvik fork
   ansible.builtin.shell: >
-    curl -so- https://raw.githubusercontent.com/jvik/jLink/main/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/jvik/jLink/main/install.sh | bash -x
+  register: jlink_install
+  when: jlink_check.rc != 0
+
+- name: Show jLink install output
+  ansible.builtin.debug:
+    msg: "{{ jlink_install.stdout_lines + jlink_install.stderr_lines }}"
   when: jlink_check.rc != 0

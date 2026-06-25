@@ -46,11 +46,12 @@ The goal is safe, minimal, and idempotent changes.
 - Do not use Bash-only syntax (e.g. `[[ ]]`, `export VAR=val`, `$(...)` in assignments) when writing commands to run interactively.
 - Use fish syntax: `set VAR val`, `string` builtins, `(command)` substitution, etc.
 
-### Documentation (`readme.md`)
+### Documentation (`readme.md`, `AGENTS.md`)
 
 - Keep [readme.md](readme.md) up-to-date when making significant changes to the repository structure or configuration.
 - Document new roles, major features, or configuration sections in the readme.
 - Maintain accuracy of any setup or usage instructions.
+- Update [AGENTS.md](AGENTS.md) when core functionality changes: new repository conventions, renamed/reorganised directories, new tooling or shells, or changes to validation steps.
 
 ## Security and secrets
 

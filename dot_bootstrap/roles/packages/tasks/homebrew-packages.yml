@@ -1,6 +1,7 @@
 ---
 - name: Install Homebrew packages
-  become: false
+  become: true
+  become_user: "{{ user }}"
   community.general.homebrew:
     name:
       - ctop
@@ -8,7 +9,6 @@
       - fzf
       - gh
       - just
-      - neofetch
       - tfenv
       - uv
       - zoxide

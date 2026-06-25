@@ -1,6 +1,7 @@
 ---
 - name: Install homebrew casks
-  become: false
+  become: true
+  become_user: "{{ user }}"
   community.general.homebrew_cask:
     name:
       - font-fontawesome
