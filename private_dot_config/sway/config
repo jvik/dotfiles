@@ -60,6 +60,12 @@ input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad" {
     middle_emulation enabled
 }
 
+input "1267:128:Elan_Touchpad" {
+    tap enabled
+    pointer_accel 0.2
+    middle_emulation enabled
+}
+
 
 ### Key Bindings
 set $term flatpak run org.wezfurlong.wezterm
