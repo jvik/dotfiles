@@ -40,6 +40,11 @@
   become: true
   become_user: "{{ user }}"
   changed_when: false
+  failed_when: false
+  retries: 3
+  delay: 5
+  register: brew_update_result
+  until: brew_update_result.rc == 0
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
 

@@ -4,7 +4,7 @@ Personal, reproducible Linux (and macOS-friendly) workstation setup powered by:
 
 * [chezmoi](https://www.chezmoi.io/) for dotfile management & templating
 * [Ansible](https://www.ansible.com/) for bootstrapping packages & system state
-* Modern tooling: zsh, Homebrew (Linuxbrew), LazyVim, WezTerm, sway/i3 environment, Wayland components
+* Modern tooling: zsh, Homebrew (Linuxbrew), LazyVim, WezTerm, sway/Wayland environment
 
 > Goal: One command to bring a fresh machine to a comfortable, fully-configured environment.
 
@@ -12,10 +12,7 @@ Personal, reproducible Linux (and macOS-friendly) workstation setup powered by:
 
 ## Quick Start
 
-Pick your tiling window manager (currently optimized for sway; i3 fallback logic included):
-
 ```bash
-export TILING_MANAGER=sway        # or i3
 export GITHUB_USERNAME=jvik       # replace with your GitHub username (fork first!)
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply "$GITHUB_USERNAME"
 ```
@@ -66,13 +63,13 @@ Automatically executed by chezmoi.
 
 Key tasks:
 * Install base packages (fd-find, tree, flatpak, ansible-lint, htop, blueman, wezterm etc.)
-* Conditional sway stack install when `window_manager == "sway"`
+* Sway stack install (sway, waybar, wofi, SwayNotificationCenter, wdisplays, lxpolkit)
 * Flatpak application installation
 * Set login shell to zsh for user
 * Install Homebrew (if missing) and package set.
 * Install fonts via Homebrew casks
 
-Template vars file created at `~/.bootstrap/vars.yml` from `vars.yml.tmpl`. Edit that file and rerun `run_onchange_install_02.sh` to apply changes.
+Template vars file created at `~/.bootstrap/vars.yml` from `vars.yml.tmpl`.
 
 Dry run / lint (optional):
 
@@ -99,16 +96,13 @@ Style formatting controlled via `stylua.toml`.
 
 ## Wayland / WM Stack
 
-When `TILING_MANAGER=sway`:
-* sway main config in `private_dot_config/sway/config`
-* color schemes in `private_dot_config/sway/colors/`
-* waybar config & style under `private_dot_config/waybar/`
-* notifications: `private_dot_config/swaync/`
-* launcher: `private_dot_config/wofi/`
+Sway is the window manager. Configuration lives under:
+* `private_dot_config/sway/config` — main sway config and color schemes
+* `private_dot_config/waybar/` — status bar config & style
+* `private_dot_config/swaync/` — notifications
+* `private_dot_config/wofi/` — launcher
 
-For i3, placeholder logic exists; add i3 package tasks & configs similarly beneath `private_dot_config/i3/`.
-
-Lock script: `private_dot_config/sway/lockman.sh` (adaptable to i3 if needed).
+Lock script: `private_dot_config/sway/lockman.sh`.
 
 ---
 

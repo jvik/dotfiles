@@ -10,4 +10,5 @@ alias tmux="tmux -2 -f '$XDG_CONFIG_HOME/tmux/tmux.conf'"
 alias firefox='firefox --profile ~/.config/mozilla/firefox/main'
 
 # Update arkenfox user.js for Firefox
-alias arkenfox-update='~/.config/mozilla/firefox/main/updater.sh'
+# Commented out: shadows the function in functions/arkenfox-update.fish which passes -e -p flags
+# alias arkenfox-update='~/.config/mozilla/firefox/main/updater.sh'

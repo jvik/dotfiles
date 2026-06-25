@@ -62,7 +62,7 @@ input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad" {
 
 
 ### Key Bindings
-set $term wezterm
+set $term flatpak run org.wezfurlong.wezterm
 set $menu wofi --show drun
 
 ## Basics
