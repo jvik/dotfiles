@@ -46,6 +46,8 @@ user_pref("browser.formfill.enable", false); // disable form history suggestions
 user_pref("signon.management.page.breach-alerts.enabled", true);
 user_pref("layout.spellcheckDefault", 0); //no spell-check
 user_pref("signon.rememberSignons", false); //never ask to save passwords
+user_pref("extensions.formautofill.creditCards.enabled", false); //disable saving payment methods
+user_pref("extensions.formautofill.addresses.enabled", false); //disable saving addresses
 user_pref("permissions.default.geo", 2); //deny location access
 user_pref("geo.enabled", false); //fullly disable location acces
 user_pref("media.navigator.enabled", false); //disabled some media features

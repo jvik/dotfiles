@@ -161,6 +161,8 @@
             "MoreFromMozilla": false,
             "FirefoxLabs": true
         },
+        "AutofillAddressEnabled": false,
+        "AutofillCreditCardEnabled": false,
         "ShowHomeButton": true,
         "SSLVersionMin": "tls1.2"
     }
