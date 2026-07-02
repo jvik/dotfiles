@@ -3,6 +3,7 @@
   ansible.builtin.package:
     name:
       - "NetworkManager-tui"
+      - SwayNotificationCenter
       - util-linux # provides cal on Fedora
       - libreoffice
       - libreoffice-langpack-nn
