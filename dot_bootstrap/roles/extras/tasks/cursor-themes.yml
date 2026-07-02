@@ -1,0 +1,27 @@
+---
+- name: Check if phinger-cursors is installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/share/icons/phinger-cursors-light"
+  register: phinger_cursors_stat
+
+- name: Install phinger-cursors
+  when: not phinger_cursors_stat.stat.exists
+  block:
+    - name: Ensure ~/.local/share/icons exists
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/icons"
+        state: directory
+        mode: "0755"
+
+    - name: Download and extract phinger-cursors
+      ansible.builtin.unarchive:
+        src: https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2
+        dest: "{{ ansible_env.HOME }}/.local/share/icons"
+        remote_src: true
+
+    - name: Allow Flatpak user apps to read ~/.icons (cursor theme)
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.command:
+        cmd: flatpak override --user --filesystem=home/.icons:ro
+      changed_when: false

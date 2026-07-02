@@ -46,6 +46,8 @@ end
 
 config.max_fps = 120
 
+xcursor_theme="phinger-cursors-light"
+
 -- config.front_end = "Sotftware"
 config.front_end = "WebGpu"
 config.webgpu_power_preference = "HighPerformance"

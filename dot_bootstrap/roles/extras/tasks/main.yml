@@ -1,0 +1,3 @@
+---
+- name: Include cursor themes
+  ansible.builtin.include_tasks: cursor-themes.yml
