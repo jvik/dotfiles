@@ -1,22 +1,26 @@
 ---
 - name: Check if phinger-cursors is installed
+  become: true
+  become_user: "{{ user }}"
   ansible.builtin.stat:
-    path: "{{ ansible_env.HOME }}/.local/share/icons/phinger-cursors-light"
+    path: "/home/{{ user }}/.local/share/icons/phinger-cursors-light"
   register: phinger_cursors_stat
 
 - name: Install phinger-cursors
+  become: true
+  become_user: "{{ user }}"
   when: not phinger_cursors_stat.stat.exists
   block:
     - name: Ensure ~/.local/share/icons exists
       ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.local/share/icons"
+        path: "/home/{{ user }}/.local/share/icons"
         state: directory
         mode: "0755"
 
     - name: Download and extract phinger-cursors
       ansible.builtin.unarchive:
         src: https://github.com/phisch/phinger-cursors/releases/latest/download/phinger-cursors-variants.tar.bz2
-        dest: "{{ ansible_env.HOME }}/.local/share/icons"
+        dest: "/home/{{ user }}/.local/share/icons"
         remote_src: true
 
     - name: Allow Flatpak user apps to read ~/.icons (cursor theme)
@@ -24,4 +28,25 @@
       become_user: "{{ user }}"
       ansible.builtin.command:
         cmd: flatpak override --user --filesystem=home/.icons:ro
+      changed_when: false
+
+    - name: Allow Flatpak user apps to read ~/.local/share/icons (cursor theme files)
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.command:
+        cmd: flatpak override --user --filesystem=home/.local/share/icons:ro
+      changed_when: false
+
+    - name: Set cursor theme via gsettings (used by xdg-desktop-portal-gtk for Flatpak apps)
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.command:
+        cmd: gsettings set org.gnome.desktop.interface cursor-theme phinger-cursors-light
+      changed_when: false
+
+    - name: Set cursor size via gsettings (used by xdg-desktop-portal-gtk for Flatpak apps)
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.command:
+        cmd: gsettings set org.gnome.desktop.interface cursor-size 36
       changed_when: false

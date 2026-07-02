@@ -30,3 +30,13 @@
       - io.github.peazip.PeaZip/x86_64/stable
       - org.wezfurlong.wezterm/x86_64/stable
     state: present
+
+# Bitwarden's launcher forces --ozone-platform=x11 by default (Electron 39
+# Wayland/GPU crash workaround), which runs it under XWayland and breaks the
+# sway-configured cursor theme. USE_X11=false is the escape hatch it honors.
+- name: Force Bitwarden to run on native Wayland instead of XWayland
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command:
+    cmd: flatpak override --user --env=USE_X11=false com.bitwarden.desktop
+  changed_when: false
