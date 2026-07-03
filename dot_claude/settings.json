@@ -74,7 +74,15 @@
         "flathub.org",
         "packages.mozilla.org",
         "www.yr.no",
-        "wttr.in"
+        "wttr.in",
+        "wiki.archlinux.org",
+        "swaywm.org",
+        "mirrors.fedoraproject.org",
+        "download.fedoraproject.org",
+        "dl.fedoraproject.org",
+        "packages.microsoft.com",
+        "repo.jotta.cloud",
+        "repository.mullvad.net"
       ],
       "httpProxyPort": 8080,
       "socksProxyPort": 8081
