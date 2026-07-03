@@ -8,6 +8,9 @@
 - name: Include logind sleep policy setup
   ansible.builtin.include_tasks: logind-sleep-policy.yml
 
+- name: Include inotify limits setup
+  ansible.builtin.include_tasks: inotify-limits.yml
+
 - name: Include Firefox arkenfox setup
   ansible.builtin.include_tasks:
     file: firefox-arkenfox.yml
