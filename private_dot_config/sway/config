@@ -54,6 +54,10 @@ input * {
     xkb_options "caps:swapescape,altwin:swap_lalt_lwin"
 }
 
+input type:keyboard {
+    xkb_numlock enabled
+}
+
 input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad" {
     tap enabled
     pointer_accel 0.2
