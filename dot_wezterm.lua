@@ -44,13 +44,15 @@ end
 -- 	window:set_config_overrides(overrides)
 -- end)
 
-config.max_fps = 120
+config.max_fps = 60
 
 xcursor_theme="phinger-cursors-light"
 
 -- config.front_end = "Sotftware"
-config.front_end = "WebGpu"
-config.webgpu_power_preference = "HighPerformance"
+-- OpenGL avoids the hover/redraw flicker seen with WebGpu on Wayland
+config.front_end = "OpenGL"
+-- config.front_end = "WebGpu"
+-- config.webgpu_power_preference = "HighPerformance"
 
 -- color config --
 -- Automatically detect system appearance (dark/light mode)
