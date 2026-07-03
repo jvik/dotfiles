@@ -26,11 +26,11 @@
       "Bash(chezmoi managed*)",
       "Bash(chezmoi source-path*)",
       "Bash(chezmoi verify*)",
-      "Bash(chezmoi apply --dry-run*)",
+      "Bash(chezmoi apply --dry-run)",
 
       "Bash(ansible-lint*)",
-      "Bash(ansible-playbook * --check*)",
-      "Bash(ansible-playbook * --syntax-check*)",
+      "Bash(ansible-playbook * --check)",
+      "Bash(ansible-playbook * --syntax-check)",
 
       "Bash(shellcheck*)",
       "Bash(shfmt -d*)",
@@ -48,10 +48,41 @@
       "Bash(tail*)",
       "Bash(pwd)",
       "Bash(which*)"
+    ],
+    "deny": [
+      "Bash(find*-exec*)",
+      "Bash(find*-execdir*)",
+      "Bash(find*-delete*)",
+      "Bash(find*-fprintf*)",
+      "Bash(find*|*)",
+
+      "Bash(*;*)",
+      "Bash(*&&*)",
+      "Bash(*||*)",
+      "Bash(*`*)",
+      "Bash(*$(*)"
     ]
   },
   "sandbox": {
     "enabled": true,
+    "credentials": {
+      "files": [
+        { "path": "~/.ssh/id_ed25519", "mode": "deny" },
+        { "path": "~/.ssh/id_rsa", "mode": "deny" },
+        { "path": "~/.ssh/id_ecdsa", "mode": "deny" },
+        { "path": "~/.gnupg", "mode": "deny" },
+        { "path": "~/.config/gh", "mode": "deny" },
+        { "path": "~/.docker", "mode": "deny" },
+        { "path": "~/.kube/config", "mode": "deny" },
+        { "path": "~/.mozilla", "mode": "deny" },
+        { "path": "~/.config/Bitwarden CLI", "mode": "deny" },
+        { "path": "~/.var/app/com.bitwarden.desktop", "mode": "deny" }
+      ],
+      "envVars": [
+        { "name": "GITHUB_TOKEN", "mode": "deny" },
+        { "name": "BW_SESSION", "mode": "deny" }
+      ]
+    },
     "network": {
       "allowedDomains": [
         "registry.npmjs.org",
