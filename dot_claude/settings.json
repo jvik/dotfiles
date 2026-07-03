@@ -4,14 +4,28 @@
     "commit": "",
     "pr": ""
   },
+  "env": {
+    "CLAUDE_CODE_NO_FLICKER": "1"
+  },
   "sandbox": {
-    "mode": "auto-allow",
-    "allowedDomains": [
-      "registry.npmjs.org",
-      "api.github.com",
-      "pypi.org"
-    ],
+    "enabled": true,
     "network": {
+      "allowedDomains": [
+        "registry.npmjs.org",
+        "api.github.com",
+        "pypi.org",
+        "api.anthropic.com",
+        "archive.ubuntu.com",
+        "crates.io",
+        "files.pythonhosted.org",
+        "github.com",
+        "index.crates.io",
+        "registry.npmjs.org",
+        "registry.yarnpkg.com",
+        "yarnpkg.com",
+        "security.ubuntu.com",
+        "static.crates.io"
+      ],
       "httpProxyPort": 8080,
       "socksProxyPort": 8081
     }
