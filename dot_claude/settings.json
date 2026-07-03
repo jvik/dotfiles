@@ -7,6 +7,49 @@
   "env": {
     "CLAUDE_CODE_NO_FLICKER": "1"
   },
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(git remote -v)",
+      "Bash(git blame*)",
+      "Bash(git stash list*)",
+
+      "Bash(chezmoi diff*)",
+      "Bash(chezmoi status*)",
+      "Bash(chezmoi data*)",
+      "Bash(chezmoi doctor*)",
+      "Bash(chezmoi cat*)",
+      "Bash(chezmoi managed*)",
+      "Bash(chezmoi source-path*)",
+      "Bash(chezmoi verify*)",
+      "Bash(chezmoi apply --dry-run*)",
+
+      "Bash(ansible-lint*)",
+      "Bash(ansible-playbook * --check*)",
+      "Bash(ansible-playbook * --syntax-check*)",
+
+      "Bash(shellcheck*)",
+      "Bash(shfmt -d*)",
+      "Bash(fish -n *)",
+      "Bash(luacheck*)",
+
+      "Bash(ls*)",
+      "Bash(find*)",
+      "Bash(rg*)",
+      "Bash(grep*)",
+      "Bash(wc*)",
+      "Bash(file*)",
+      "Bash(tree*)",
+      "Bash(head*)",
+      "Bash(tail*)",
+      "Bash(pwd)",
+      "Bash(which*)"
+    ]
+  },
   "sandbox": {
     "enabled": true,
     "network": {
@@ -20,11 +63,18 @@
         "files.pythonhosted.org",
         "github.com",
         "index.crates.io",
-        "registry.npmjs.org",
         "registry.yarnpkg.com",
         "yarnpkg.com",
         "security.ubuntu.com",
-        "static.crates.io"
+        "static.crates.io",
+        "raw.githubusercontent.com",
+        "objects.githubusercontent.com",
+        "formulae.brew.sh",
+        "ghcr.io",
+        "flathub.org",
+        "packages.mozilla.org",
+        "www.yr.no",
+        "wttr.in"
       ],
       "httpProxyPort": 8080,
       "socksProxyPort": 8081
