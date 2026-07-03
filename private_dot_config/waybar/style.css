@@ -416,12 +416,12 @@ label:focus {
     min-width: 16px;
 }
 
-#keyboard-state>label {
+#keyboard-state label {
     padding: 0 3px;
     background: rgba(0, 0, 0, 0.2);
 }
 
-#keyboard-state>label.locked {
+#keyboard-state label.locked {
     background: transparent;
 }
 
