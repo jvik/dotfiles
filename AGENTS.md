@@ -46,6 +46,17 @@ The goal is safe, minimal, and idempotent changes.
 - Do not use Bash-only syntax (e.g. `[[ ]]`, `export VAR=val`, `$(...)` in assignments) when writing commands to run interactively.
 - Use fish syntax: `set VAR val`, `string` builtins, `(command)` substitution, etc.
 
+### Device-specific config
+
+The following files embed hardware identifiers and must reflect the current machine's hardware:
+
+- `private_dot_config/kanshi/config` — monitor serial numbers in profile names and `output` directives
+- `private_dot_config/sway/config` — touchpad input IDs and the hardcoded wallpaper path
+- `private_dot_config/solaar/config.yaml` — Logitech peripheral serial numbers (MX Master, MX Keys, etc.)
+- `dot_var/app/hu.irl.cameractrls/` — camera device identifiers encoded in filenames
+
+When any hardware changes (displays, input devices, peripherals, cameras), update the relevant files above and keep this list and the matching section in [readme.md](readme.md) accurate.
+
 ### Documentation (`readme.md`, `AGENTS.md`)
 
 - Keep [readme.md](readme.md) up-to-date when making significant changes to the repository structure or configuration.

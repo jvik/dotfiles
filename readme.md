@@ -106,6 +106,17 @@ Lock script: `private_dot_config/sway/lockman.sh`.
 
 ---
 
+## Device-Specific Configuration
+
+Some files contain hardware identifiers or device settings tied to specific machines. Review and update these when setting up on new hardware:
+
+- **`private_dot_config/kanshi/config`** — Display profiles keyed by monitor serial numbers. Add new profiles with `scripts/kanshi-append-config.sh` or by editing directly.
+- **`private_dot_config/sway/config`** — Touchpad input device IDs (e.g. `input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad"`) and the wallpaper path (`/home/jorgen/.wallpaper`).
+- **`private_dot_config/solaar/config.yaml`** — Logitech peripheral settings containing per-device serial numbers (MX Master 3S, MX Keys, etc.).
+- **`dot_var/app/hu.irl.cameractrls/`** — Camera control settings with PCI/USB device identifiers encoded in the filenames.
+
+---
+
 ## Updating & Maintaining
 
 Common chezmoi commands:
