@@ -104,6 +104,8 @@ Sway is the window manager. Configuration lives under:
 
 Lock script: `private_dot_config/sway/lockman.sh`.
 
+Network management: clicking the wlan tile in waybar (or the network icon in the swaync quick actions) opens [`networkmanager_dmenu`](https://github.com/firecat53/networkmanager-dmenu) via wofi — lists APs with signal strength, connects/forgets networks, and includes a "Rescan WiFi Networks" action (unlike `nmtui`). Installed by the `extras` Ansible role; configured at `private_dot_config/networkmanager-dmenu/config.ini`.
+
 ---
 
 ## Device-Specific Configuration

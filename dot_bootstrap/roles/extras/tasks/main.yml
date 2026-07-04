@@ -1,3 +1,6 @@
 ---
 - name: Include cursor themes
   ansible.builtin.include_tasks: cursor-themes.yml
+
+- name: Include networkmanager-dmenu
+  ansible.builtin.include_tasks: networkmanager-dmenu.yml

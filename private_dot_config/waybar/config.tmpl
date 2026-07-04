@@ -185,6 +185,7 @@
     },
     "custom/network-wlan": {
         "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
+        "on-click": "$HOME/.local/bin/networkmanager_dmenu",
         "return-type": "json",
         "interval": 2,
         "format": "{}"
