@@ -3,6 +3,9 @@
   ansible.builtin.package:
     name:
       - "NetworkManager-tui"
+      - "NetworkManager-libnm" # gi.repository.NM bindings, required by networkmanager_dmenu
+      - "python3-gobject"
+      - "nm-connection-editor" # GUI fallback launched from networkmanager_dmenu
       - SwayNotificationCenter
       - util-linux # provides cal on Fedora
       - libreoffice

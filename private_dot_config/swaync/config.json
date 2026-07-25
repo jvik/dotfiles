@@ -90,7 +90,7 @@
         },
         {
           "label": "󰖩",
-          "command": "nmtui"
+          "command": "$HOME/.local/bin/networkmanager_dmenu"
         },
         {
           "label": "󰂯",

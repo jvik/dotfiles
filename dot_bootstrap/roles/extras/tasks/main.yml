@@ -4,3 +4,6 @@
 
 - name: Include Signal Desktop
   ansible.builtin.include_tasks: signal.yml
+
+- name: Include networkmanager-dmenu
+  ansible.builtin.include_tasks: networkmanager-dmenu.yml
