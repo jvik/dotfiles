@@ -1,3 +1,6 @@
 ---
 - name: Include cursor themes
   ansible.builtin.include_tasks: cursor-themes.yml
+
+- name: Include Signal Desktop
+  ansible.builtin.include_tasks: signal.yml

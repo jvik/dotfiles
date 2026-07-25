@@ -1,0 +1,107 @@
+---
+- name: Check if Signal Desktop AppImage is installed
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.stat:
+    path: "/home/{{ user }}/Applications/signal-desktop.AppImage"
+  register: signal_appimage_stat
+
+- name: Install Signal Desktop AppImage
+  become: true
+  become_user: "{{ user }}"
+  when: not signal_appimage_stat.stat.exists
+  block:
+    - name: Ensure ~/Applications exists
+      ansible.builtin.file:
+        path: "/home/{{ user }}/Applications"
+        state: directory
+        mode: "0755"
+
+    - name: Import Signal GPG key
+      ansible.builtin.command:
+        cmd: >
+          bash -c "curl -s https://updates.signal.org/static/desktop/appimage.asc | gpg --import"
+      changed_when: false
+
+    - name: Download Signal Desktop AppImage
+      ansible.builtin.get_url:
+        url: https://updates.signal.org/desktop/signal-desktop.AppImage
+        dest: "/home/{{ user }}/Applications/signal-desktop.AppImage"
+        mode: "0755"
+
+    - name: Download Signal AppImage GPG signature
+      ansible.builtin.get_url:
+        url: https://updates.signal.org/desktop/signal-desktop.AppImage.gpg
+        dest: "/tmp/signal-desktop.AppImage.gpg"
+        mode: "0644"
+
+    - name: Verify Signal AppImage GPG signature
+      ansible.builtin.command:
+        cmd: >
+          gpg --verify /tmp/signal-desktop.AppImage.gpg
+          /home/{{ user }}/Applications/signal-desktop.AppImage
+      changed_when: false
+
+    - name: Remove GPG signature file
+      ansible.builtin.file:
+        path: /tmp/signal-desktop.AppImage.gpg
+        state: absent
+
+- name: Check if Signal .desktop file exists
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.stat:
+    path: "/home/{{ user }}/.local/share/applications/signal-desktop.desktop"
+  register: signal_desktop_stat
+
+- name: Create Signal desktop integration
+  become: true
+  become_user: "{{ user }}"
+  when: not signal_desktop_stat.stat.exists
+  block:
+    - name: Extract Signal icon from AppImage
+      ansible.builtin.command:
+        cmd: >
+          /home/{{ user }}/Applications/signal-desktop.AppImage
+          --appimage-extract usr/share/icons/hicolor/256x256/apps/signal-desktop.png
+        chdir: /tmp
+      changed_when: false
+
+    - name: Ensure ~/.local/share/icons exists
+      ansible.builtin.file:
+        path: "/home/{{ user }}/.local/share/icons"
+        state: directory
+        mode: "0755"
+
+    - name: Copy Signal icon
+      ansible.builtin.copy:
+        src: /tmp/squashfs-root/usr/share/icons/hicolor/256x256/apps/signal-desktop.png
+        dest: "/home/{{ user }}/.local/share/icons/signal-desktop.png"
+        remote_src: true
+        mode: "0644"
+
+    - name: Remove AppImage extraction directory
+      ansible.builtin.file:
+        path: /tmp/squashfs-root
+        state: absent
+
+    - name: Ensure ~/.local/share/applications exists
+      ansible.builtin.file:
+        path: "/home/{{ user }}/.local/share/applications"
+        state: directory
+        mode: "0755"
+
+    - name: Create Signal .desktop file
+      ansible.builtin.copy:
+        dest: "/home/{{ user }}/.local/share/applications/signal-desktop.desktop"
+        content: |
+          [Desktop Entry]
+          Name=Signal
+          Comment=Private messaging from your desktop
+          Exec=/home/{{ user }}/Applications/signal-desktop.AppImage %U
+          Icon=/home/{{ user }}/.local/share/icons/signal-desktop.png
+          Type=Application
+          StartupNotify=true
+          Categories=Network;InstantMessaging;
+          MimeType=x-scheme-handler/sgnl;x-scheme-handler/signalcaptcha;
+        mode: "0644"
