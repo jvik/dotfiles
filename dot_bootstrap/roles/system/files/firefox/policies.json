@@ -163,6 +163,7 @@
         },
         "AutofillAddressEnabled": false,
         "AutofillCreditCardEnabled": false,
+        "OfferToSaveLogins": false,
         "ShowHomeButton": true,
         "SSLVersionMin": "tls1.2"
     }
