@@ -41,4 +41,5 @@ pkill -x wayfreeze
 flatpak run org.satty.Satty \
     --filename "$tmpfile" \
     --output-filename "$HOME/Pictures/satty-%Y%m%d-%H%M%S.png" \
-    --actions-on-enter save-to-clipboard
+    --actions-on-enter save-to-clipboard \
+    --copy-command "flatpak-spawn --host wl-copy --type image/png"
