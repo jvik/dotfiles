@@ -4,7 +4,7 @@ profile desktop {
 }
 
 profile desktop-laptop {
-    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@119.982Hz position 1920,0
+    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@144Hz position 1920,0
     output eDP-1 enable mode 1920x1200@60.002Hz position 0,0
     exec swaymsg "output * adaptive_sync on"
 }
