@@ -5,7 +5,7 @@ set -euo pipefail
 
 mkdir -p "$HOME/Pictures"
 tmpfile=$(mktemp "$HOME/Pictures/.satty-capture-XXXXXX.png")
-trap 'pkill -x wayfreeze; rm -f "$tmpfile"' EXIT
+trap 'pkill -x wayfreeze || true; rm -f "$tmpfile"' EXIT
 
 case "${1:-region}" in
     region)
@@ -36,7 +36,7 @@ fi
 # the frozen overlay stays on top of satty's window until the next click
 # dismisses it.
 grim "${grim_args[@]}" "$tmpfile"
-pkill -x wayfreeze
+pkill -x wayfreeze || true
 
 flatpak run org.satty.Satty \
     --filename "$tmpfile" \

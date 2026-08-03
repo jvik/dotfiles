@@ -19,7 +19,8 @@ exec flatpak run com.bitwarden.desktop
 # start copyq
 exec /usr/bin/copyq --start-server
 # keep clipboard content alive after the copying app (e.g. Satty) exits
-exec wl-clip-persist --clipboard regular
+# (full path: ~/.cargo/bin isn't on PATH for sway when launched outside an interactive shell, e.g. after reboot)
+exec $HOME/.cargo/bin/wl-clip-persist --clipboard regular >"$HOME/.cache/wl-clip-persist.log" 2>&1
 exec_always pgrep -x solaar || solaar --battery-icons=symbolic --window=hide
 
 exec_always {

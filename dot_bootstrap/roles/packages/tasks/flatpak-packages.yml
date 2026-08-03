@@ -59,6 +59,17 @@
           /tmp/satty-v{{ satty_version }}.flatpak
       changed_when: true
 
+# Satty's --copy-command shells out via `flatpak-spawn --host` (see
+# scripts/executable_satty-screenshot.sh) so the clipboard write lands on the
+# host instead of being lost to the sandbox. That requires talking to
+# org.freedesktop.Flatpak, which isn't granted by Satty's own manifest.
+- name: Allow Satty to use flatpak-spawn --host for clipboard access
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command:
+    cmd: flatpak override --user --talk-name=org.freedesktop.Flatpak org.satty.Satty
+  changed_when: false
+
 # Bitwarden's launcher forces --ozone-platform=x11 by default (Electron 39
 # Wayland/GPU crash workaround), which runs it under XWayland and breaks the
 # sway-configured cursor theme. USE_X11=false is the escape hatch it honors.
