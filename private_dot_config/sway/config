@@ -208,10 +208,16 @@ bindsym --locked XF86AudioPlay exec ~/scripts/media-play-toggle-or-next.sh
 bindsym --locked XF86AudioNext exec playerctl next
 
 ## Screenshots
-
-bindsym Print exec grim -o $(swaymsg -t get_outputs | jq -r '.[] | select(.focused) | .name') - | wl-copy --type image/png
-bindsym $mod+p exec grim -g "$(slurp)" - | wl-copy --type image/png
-bindsym $mod+Control+p exec ~/scripts/screenshot-to-file.sh
+set $printscreen_mode "printscreen (r:region, f:full, w:window)"
+mode $printscreen_mode {
+    bindsym r mode "default"; exec ~/scripts/satty-screenshot.sh region
+    bindsym f mode "default"; exec ~/scripts/satty-screenshot.sh full
+    bindsym w mode "default"; exec ~/scripts/satty-screenshot.sh window
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+p mode $printscreen_mode
+bindsym Print mode $printscreen_mode
 
 ## Clipboard Manager
 bindsym $mod+Shift+v exec copyq toggle

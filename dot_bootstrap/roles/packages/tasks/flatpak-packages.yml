@@ -31,6 +31,34 @@
       - org.wezfurlong.wezterm/x86_64/stable
     state: present
 
+# Satty is not published on Flathub, so it is installed from the release bundle
+# rather than through the flatpak module. Installed system-wide to match the
+# existing install.
+- name: Check whether Satty is installed
+  ansible.builtin.command:
+    cmd: flatpak info org.satty.Satty
+  register: packages_satty_installed
+  changed_when: false
+  failed_when: false
+
+- name: Install Satty from its release bundle
+  vars:
+    satty_version: "0.22.0"
+  when: packages_satty_installed.rc != 0
+  block:
+    - name: Download Satty Flatpak bundle
+      ansible.builtin.get_url:
+        url: https://github.com/Satty-org/Satty/releases/download/v{{ satty_version }}/satty-v{{ satty_version }}.flatpak
+        dest: /tmp/satty-v{{ satty_version }}.flatpak
+        mode: "0644"
+
+    - name: Install Satty bundle
+      become: true
+      ansible.builtin.command:
+        cmd: flatpak install --system --assumeyes --noninteractive
+          /tmp/satty-v{{ satty_version }}.flatpak
+      changed_when: true
+
 # Bitwarden's launcher forces --ozone-platform=x11 by default (Electron 39
 # Wayland/GPU crash workaround), which runs it under XWayland and breaks the
 # sway-configured cursor theme. USE_X11=false is the escape hatch it honors.
