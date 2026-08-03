@@ -18,6 +18,8 @@ exec --no-startup-id lxpolkit
 exec flatpak run com.bitwarden.desktop
 # start copyq
 exec /usr/bin/copyq --start-server
+# keep clipboard content alive after the copying app (e.g. Satty) exits
+exec wl-clip-persist --clipboard regular
 exec_always pgrep -x solaar || solaar --battery-icons=symbolic --window=hide
 
 exec_always {
@@ -213,11 +215,11 @@ mode $printscreen_mode {
     bindsym r mode "default"; exec ~/scripts/satty-screenshot.sh region
     bindsym f mode "default"; exec ~/scripts/satty-screenshot.sh full
     bindsym w mode "default"; exec ~/scripts/satty-screenshot.sh window
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+    bindsym Return mode "default"; exec killall wayfreeze
+    bindsym Escape mode "default"; exec killall wayfreeze
 }
-bindsym $mod+p mode $printscreen_mode
-bindsym Print mode $printscreen_mode
+bindsym $mod+p exec ~/.cargo/bin/wayfreeze; mode $printscreen_mode
+bindsym Print exec ~/.cargo/bin/wayfreeze; mode $printscreen_mode
 
 ## Clipboard Manager
 bindsym $mod+Shift+v exec copyq toggle

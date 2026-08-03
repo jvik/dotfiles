@@ -7,3 +7,9 @@
 
 - name: Include networkmanager-dmenu
   ansible.builtin.include_tasks: networkmanager-dmenu.yml
+
+- name: Include wayfreeze
+  ansible.builtin.include_tasks: wayfreeze.yml
+
+- name: Include wl-clip-persist
+  ansible.builtin.include_tasks: wl-clip-persist.yml

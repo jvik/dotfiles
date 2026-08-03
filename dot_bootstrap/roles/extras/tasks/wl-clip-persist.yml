@@ -1,0 +1,15 @@
+---
+- name: Check if wl-clip-persist is installed
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.stat:
+    path: "/home/{{ user }}/.cargo/bin/wl-clip-persist"
+  register: wl_clip_persist_stat
+
+- name: Install wl-clip-persist
+  when: not wl_clip_persist_stat.stat.exists
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command: cargo install --git https://github.com/Linus789/wl-clip-persist --locked
+  register: wl_clip_persist_install
+  changed_when: true

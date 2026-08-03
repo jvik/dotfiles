@@ -4,6 +4,8 @@
 set -euo pipefail
 
 mkdir -p "$HOME/Pictures"
+tmpfile=$(mktemp "$HOME/Pictures/.satty-capture-XXXXXX.png")
+trap 'pkill -x wayfreeze; rm -f "$tmpfile"' EXIT
 
 case "${1:-region}" in
     region)
@@ -29,10 +31,14 @@ else
     grim_args=(-o "$output")
 fi
 
-# The Flatpak sandbox has a private /tmp, so the capture goes over stdin rather
-# than through a temp file. ~/Pictures is writable via its filesystems=home perm.
-grim "${grim_args[@]}" - | flatpak run org.satty.Satty \
-    --filename - \
+# Capture to a file (rather than piping straight into satty) so wayfreeze can
+# be killed the moment the capture finishes, before satty opens -- otherwise
+# the frozen overlay stays on top of satty's window until the next click
+# dismisses it.
+grim "${grim_args[@]}" "$tmpfile"
+pkill -x wayfreeze
+
+flatpak run org.satty.Satty \
+    --filename "$tmpfile" \
     --output-filename "$HOME/Pictures/satty-%Y%m%d-%H%M%S.png" \
-    --early-exit all \
     --actions-on-enter save-to-clipboard

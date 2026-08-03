@@ -1,0 +1,41 @@
+---
+- name: Check if wayfreeze is installed
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.stat:
+    path: "/home/{{ user }}/.cargo/bin/wayfreeze"
+  register: wayfreeze_stat
+
+- name: Install wayfreeze
+  when: not wayfreeze_stat.stat.exists
+  block:
+    - name: Install wayfreeze build dependencies (Fedora)
+      ansible.builtin.dnf:
+        name:
+          - cargo
+          - libxkbcommon-devel
+          - wayland-devel
+          - pkgconf-pkg-config
+        state: present
+        lock_timeout: 180
+      become: true
+      when: ansible_distribution == 'Fedora'
+
+    - name: Install wayfreeze build dependencies (Ubuntu)
+      ansible.builtin.apt:
+        name:
+          - cargo
+          - libxkbcommon-dev
+          - libwayland-dev
+          - pkg-config
+        state: present
+        lock_timeout: 180
+      become: true
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Build and install wayfreeze via cargo
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.command: cargo install --git https://github.com/Jappie3/wayfreeze --locked
+      register: wayfreeze_install
+      changed_when: true
