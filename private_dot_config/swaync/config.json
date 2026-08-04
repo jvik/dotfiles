@@ -21,6 +21,13 @@
   "hide-on-clear": false,
   "hide-on-action": true,
   "script-fail-notify": true,
+  "scripts": {
+    "claude-focus": {
+      "exec": "/home/jorgen/.local/bin/claude-focus",
+      "app-name": "Claude Code",
+      "run-on": "action"
+    }
+  },
   "widgets": [
     "buttons-grid",
     "volume",

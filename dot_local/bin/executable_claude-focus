@@ -1,0 +1,28 @@
+#!/bin/bash
+if [ -f /tmp/claude-wez-con ]; then
+    CON_ID=$(sed -n 1p /tmp/claude-wez-con)
+    WEZ_PID=$(sed -n 2p /tmp/claude-wez-con)
+    if [ -n "$CON_ID" ] && swaymsg "[con_id=$CON_ID] focus" 2>/dev/null; then
+        exit 0
+    fi
+    if [ -n "$WEZ_PID" ]; then
+        ALT_CON=$(swaymsg -t get_tree | python3 -c "
+import sys, json
+try:
+    pid = int('$WEZ_PID')
+    def find(n):
+        if n.get('pid') == pid and 'wezterm' in n.get('app_id','').lower():
+            return n.get('id')
+        for c in n.get('nodes',[]) + n.get('floating_nodes',[]):
+            r = find(c)
+            if r is not None: return r
+    print(find(json.load(sys.stdin)) or '')
+except: print('')
+" 2>/dev/null)
+        if [ -n "$ALT_CON" ]; then
+            swaymsg "[con_id=$ALT_CON] focus" 2>/dev/null && exit 0
+        fi
+    fi
+fi
+swaymsg '[app_id="org.wezfurlong.wezterm" title=".*claude.*"] focus' 2>/dev/null ||
+swaymsg '[app_id="org.wezfurlong.wezterm"] focus' 2>/dev/null
