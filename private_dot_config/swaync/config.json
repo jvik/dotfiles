@@ -28,6 +28,12 @@
       "run-on": "action"
     }
   },
+  "notification-visibility": {
+    "claude-transient": {
+      "state": "transient",
+      "app-name": "Claude Code"
+    }
+  },
   "widgets": [
     "buttons-grid",
     "volume",
