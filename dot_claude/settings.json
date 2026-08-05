@@ -121,26 +121,4 @@
       "socksProxyPort": 8081
     }
   },
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/notify-stop.sh"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/notify-notification.sh"
-          }
-        ]
-      }
-    ]
-  }
 }
