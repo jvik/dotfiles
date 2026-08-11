@@ -178,7 +178,8 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 ## Present Mode
-mode "present" {
+set $present_mode "present (m:mirror, o:output, r:region, R:unset, s:scale, f:freeze, k:kill)"
+mode $present_mode {
     bindsym m mode "default"; exec wl-present mirror
     bindsym o mode "default"; exec wl-present set-output
     bindsym r mode "default"; exec wl-present set-region
@@ -190,8 +191,8 @@ mode "present" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-bindsym $mod+shift+p mode "present"
-bindsym XF86Display mode "present"
+bindsym $mod+shift+p mode $present_mode
+bindsym XF86Display mode $present_mode
 
 ## Media and System Keys
 bindsym --locked XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
