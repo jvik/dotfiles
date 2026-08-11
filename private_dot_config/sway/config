@@ -40,16 +40,10 @@ workspace 10 output eDP-1
 ### Idle Configuration
 set $locker swaylock -f
 set $lockman exec bash ~/.config/sway/lockman.sh
-set $monitorDisableTimeout 300
-set $lockerTimeout 360
-set $suspendTimeout $(if ls /sys/class/power_supply/BAT* >/dev/null 2>&1; then echo 600; else echo 0; fi)
 
-exec_always killall swayidle; swayidle -w \
-    timeout $monitorDisableTimeout 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-    timeout $lockerTimeout '$locker' \
-    timeout $suspendTimeout 'systemctl suspend' \
-    before-sleep '$locker' \
-    lock '$locker'
+# Timeouts and the battery check live in idle.sh, which is PID-file scoped so a
+# reload doesn't also kill the swayidle lockman.sh runs while the screen is locked.
+exec_always ~/.config/sway/scripts/idle.sh
 
 ### Input Configuration
 input * {

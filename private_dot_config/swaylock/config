@@ -26,7 +26,8 @@ text-clear-color=ccf5ffff
 separator-color=ffffff33
 
 # Indikator
-show-keyboard-layout=no
+# NB: show-keyboard-layout tar ikke argument -- "show-keyboard-layout=no" fikk
+# swaylock til a avslutte med "option doesn't allow an argument". Av er default.
 show-failed-attempts=yes
 indicator-radius=110
 indicator-thickness=12

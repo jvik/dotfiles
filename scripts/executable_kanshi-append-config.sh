@@ -2,11 +2,17 @@
 
 # Append a kanshi profile derived from current Sway output layout.
 # Usage: kanshi-append-config.sh [profile-name] [kanshi-config-path]
+#
+# External outputs are capped at KANSHI_MAX_REFRESH Hz. Recording a monitor's
+# top refresh is what produced the 5120x1440@165.001Hz profile that left the
+# internal panel unable to come back after a DPMS off -- at that mode the DRM
+# config has no room left for eDP-1.
 
 set -euo pipefail
 
 DEFAULT_CONFIG="$HOME/.local/share/chezmoi/private_dot_config/kanshi/config"
 MARKER="# Generated profiles"
+MAX_REFRESH_MHZ=$(( ${KANSHI_MAX_REFRESH:-120} * 1000 ))
 
 error_exit() {
     echo "Error: $1" >&2
@@ -139,7 +145,7 @@ main() {
         fi
     fi
 
-    output_lines=$(printf '%s' "$outputs_json" | jq -r '
+    output_lines=$(printf '%s' "$outputs_json" | jq -r --argjson max_refresh "$MAX_REFRESH_MHZ" '
         def output_name:
             if (.make // "") != "" and (.model // "") != "" and (.serial // "") != "" and .serial != "Unknown" then
                 "\(.make) \(.model) \(.serial)"
@@ -159,17 +165,14 @@ main() {
             else 0
             end;
 
-        def refresh_hz:
-            if .current_mode.refresh != null then (.current_mode.refresh / 1000)
-            elif .current_mode.refresh_rate != null then (.current_mode.refresh_rate / 1000)
-            else null
-            end;
+        def fmt_hz($mhz):
+            ($mhz / 1000) as $v
+            | if ($v | floor) == $v then (($v | floor) | tostring)
+              else ($v | tostring | sub("0+$"; "") | sub("\\.$"; ""))
+              end;
 
-        def fmt_hz($v):
-            if $v == null then ""
-            elif ($v | floor) == $v then (($v | floor) | tostring)
-            else ($v | tostring | sub("0+$"; "") | sub("\\.$"; ""))
-            end;
+        def mode_str($w; $h; $mhz):
+            "\($w)x\($h)" + (if $mhz == null then "" else "@\(fmt_hz($mhz))Hz" end);
 
         [
             .[]
@@ -178,9 +181,19 @@ main() {
         ]
         | sort_by(pos_x, pos_y, .name)
         | .[]
-        | (refresh_hz) as $hz
-        | ("\(.current_mode.width)x\(.current_mode.height)" + (if $hz == null then "" else "@\(fmt_hz($hz))Hz" end)) as $mode
-        | "    output \"\(output_name)\" enable mode \($mode) position \(pos_x),\(pos_y)"
+        | . as $o
+        | ($o.current_mode) as $cm
+        | ($cm.refresh // $cm.refresh_rate) as $current
+        | (($o.name | test("^eDP")) | not) as $is_external
+        # Highest advertised refresh at this resolution that is within the cap.
+        | (if $is_external and $current != null and $current > $max_refresh then
+               ([$o.modes[]? | select(.width == $cm.width and .height == $cm.height) | .refresh]
+                | map(select(. <= $max_refresh)) | max)
+           else null end) as $capped
+        | "    output \"\($o | output_name)\" enable mode \(mode_str($cm.width; $cm.height; $capped // $current)) position \($o | pos_x),\($o | pos_y)"
+          + (if $capped == null then ""
+             else "\n    # capped from \(mode_str($cm.width; $cm.height; $current)); raise KANSHI_MAX_REFRESH to keep it"
+             end)
     ')
 
     [ -n "$output_lines" ] || error_exit "Could not generate output lines from sway outputs"

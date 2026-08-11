@@ -1,11 +1,11 @@
-profile desktop {
-    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@120Hz position 1920,0
-    exec swaymsg "output * adaptive_sync on"
-}
-
 profile desktop-laptop {
     output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@144Hz position 1920,0
     output eDP-1 enable mode 1920x1200@60.002Hz position 0,0
+    exec swaymsg "output * adaptive_sync on"
+}
+
+profile desktop {
+    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@120Hz position 1920,0
     exec swaymsg "output * adaptive_sync on"
 }
 
@@ -78,6 +78,9 @@ profile HNTTA00440 {
 }
 
 profile CNC5260DTR {
-    output "HP Inc. HP E45c G5 CNC5260DTR" enable mode 5120x1440@165.001Hz position 0,0
+    # 120Hz, not the panel's top 165.001Hz: at 165Hz the DRM config has no room
+    # left for eDP-1, so re-enabling the internal panel after a DPMS off fails
+    # ("Search for valid config failed") until the external is unplugged.
+    output "HP Inc. HP E45c G5 CNC5260DTR" enable mode 5120x1440@120Hz position 0,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5120,0
 }
