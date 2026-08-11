@@ -76,3 +76,8 @@ profile HNTTA00440 {
     output "Samsung Electric Company LS49A950U HNTTA00440" enable mode 5120x1440@59.977Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }
+
+profile CNC5260DTR {
+    output "HP Inc. HP E45c G5 CNC5260DTR" enable mode 5120x1440@165.001Hz position 0,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 5120,0
+}

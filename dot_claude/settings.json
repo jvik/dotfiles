@@ -19,7 +19,6 @@
       "Bash(git remote -v)",
       "Bash(git blame*)",
       "Bash(git stash list*)",
-
       "Bash(chezmoi diff*)",
       "Bash(chezmoi status*)",
       "Bash(chezmoi data*)",
@@ -29,16 +28,13 @@
       "Bash(chezmoi source-path*)",
       "Bash(chezmoi verify*)",
       "Bash(chezmoi apply --dry-run)",
-
       "Bash(ansible-lint*)",
       "Bash(ansible-playbook * --check)",
       "Bash(ansible-playbook * --syntax-check)",
-
       "Bash(shellcheck*)",
       "Bash(shfmt -d*)",
       "Bash(fish -n *)",
       "Bash(luacheck*)",
-
       "Bash(ls*)",
       "Bash(find*)",
       "Bash(rg*)",
@@ -57,7 +53,6 @@
       "Bash(find*-delete*)",
       "Bash(find*-fprintf*)",
       "Bash(find*|*)",
-
       "Bash(*;*)",
       "Bash(*&&*)",
       "Bash(*||*)",
@@ -69,20 +64,56 @@
     "enabled": true,
     "credentials": {
       "files": [
-        { "path": "~/.ssh/id_ed25519", "mode": "deny" },
-        { "path": "~/.ssh/id_rsa", "mode": "deny" },
-        { "path": "~/.ssh/id_ecdsa", "mode": "deny" },
-        { "path": "~/.gnupg", "mode": "deny" },
-        { "path": "~/.config/gh", "mode": "deny" },
-        { "path": "~/.docker", "mode": "deny" },
-        { "path": "~/.kube/config", "mode": "deny" },
-        { "path": "~/.mozilla", "mode": "deny" },
-        { "path": "~/.config/Bitwarden CLI", "mode": "deny" },
-        { "path": "~/.var/app/com.bitwarden.desktop", "mode": "deny" }
+        {
+          "path": "~/.ssh/id_ed25519",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.ssh/id_rsa",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.ssh/id_ecdsa",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.gnupg",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.config/gh",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.docker",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.kube/config",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.mozilla",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.config/Bitwarden CLI",
+          "mode": "deny"
+        },
+        {
+          "path": "~/.var/app/com.bitwarden.desktop",
+          "mode": "deny"
+        }
       ],
       "envVars": [
-        { "name": "GITHUB_TOKEN", "mode": "deny" },
-        { "name": "BW_SESSION", "mode": "deny" }
+        {
+          "name": "GITHUB_TOKEN",
+          "mode": "deny"
+        },
+        {
+          "name": "BW_SESSION",
+          "mode": "deny"
+        }
       ]
     },
     "network": {
@@ -120,5 +151,5 @@
       "httpProxyPort": 8080,
       "socksProxyPort": 8081
     }
-  },
+  }
 }
