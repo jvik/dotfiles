@@ -75,12 +75,17 @@ set $term flatpak run org.wezfurlong.wezterm
 set $menu wofi --show drun
 
 ## Basics
+# Lines starting with `#:` are picked up by ~/scripts/sway-shortcuts.sh as the
+# description for the binding directly below them. Sway itself ignores them.
 bindsym $mod+Return exec $term
 bindsym $mod+Shift+q kill
+#: Application launcher
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+f exec $browser
 bindsym $mod+Shift+i exec ~/scripts/toggle-dark-mode.sh
+#: Jump to the most recently urgent window
 bindsym $mod+x [urgent=latest] focus
+#: Lock the screen
 bindsym $mod+Control+l exec $lockman
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
@@ -108,12 +113,17 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+Shift+m sticky toggle
 
 ## Utility Bindings
+#: Toggle Bluetooth A2DP / headset profile
 bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
+#: Redistribute workspaces across outputs
 bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
 bindsym $mod+Shift+t exec "swaymsg '[app_id=\"com.github.IsmaelMartinez.teams_for_linux\"] focus' || flatpak run com.github.IsmaelMartinez.teams_for_linux"
 bindsym $mod+Shift+s exec "swaymsg '[app_id=\"com.slack.Slack\"] focus' || flatpak run com.slack.Slack"
+# Bring app to current workspace or launch it if not running
+bindsym $mod+Shift+o exec "swaymsg '[app_id=\"md.Obsidian\"] move container to workspace current, focus' || exec flatpak run md.obsidian.Obsidian"
 #bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
+#: Emoji picker
 bindsym $mod+period exec "flatpak run it.mijorus.smile"
 
 ## Workspaces
@@ -149,7 +159,9 @@ bindsym $mod+Control+Shift+Up move workspace to output up
 bindsym $mod+b splith
 bindsym $mod+v splitv
 # bindsym $mod+s exec ~/.config/sway/scripts/layout.sh stacking
+#: Tabbed layout
 bindsym $mod+w exec ~/.config/sway/scripts/layout.sh tabbed
+#: Toggle split direction, horizontal / vertical
 bindsym $mod+e exec ~/.config/sway/scripts/layout.sh toggle split
 bindsym $mod+s layout stacking
 bindsym $mod+f fullscreen
@@ -187,6 +199,7 @@ mode $present_mode {
     bindsym s mode "default"; exec wl-present set-scaling
     bindsym f mode "default"; exec wl-present toggle-freeze
     bindsym c mode "default"; exec wl-present custom
+    #: Stop mirroring
     bindsym k mode "default"; exec killall wl-mirror
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -211,7 +224,9 @@ mode $printscreen_mode {
     bindsym r mode "default"; exec ~/scripts/satty-screenshot.sh region
     bindsym f mode "default"; exec ~/scripts/satty-screenshot.sh full
     bindsym w mode "default"; exec ~/scripts/satty-screenshot.sh window
+    #: Cancel, unfreeze the screen
     bindsym Return mode "default"; exec killall wayfreeze
+    #: Cancel, unfreeze the screen
     bindsym Escape mode "default"; exec killall wayfreeze
 }
 bindsym $mod+p exec ~/.cargo/bin/wayfreeze; mode $printscreen_mode
@@ -221,7 +236,15 @@ bindsym Print exec ~/.cargo/bin/wayfreeze; mode $printscreen_mode
 bindsym $mod+Shift+v exec copyq toggle
 
 ## Notification Center
+#: Toggle the notification center panel
 bindsym $mod+Shift+n exec swaync-client -t -sw
+
+## Help
+# Searchable overlay of every binding in this file, generated at invocation time.
+#: Show this shortcut cheatsheet
+bindsym $mod+question exec ~/scripts/sway-shortcuts.sh
+#: Show this shortcut cheatsheet
+bindsym $mod+Shift+question exec ~/scripts/sway-shortcuts.sh
 
 ### Status Bar
 bar {
@@ -268,9 +291,6 @@ assign [title="Plexamp"] 8
 assign [app_id="spotify"] 8
 assign [app_id="signal"] 9
 assign [app_id="discord|vesktop"] 9
-
-## Bring app to current workspace or launch it if not running
-bindsym $mod+Shift+o exec "swaymsg '[app_id=\"md.Obsidian\"] move container to workspace current, focus' || exec flatpak run md.obsidian.Obsidian"
 
 workspace_auto_back_and_forth no
 focus_on_window_activation focus
