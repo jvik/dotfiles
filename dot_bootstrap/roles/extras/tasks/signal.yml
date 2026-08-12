@@ -98,7 +98,7 @@
           [Desktop Entry]
           Name=Signal
           Comment=Private messaging from your desktop
-          Exec=/home/{{ user }}/Applications/signal-desktop.AppImage %U
+          Exec=/home/{{ user }}/Applications/signal-desktop.AppImage --user-data-dir=/home/{{ user }}/.config/Signal --password-store=gnome-libsecret %U
           Icon=/home/{{ user }}/.local/share/icons/signal-desktop.png
           Type=Application
           StartupNotify=true
