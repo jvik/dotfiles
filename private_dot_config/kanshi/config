@@ -84,3 +84,8 @@ profile CNC5260DTR {
     output "HP Inc. HP E45c G5 CNC5260DTR" enable mode 5120x1440@120Hz position 0,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5120,0
 }
+
+profile HNTX902332 {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
+    output "Samsung Electric Company LS49C95xU HNTX902332" enable mode 5120x1440@59.999Hz position 1920,0
+}
