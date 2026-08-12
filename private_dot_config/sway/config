@@ -278,6 +278,7 @@ for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
+for_window [title="Screen is being shared$"] floating enable, sticky enable
 for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
 # Workaround for glitchy behaviour in sway
 for_window [app_id="^firefox$" title="^Extension: \(Bitwarden Password Manager\) - Bitwarden — Mozilla Firefox$"] exec "sleep 0.1; swaymsg floating enable; swaymsg floating disable; swaymsg floating enable"
