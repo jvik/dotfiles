@@ -120,6 +120,7 @@ bindsym $mod+Shift+d exec wdisplays
 bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
 bindsym $mod+Shift+t exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.github.IsmaelMartinez.teams_for_linux" flatpak run com.github.IsmaelMartinez.teams_for_linux
 bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.slack.Slack" flatpak run com.slack.Slack
+bindsym $mod+Shift+g exec ~/.config/sway/scripts/toggle-scratchpad.sh "signal" gtk-launch signal-desktop
 # Bring app to current workspace or launch it if not running
 bindsym $mod+Shift+o exec ~/.config/sway/scripts/toggle-scratchpad.sh "md.obsidian.Obsidian" flatpak run md.obsidian.Obsidian
 #bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
