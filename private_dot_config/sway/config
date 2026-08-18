@@ -282,8 +282,7 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 for_window [title="Screen is being shared$"] floating enable, sticky enable, move position 100 ppt 100 ppt, move left 444 px, move up 197 px
 for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
 # Scratchpad apps: move to scratchpad on creation (keybinding toggles show/hide)
-for_window [app_id="com.slack.Slack"] move scratchpad
-for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] move scratchpad
+# Note: Slack and Teams are NOT auto-sent to scratchpad so their tray icons keep working.
 for_window [app_id="md.obsidian.Obsidian"] move scratchpad
 # Slack huddle call window — pop back out of scratchpad and keep visible across workspaces
 for_window [app_id="com.slack.Slack" title="^Huddle: "] scratchpad show, floating enable, sticky enable, resize set width 20 ppt height 28 ppt, move position 78 ppt 70 ppt
