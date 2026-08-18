@@ -118,8 +118,8 @@ bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
 #: Move workspaces to external monitor
 bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
-bindsym $mod+Shift+t exec "swaymsg '[app_id=\"com.github.IsmaelMartinez.teams_for_linux\"] focus' || flatpak run com.github.IsmaelMartinez.teams_for_linux"
-bindsym $mod+Shift+s exec "swaymsg '[app_id=\"com.slack.Slack\"] focus' || flatpak run com.slack.Slack"
+bindsym $mod+Shift+t exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.github.IsmaelMartinez.teams_for_linux" flatpak run com.github.IsmaelMartinez.teams_for_linux
+bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.slack.Slack" flatpak run com.slack.Slack
 # Bring app to current workspace or launch it if not running
 bindsym $mod+Shift+o exec "swaymsg '[app_id=\"md.Obsidian\"] move container to workspace current, focus' || exec flatpak run md.obsidian.Obsidian"
 #bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
@@ -281,14 +281,18 @@ for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
 # Teams screen-share indicator: anchor bottom-right (404x167 window + 40px/30px margin)
 for_window [title="Screen is being shared$"] floating enable, sticky enable, move position 100 ppt 100 ppt, move left 444 px, move up 197 px
 for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
-# Slack huddle call window — keep the call visible while working on other workspaces
-for_window [app_id="com.slack.Slack" title="^Huddle: "] floating enable, sticky enable, resize set width 20 ppt height 28 ppt, move position 78 ppt 70 ppt
+# Scratchpad apps: move to scratchpad on creation (keybinding toggles show/hide)
+for_window [app_id="com.slack.Slack"] move scratchpad
+for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] move scratchpad
+# Slack huddle call window — pop back out of scratchpad and keep visible across workspaces
+for_window [app_id="com.slack.Slack" title="^Huddle: "] scratchpad show, floating enable, sticky enable, resize set width 20 ppt height 28 ppt, move position 78 ppt 70 ppt
+# Sharing indicators: pop back out of scratchpad immediately
+for_window [app_id="com.slack.Slack" title="Sharing Indicator"] scratchpad show
+for_window [app_id="com.github.IsmaelMartinez.teams_for_linux" title="Screen is being shared"] scratchpad show
 # Workaround for glitchy behaviour in sway
 for_window [app_id="^firefox$" title="^Extension: \(Bitwarden Password Manager\) - Bitwarden — Mozilla Firefox$"] exec "sleep 0.1; swaymsg floating enable; swaymsg floating disable; swaymsg floating enable"
 
 ## Workspace Assignments
-assign [app_id="com.github.IsmaelMartinez.teams_for_linux"] 4
-assign [class="Slack"] 4
 #for_window [app_id="com.github.IsmaelMartinez.teams_for_linux"] layout tabbed
 #for_window [class="Slack"] layout tabbed
 assign [title="Plexamp"] 8
