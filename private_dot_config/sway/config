@@ -285,8 +285,11 @@ for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
 # Scratchpad apps: move to scratchpad on creation (keybinding toggles show/hide)
 # Note: Slack and Teams are NOT auto-sent to scratchpad so their tray icons keep working.
 for_window [app_id="md.obsidian.Obsidian"] move scratchpad
-# Slack huddle call window — pop back out of scratchpad and keep visible across workspaces
-for_window [app_id="com.slack.Slack" title="^Huddle: "] scratchpad show, floating enable, sticky enable, resize set width 20 ppt height 28 ppt, move position 78 ppt 70 ppt
+# Slack huddle call window (incl. pre-join "Huddle Preview") — keep visible across workspaces.
+# Title is set async after map (for_window title matching races) and Slack ignores our
+# requested height, so sizing/positioning is done by the script once the window settles.
+for_window [app_id="com.slack.Slack" title="Huddle"] floating enable, sticky enable
+for_window [app_id="com.slack.Slack"] exec ~/.config/sway/scripts/float-slack-huddle.sh
 # Sharing indicators: pop back out of scratchpad immediately
 for_window [app_id="com.slack.Slack" title="Sharing Indicator"] scratchpad show
 for_window [app_id="com.github.IsmaelMartinez.teams_for_linux" title="Screen is being shared"] scratchpad show

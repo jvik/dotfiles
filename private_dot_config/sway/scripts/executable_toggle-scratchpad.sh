@@ -12,7 +12,7 @@ in_scratchpad=$(swaymsg -t get_tree | jq -r "
     .. | objects | select(.name? == \"__i3_scratch\") |
     .floating_nodes[]?, .nodes[]? |
     select(.app_id? == \"$app_id\") |
-    select((.name? // \"\") | test(\"^Huddle: |Sharing Indicator|Screen is being shared\") | not)
+    select((.name? // \"\") | test(\"Huddle|Sharing Indicator|Screen is being shared\") | not)
   ) | .id // empty
 " 2>/dev/null)
 
@@ -24,7 +24,7 @@ on_current=$(swaymsg -t get_tree | jq -r "
     select(.type? == \"workspace\" and .name? == \"$focused_ws\") |
     recurse(.nodes[]?, .floating_nodes[]?) |
     select(.app_id? == \"$app_id\") |
-    select((.name? // \"\") | test(\"^Huddle: |Sharing Indicator|Screen is being shared\") | not)
+    select((.name? // \"\") | test(\"Huddle|Sharing Indicator|Screen is being shared\") | not)
   ) | .id // empty
 " 2>/dev/null)
 
@@ -34,7 +34,7 @@ on_workspace=$(swaymsg -t get_tree | jq -r "
     select(.type? == \"workspace\") |
     recurse(.nodes[]?, .floating_nodes[]?) |
     select(.app_id? == \"$app_id\") |
-    select((.name? // \"\") | test(\"^Huddle: |Sharing Indicator|Screen is being shared\") | not)
+    select((.name? // \"\") | test(\"Huddle|Sharing Indicator|Screen is being shared\") | not)
   ) | .id // empty
 " 2>/dev/null)
 
