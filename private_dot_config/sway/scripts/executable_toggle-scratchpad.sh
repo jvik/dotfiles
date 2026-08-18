@@ -11,6 +11,17 @@ in_scratchpad=$(swaymsg -t get_tree | jq -r "
   ) | .id // empty
 " 2>/dev/null)
 
+focused_ws=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused) | .name')
+
+on_current=$(swaymsg -t get_tree | jq -r "
+  first(
+    .. | objects |
+    select(.type? == \"workspace\" and .name? == \"$focused_ws\") |
+    recurse(.nodes[]?, .floating_nodes[]?) |
+    select(.app_id? == \"$app_id\")
+  ) | .id // empty
+" 2>/dev/null)
+
 on_workspace=$(swaymsg -t get_tree | jq -r "
   first(
     .. | objects |
@@ -22,8 +33,10 @@ on_workspace=$(swaymsg -t get_tree | jq -r "
 
 if [ -n "$in_scratchpad" ]; then
     swaymsg "[app_id=\"$app_id\"] scratchpad show, floating disable"
-elif [ -n "$on_workspace" ]; then
+elif [ -n "$on_current" ]; then
     swaymsg "[app_id=\"$app_id\"] move scratchpad"
+elif [ -n "$on_workspace" ]; then
+    swaymsg "[app_id=\"$app_id\"] move container to workspace current, focus"
 else
     "$@" &
 fi
