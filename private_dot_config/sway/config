@@ -278,8 +278,11 @@ for_window [title="Rename *"] floating enable
 for_window [title="Firefox — Sharing Indicator"] floating enable
 for_window [title="Remmina Remote Desktop Client"] floating enable, resize set width 800px height 600px, move position center
 for_window [title="\ -\ Sharing\ Indicator$"] floating enable, sticky enable
-for_window [title="Screen is being shared$"] floating enable, sticky enable
+# Teams screen-share indicator: anchor bottom-right (404x167 window + 40px/30px margin)
+for_window [title="Screen is being shared$"] floating enable, sticky enable, move position 100 ppt 100 ppt, move left 444 px, move up 197 px
 for_window [app_id="it.mijorus.smile"] floating enable, sticky enable
+# Slack huddle call window — keep the call visible while working on other workspaces
+for_window [app_id="com.slack.Slack" title="^Huddle: "] floating enable, sticky enable, resize set width 20 ppt height 28 ppt, move position 78 ppt 70 ppt
 # Workaround for glitchy behaviour in sway
 for_window [app_id="^firefox$" title="^Extension: \(Bitwarden Password Manager\) - Bitwarden — Mozilla Firefox$"] exec "sleep 0.1; swaymsg floating enable; swaymsg floating disable; swaymsg floating enable"
 
