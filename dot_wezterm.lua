@@ -103,7 +103,6 @@ config.inactive_pane_hsb = {
 
 config.alternate_buffer_wheel_scroll_speed = 30
 config.use_dead_keys = false
-config.bypass_mouse_reporting_modifiers = "NONE"
 
 -- keys --
 config.keys = {
