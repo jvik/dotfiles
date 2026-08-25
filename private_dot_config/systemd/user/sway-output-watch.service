@@ -1,0 +1,17 @@
+[Unit]
+Description=Reconcile sway workspaces and tiling after an output change
+PartOf=graphical-session.target
+After=graphical-session-pre.target
+# graphical-session.target is inactive on this host, so the unit is driven by
+# sway's exec_always. Disable rate limiting so a sway-less spin can never latch
+# the unit into `failed` and leave the next session unwatched.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+ExecStart=%h/.config/sway/scripts/on-output-change.sh
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target

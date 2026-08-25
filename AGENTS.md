@@ -39,6 +39,13 @@ The goal is safe, minimal, and idempotent changes.
 - Match the shell style already used in each file (POSIX/Bash/Fish).
 - Do not remove `executable_` prefixes or rename scripts without a clear reason.
 - Avoid introducing interactive behavior in scripts used by status bars/hooks.
+- **Long-running sway helpers belong in a systemd user unit**, not in
+  `exec_always "pkill -f <name>; <name>"`. sway runs `exec_always` through
+  `sh -c "<the whole string>"`, so that shell's own argv matches the pkill
+  pattern and it kills itself before reaching the `;` — a watcher started that
+  way never runs. See `private_dot_config/systemd/user/sway-output-watch.service`.
+- When subscribing with `swaymsg -t subscribe`, pass `--monitor`. Without it
+  swaymsg exits after the first event and the script silently dies.
 
 ### Terminal/shell environment
 
@@ -50,7 +57,7 @@ The goal is safe, minimal, and idempotent changes.
 
 The following files embed hardware identifiers and must reflect the current machine's hardware:
 
-- `private_dot_config/kanshi/config` — monitor serial numbers in profile names and `output` directives
+- `private_dot_config/kanshi/config` — monitor identifiers in profile names and `output` directives. Most desks are covered by per-family glob profiles (`"Samsung Electric Company LS49C95xU *"`) and a final `fallback-docked` catch-all, so a new monitor usually needs no profile at all. kanshi takes the **first** matching profile, so order matters: specific desks → family globs → `fallback-docked` last.
 - `private_dot_config/sway/config` — touchpad input IDs and the hardcoded wallpaper path
 - `private_dot_config/solaar/config.yaml` — Logitech peripheral serial numbers (MX Master, MX Keys, etc.)
 - `dot_var/app/hu.irl.cameractrls/` — camera device identifiers encoded in filenames

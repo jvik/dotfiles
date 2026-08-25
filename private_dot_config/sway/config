@@ -13,7 +13,7 @@ include ~/.config/sway/colors/gruvbox
 ### Startup Commands
 exec --no-startup-id dbus-update-activation-environment --all
 # Propagate Wayland env vars to systemd user session so D-Bus activated apps (e.g. GNOME Snapshot) can open displays
-exec --no-startup-id systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+exec_always --no-startup-id systemctl --user import-environment SWAYSOCK WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 exec --no-startup-id lxpolkit
 exec flatpak run com.bitwarden.desktop
 # start copyq
@@ -27,12 +27,23 @@ exec_always {
     rm /run/user/1000/pipectl.1000.wl-present.pipe 
 }
 
-exec_always systemctl --user restart kanshi.service
-exec_always "killall swaync; swaync"
-exec_always "pkill -f fix-tiling-on-output-change.sh; ~/.config/sway/scripts/fix-tiling-on-output-change.sh"
-exec_always ~/.config/sway/scripts/move-workspaces.sh
+# A reload resets output config to what this file says, discarding kanshi's
+# positions, so kanshi does have to re-apply afterwards. But restarting it
+# inline -- as `exec_always systemctl --user restart kanshi.service` did -- puts
+# a DRM modeset on a compositor that is still rebuilding, which is what turned
+# mod+Shift+c into a black screen. The script defers and lock-guards it.
+exec_always ~/.config/sway/scripts/reapply-kanshi.sh
+exec_always pgrep -x swaync >/dev/null || swaync
+# The output watcher runs as a systemd unit, not as
+#   exec_always "pkill -f <name>; <name>"
+# sway runs exec_always through `sh -c "<the whole string>"`, so that shell's
+# own argv matches the pkill pattern and it SIGTERMs itself before reaching the
+# `;`. The predecessor of this watcher was never running for exactly that reason.
+exec_always systemctl --user restart sway-output-watch.service
+# Load-bearing: --monitor does not emit the subscribe ack, so the watcher does
+# not fire once at startup. This is the initial reconcile.
+exec_always ~/.config/sway/scripts/on-output-change.sh --once
 # exec_always "killall autotiling; $HOME/.local/bin/autotiling"
-exec ~/.config/sway/scripts/keep-workspace-10.sh
 
 ### Output Configuration
 workspace 10 output eDP-1
@@ -87,7 +98,11 @@ bindsym $mod+Shift+i exec ~/scripts/toggle-dark-mode.sh
 bindsym $mod+x [urgent=latest] focus
 #: Lock the screen
 bindsym $mod+Control+l exec $lockman
-bindsym $mod+Shift+c reload
+#: Re-place workspaces and re-fill tiling after a display change
+bindsym $mod+Shift+c exec ~/.config/sway/scripts/on-output-change.sh --once
+# Reload is deliberately the harder chord: it re-runs every exec_always, and
+# reaching for it as a display fix is what produced the black screen.
+bindsym $mod+Control+Shift+c reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 
 floating_modifier $mod normal
@@ -117,7 +132,7 @@ bindsym $mod+Shift+m sticky toggle
 bindsym $mod+Shift+a exec ~/scripts/a2dp-toggle.sh
 bindsym $mod+Shift+d exec wdisplays
 #: Move workspaces to external monitor
-bindsym $mod+Shift+w exec ~/.config/sway/scripts/move-workspaces.sh
+bindsym $mod+Shift+w exec ~/.config/sway/scripts/on-output-change.sh --once
 bindsym $mod+Shift+t exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.github.IsmaelMartinez.teams_for_linux" flatpak run com.github.IsmaelMartinez.teams_for_linux
 bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.slack.Slack" flatpak run com.slack.Slack
 bindsym $mod+Shift+g exec ~/.config/sway/scripts/toggle-scratchpad.sh "signal" gtk-launch signal-desktop

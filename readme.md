@@ -116,7 +116,7 @@ Screenshots: `$mod+p` / `Print` freezes the screen with [`wayfreeze`](https://gi
 
 Some files contain hardware identifiers or device settings tied to specific machines. Review and update these when setting up on new hardware:
 
-- **`private_dot_config/kanshi/config`** — Display profiles keyed by monitor serial numbers. Add new profiles with `scripts/kanshi-append-config.sh` or by editing directly.
+- **`private_dot_config/kanshi/config`** — Display profiles. Per-family glob profiles (`"Samsung Electric Company LS49C95xU *"`) cover most desks and a final `fallback-docked` catch-all handles anything unrecognised, so a new monitor usually needs no profile at all. Add one only when a desk needs different geometry, with `scripts/kanshi-append-config.sh` (which inserts before the catch-all) or by editing directly. kanshi takes the first matching profile, so `fallback-docked` must stay last.
 - **`private_dot_config/sway/config`** — Touchpad input device IDs (e.g. `input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad"`) and the wallpaper path (`/home/jorgen/.wallpaper`).
 - **`private_dot_config/solaar/config.yaml`** — Logitech peripheral settings containing per-device serial numbers (MX Master 3S, MX Keys, etc.).
 - **`dot_var/app/hu.irl.cameractrls/`** — Camera control settings with PCI/USB device identifiers encoded in the filenames.

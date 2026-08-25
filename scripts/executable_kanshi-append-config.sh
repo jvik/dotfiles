@@ -12,6 +12,9 @@ set -euo pipefail
 
 DEFAULT_CONFIG="$HOME/.local/share/chezmoi/private_dot_config/kanshi/config"
 MARKER="# Generated profiles"
+# New profiles are inserted before this one: kanshi takes the first match, so a
+# profile written after the catch-all would be unreachable.
+FALLBACK_PROFILE="fallback-docked"
 MAX_REFRESH_MHZ=$(( ${KANSHI_MAX_REFRESH:-120} * 1000 ))
 
 error_exit() {
@@ -198,24 +201,35 @@ main() {
 
     [ -n "$output_lines" ] || error_exit "Could not generate output lines from sway outputs"
 
-    ensure_generated_marker "$config_path"
     profile_name=$(find_unique_profile_name "$profile_base" "$config_path")
 
-    # Check if there are external (non-eDP) outputs
-    local has_external
-    has_external=$(printf '%s' "$outputs_json" | jq -r '
-        [.[] | select(.active and .current_mode != null) | select((.name | test("^eDP")) | not)]
-        | length
-    ')
-
-    {
+    local profile_text
+    profile_text=$(
         printf '\nprofile %s {\n' "$profile_name"
         printf '%s\n' "$output_lines"
         printf '}\n'
-    } >> "$config_path"
+    )
 
-    echo "Appended profile '$profile_name' to $config_path"
-    echo "Remember to run 'chezmoi apply' and reload kanshi to use the new profile."
+    # Insert before the catch-all rather than appending. kanshi takes the first
+    # matching profile, so anything written after `profile fallback-docked`
+    # would never match.
+    if grep -q "^profile $FALLBACK_PROFILE {" "$config_path"; then
+        local tmp
+        tmp=$(mktemp) || error_exit "Could not create temp file"
+        awk -v anchor="^profile $FALLBACK_PROFILE \\{" -v block="$profile_text" '
+            !done && $0 ~ anchor { print block; done = 1 }
+            { print }
+        ' "$config_path" > "$tmp" || { rm -f "$tmp"; error_exit "Failed to rewrite $config_path"; }
+        cat "$tmp" > "$config_path" || { rm -f "$tmp"; error_exit "Failed to write $config_path"; }
+        rm -f "$tmp"
+        echo "Inserted profile '$profile_name' before $FALLBACK_PROFILE in $config_path"
+    else
+        printf '%s\n' "$profile_text" >> "$config_path"
+        echo "Appended profile '$profile_name' to $config_path"
+    fi
+
+    echo "Run 'chezmoi apply ~/.config/kanshi/config' to deploy it; the"
+    echo "run_onchange hook restarts kanshi for you."
 
     if command -v notify-send >/dev/null 2>&1; then
         notify-send -t 2000 "Kanshi" "Generated profile: $profile_name"

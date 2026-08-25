@@ -57,6 +57,13 @@
     "sway/workspaces": {
         "all-outputs": false,
         "disable-scroll": true,
+        // Keeps the "10" pill visible without a script recreating the
+        // workspace: keep-workspace-10.sh did that and stole focus doing it.
+        "persistent-workspaces": {
+            "10": [
+                "eDP-1"
+            ]
+        },
         "format": "{name}: {icon}",
         "format-icons": {
             "1": "", // browsing

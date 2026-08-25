@@ -1,40 +1,44 @@
+# kanshi picks the FIRST profile in file order whose outputs all match the
+# connected heads. Order therefore matters:
+#   1. named home/laptop profiles
+#   2. desks with geometry that deviates from the family default
+#   3. per-family glob profiles
+#   4. fallback-docked, which must stay last
+#
+# Adding a desk is usually unnecessary now: the family globs match any serial,
+# and fallback-docked catches anything else. Only add a profile when a desk
+# needs geometry that differs from its family default.
+
 profile desktop-laptop {
-    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@144Hz position 1920,0
+    # 120Hz, not the panel's top 144Hz: at the top modes the DRM config has no
+    # room left for eDP-1 (same cause as the CNC5260DTR comment below).
+    # adaptive_sync is a per-output directive, not an `exec swaymsg` -- kanshi
+    # folds it into the profile's single atomic commit. As an exec it was a
+    # second, unordered DRM commit that also enabled VRR on eDP-1.
+    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@120Hz position 1920,0 adaptive_sync on
     output eDP-1 enable mode 1920x1200@60.002Hz position 0,0
-    exec swaymsg "output * adaptive_sync on"
 }
 
 profile desktop {
-    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@120Hz position 1920,0
-    exec swaymsg "output * adaptive_sync on"
+    # Lid-closed at home: kanshi only sees the one head.
+    output "LG Electronics 38GN950 203NTAB86520" enable mode 3840x1600@120Hz position 1920,0 adaptive_sync on
 }
 
 profile laptop {
     output eDP-1 enable mode 1920x1200 position 0,0
 }
 
-# Generated profiles
-
-
-profile HNTX901781 {
-    output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,124
-}
-
-
-profile HNTX201175 {
-    output "Samsung Electric Company LS49C95xU HNTX201175" enable mode 5120x1440@59.999Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-}
-
-profile HNTX700148 {
-    output "Samsung Electric Company LS49C95xU HNTX700148" enable mode 5120x1440@59.999Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-}
+# Desks whose geometry deviates from the family default. These must precede the
+# glob profiles below, which would otherwise match first.
 
 profile HNTX302740 {
     output "Samsung Electric Company LS49C95xU HNTX302740" enable mode 5120x1440@59.999Hz position 448,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5568,240
+}
+
+profile HNTX902332 {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
+    output "Samsung Electric Company LS49C95xU HNTX902332" enable mode 5120x1440@59.999Hz position 1920,0
 }
 
 profile HNTT800981 {
@@ -42,29 +46,9 @@ profile HNTT800981 {
     output "Samsung Electric Company LS49A950U HNTT800981" enable mode 5120x1440@59.977Hz position 1920,0
 }
 
-profile HNTX401574 {
-    output "Samsung Electric Company LS49C95xU HNTX401574" enable mode 5120x1440@59.999Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-}
-
 profile H4ZT400405 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
     output "Samsung Electric Company LS49A950U H4ZT400405" enable mode 5120x1440@59.977Hz position 1920,0
-}
-
-profile CNC4522K6S {
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
-    output "HP Inc. HP E45c G5 CNC4522K6S" enable mode 5120x1440@120Hz position 1920,0
-}
-
-profile HNTW203395 {
-    output "Samsung Electric Company LS49A950U HNTW203395" enable mode 5120x1440@59.977Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
-}
-
-profile HNTTA00442 {
-    output "Samsung Electric Company LS49A950U HNTTA00442" enable mode 5120x1440@59.977Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }
 
 profile H4ZT601342 {
@@ -72,9 +56,9 @@ profile H4ZT601342 {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 3840,0
 }
 
-profile HNTTA00440 {
-    output "Samsung Electric Company LS49A950U HNTTA00440" enable mode 5120x1440@59.977Hz position 1920,0
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+profile CNC4522K6S {
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,240
+    output "HP Inc. HP E45c G5 CNC4522K6S" enable mode 5120x1440@120Hz position 1920,0
 }
 
 profile CNC5260DTR {
@@ -85,17 +69,25 @@ profile CNC5260DTR {
     output "eDP-1" enable mode 1920x1200@60.002Hz position 5120,0
 }
 
-profile HNTX902332 {
-    output "eDP-1" enable mode 1920x1200@60.002Hz position 0,0
-    output "Samsung Electric Company LS49C95xU HNTX902332" enable mode 5120x1440@59.999Hz position 1920,0
-}
+# Family defaults. These replace the per-serial profiles that used to be
+# appended for every new desk -- the layout was identical in all of them, so a
+# new serial meant "no profile matched" until someone remembered to add it and
+# run chezmoi apply.
 
-profile HNTX901780 {
-    output "Samsung Electric Company LS49C95xU HNTX901780" enable mode 5120x1440@59.999Hz position 1920,0
+profile samsung-ultrawide-c95 {
+    output "Samsung Electric Company LS49C95xU *" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }
 
-profile HNTWB01215 {
-    output "Samsung Electric Company LS49C95xU HNTWB01215" enable mode 5120x1440@59.999Hz position 1920,0
+profile samsung-ultrawide-a950 {
+    output "Samsung Electric Company LS49A950U *" enable mode 5120x1440@59.977Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+}
+
+# Last resort: any unknown external alongside the laptop panel. No mode pinning
+# -- let sway pick the preferred mode. Must stay last; kanshi takes the first
+# match, so anything below this would be unreachable.
+profile fallback-docked {
+    output "eDP-1" enable position 0,0
+    output "*" enable position 1920,0
 }
