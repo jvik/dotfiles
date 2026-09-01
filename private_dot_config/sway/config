@@ -83,7 +83,7 @@ seat seat0 xcursor_theme phinger-cursors-light 36
 
 ### Key Bindings
 set $term flatpak run org.wezfurlong.wezterm
-set $menu wofi --show drun
+set $menu pkill wofi || wofi --show drun
 
 ## Basics
 # Lines starting with `#:` are picked up by ~/scripts/sway-shortcuts.sh as the
