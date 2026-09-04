@@ -1,0 +1,5 @@
+action = clipboard
+selector = fuzzel
+files = emojis
+max-recent = 10
+selector-args = --prompt > --lines 12 --width 35

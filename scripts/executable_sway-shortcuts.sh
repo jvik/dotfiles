@@ -11,11 +11,10 @@
 #   sway-shortcuts.sh --dump          print the parsed rows (debugging)
 #   sway-shortcuts.sh --config FILE   parse FILE instead of the live config
 #
-# Note: no `set -e` -- wofi exits 1 when the user presses Escape, which is a
+# Note: no `set -e` -- fuzzel exits 1 when the user presses Escape, which is a
 # normal path here, so exit statuses are handled explicitly instead.
 set -uo pipefail
 
-WOFI_CONF="${XDG_CONFIG_HOME:-$HOME/.config}/wofi/shortcuts.conf"
 CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/sway/config"
 DUMP=0
 
@@ -420,7 +419,7 @@ BEGIN {
     if (MB) for (b = 128; b <= 191; b++) CONT = CONT sprintf("%c", b)
     setup_keys()
     if (KW == 0) KW = 26
-    if (DW == 0) DW = 46
+    if (DW == 0) DW = 52
     if (CW == 0) CW = 56
     sect = "Other"
     curmode = ""
@@ -506,16 +505,15 @@ END {
         if (gsect[k] != lastsect) {
             lastsect = gsect[k]
             bar = ""
-            for (j = ulen(lastsect); j < KW + DW + CW - 4; j++) bar = bar "─"
-            printf "<span weight=\"bold\" alpha=\"60%%\">── %s %s</span>\t\n", esc(lastsect), bar
+            for (j = ulen(lastsect); j < KW + DW - 4; j++) bar = bar "─"
+            printf "── %s %s\t\n", lastsect, bar
         }
         keys = gcombos[k]
         keys = join_combos(keys)
         if (gmode[k] != "" && (gmode[k] in trigger)) keys = trigger[gmode[k]] " → " keys
-        printf "<b>%s</b>  %s  <span alpha=\"45%%\">%s</span>\t%s\n", \
-            esc(upad(utrunc(keys, KW), KW)), \
-            esc(upad(utrunc(gdesc[k], DW), DW)), \
-            esc(utrunc(gcmd[k], CW)), \
+        printf "%s  %s\t%s\n", \
+            upad(utrunc(keys, KW), KW), \
+            utrunc(gdesc[k], DW), \
             gcmd[k]
     }
 }
@@ -530,7 +528,7 @@ if [ "$DUMP" -eq 1 ]; then
     exit 0
 fi
 
-command -v wofi >/dev/null 2>&1 || die "wofi is not installed"
+command -v fuzzel >/dev/null 2>&1 || die "fuzzel is not installed"
 
 lines=()
 cmds=()
@@ -539,18 +537,18 @@ for row in "${rows[@]}"; do
     cmds+=("${row#*$'\t'}")
 done
 
-sel=$(printf '%s\n' "${lines[@]}" |
-    wofi --conf "$WOFI_CONF" --dmenu \
+sel_text=$(printf '%s\n' "${lines[@]}" |
+    fuzzel --dmenu \
         --prompt 'Shortcut' \
-        --width 1200 --height 720 \
-        --cache-file /dev/null \
-        --no-custom-entry) || exit 0
+        --width 80 --lines 25) || exit 0
 
-[ -n "$sel" ] || exit 0
-case "$sel" in '' | *[!0-9]*) exit 0 ;; esac
+[ -n "$sel_text" ] || exit 0
 
-# dmenu-print_line_num is 0-based (wofi modes/dmenu.c: `line_num = 0` with a
-# post-increment when the action string is built)
+sel=-1
+for i in "${!lines[@]}"; do
+    [ "${lines[$i]}" = "$sel_text" ] && { sel=$i; break; }
+done
+[ "$sel" -ge 0 ] || exit 0
 [ "$sel" -lt "${#cmds[@]}" ] || exit 0
 
 cmd=${cmds[$sel]}

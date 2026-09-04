@@ -48,7 +48,8 @@ window {
 }
 
 #entry:hover {
-    background-color: #d5c4a1;
+    background-color: #d5c4a1 !important;
+    color: #3c3836 !important;
     border-radius: 3px;
 }
 

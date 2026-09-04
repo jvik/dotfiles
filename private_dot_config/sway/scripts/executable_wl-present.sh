@@ -38,8 +38,6 @@ usage() {
 
 if [[ -n "$WL_PRESENT_DMENU" ]]; then
     DMENU="$WL_PRESENT_DMENU"
-elif type -p wofi >/dev/null; then
-    DMENU="wofi -d"
 elif type -p wmenu >/dev/null; then
     DMENU=wmenu
 elif type -p fuzzel >/dev/null; then

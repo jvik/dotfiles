@@ -83,7 +83,7 @@ seat seat0 xcursor_theme phinger-cursors-light 36
 
 ### Key Bindings
 set $term flatpak run org.wezfurlong.wezterm
-set $menu pkill wofi || wofi --show drun
+set $menu pkill fuzzel || fuzzel
 
 ## Basics
 # Lines starting with `#:` are picked up by ~/scripts/sway-shortcuts.sh as the
@@ -138,9 +138,8 @@ bindsym $mod+Shift+s exec ~/.config/sway/scripts/toggle-scratchpad.sh "com.slack
 bindsym $mod+Shift+g exec ~/.config/sway/scripts/toggle-scratchpad.sh "signal" gtk-launch signal-desktop
 # Bring app to current workspace or launch it if not running
 bindsym $mod+Shift+o exec ~/.config/sway/scripts/toggle-scratchpad.sh "md.obsidian.Obsidian" flatpak run md.obsidian.Obsidian
-#bindsym $mod+period exec ~/.local/bin/rofimoji --selector wofi --action copy
 #: Emoji picker
-bindsym $mod+period exec "flatpak run it.mijorus.smile"
+bindsym $mod+period exec rofimoji
 
 ## Workspaces
 bindsym $mod+1 workspace number 1

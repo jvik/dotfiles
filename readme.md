@@ -63,7 +63,7 @@ Automatically executed by chezmoi.
 
 Key tasks:
 * Install base packages (fd-find, tree, flatpak, ansible-lint, htop, blueman, wezterm etc.)
-* Sway stack install (sway, waybar, wofi, SwayNotificationCenter, wdisplays, lxpolkit)
+* Sway stack install (sway, waybar, fuzzel, SwayNotificationCenter, wdisplays, lxpolkit)
 * Flatpak application installation
 * Set login shell to zsh for user
 * Install Homebrew (if missing) and package set.
@@ -100,13 +100,13 @@ Sway is the window manager. Configuration lives under:
 * `private_dot_config/sway/config` — main sway config and color schemes
 * `private_dot_config/waybar/` — status bar config & style
 * `private_dot_config/swaync/` — notifications
-* `private_dot_config/wofi/` — launcher
+* `private_dot_config/fuzzel/` — launcher
 
 Lock script: `private_dot_config/sway/lockman.sh`.
 
-Keyboard shortcut overlay: `$mod+?` opens a searchable wofi palette of every keybinding, built by `scripts/sway-shortcuts.sh` parsing the live sway config (including `include`d files) at invocation time — there is no cheatsheet file to keep in sync. Bindings are grouped by the `##` section headers already in the config, mode bindings are shown prefixed with the key that enters the mode (`$mod+p → r`), and selecting an entry runs it via `swaymsg`. Descriptions are derived from the sway command; to override one, put a `#: some description` comment on the line directly above the `bindsym` (sway ignores it). Run `scripts/sway-shortcuts.sh --dump` to inspect the parsed rows without opening the overlay. Uses its own wofi profile at `private_dot_config/wofi/shortcuts.conf`, since the main `wofi/config` is tuned for drun mode.
+Keyboard shortcut overlay: `$mod+?` opens a searchable fuzzel palette of every keybinding, built by `scripts/sway-shortcuts.sh` parsing the live sway config (including `include`d files) at invocation time — there is no cheatsheet file to keep in sync. Bindings are grouped by the `##` section headers already in the config, mode bindings are shown prefixed with the key that enters the mode (`$mod+p → r`), and selecting an entry runs it via `swaymsg`. Descriptions are derived from the sway command; to override one, put a `#: some description` comment on the line directly above the `bindsym` (sway ignores it). Run `scripts/sway-shortcuts.sh --dump` to inspect the parsed rows without opening the overlay.
 
-Network management: clicking the wlan tile in waybar (or the network icon in the swaync quick actions) opens [`networkmanager_dmenu`](https://github.com/firecat53/networkmanager-dmenu) via wofi — lists APs with signal strength, connects/forgets networks, and includes a "Rescan WiFi Networks" action (unlike `nmtui`). Installed by the `extras` Ansible role; configured at `private_dot_config/networkmanager-dmenu/config.ini`.
+Network management: clicking the wlan tile in waybar (or the network icon in the swaync quick actions) opens [`networkmanager_dmenu`](https://github.com/firecat53/networkmanager-dmenu) via fuzzel — lists APs with signal strength, connects/forgets networks, and includes a "Rescan WiFi Networks" action (unlike `nmtui`). Installed by the `extras` Ansible role; configured at `private_dot_config/networkmanager-dmenu/config.ini`.
 
 Screenshots: `$mod+p` / `Print` freezes the screen with [`wayfreeze`](https://github.com/Jappie3/wayfreeze) and opens a sway mode to pick region/full/window capture (`r`/`f`/`w`) — see `scripts/satty-screenshot.sh`. The frozen overlay ensures the capture matches what was on screen when the shortcut was pressed, not whatever's on screen once you finish selecting. Installed by the `extras` Ansible role.
 

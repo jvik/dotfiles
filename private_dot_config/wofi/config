@@ -8,6 +8,7 @@ parse_search=true
 ; hide_scroll=true
 no_actions=true
 insensitive=true
+single_click=true
 prompt=Search...
 ; columns=2
 term=wezterm

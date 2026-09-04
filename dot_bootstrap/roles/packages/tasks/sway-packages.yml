@@ -3,11 +3,12 @@
   ansible.builtin.package:
     name:
       - sway
-      - wofi
+      - fuzzel
       - waybar
       - wdisplays
       - lxpolkit
       - grim
       - slurp
       - wl-clipboard
+      - rofimoji
     state: present
