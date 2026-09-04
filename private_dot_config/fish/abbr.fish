@@ -68,3 +68,7 @@ abbr che "cd (git rev-parse --show-toplevel)/helmfile.d"
 abbr cre "cd (git rev-parse --show-toplevel)/_rendered"
 
 abbr cop "cplt -- --mode plan --agent platform-dev:platform-dev --add-dir (git rev-parse --show-toplevel 2>/dev/null; or pwd)"
+
+# GitHub
+abbr -a ghfc ghfuzzyclone
+abbr -a ghfco 'ghfuzzyclone -o $gh_org'

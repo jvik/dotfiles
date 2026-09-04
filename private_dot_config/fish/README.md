@@ -75,7 +75,7 @@ Fish uses **abbreviations** which expand when you press space (like ZSH aliases)
 - `fvim` - Fuzzy find and open file in nvim
 - `t` - Sesh session manager with fzf
 - `git-fworktree` - Fuzzy select git worktree
-- `ghfuzzyclone` - Fuzzy clone GitHub repo from `$gh_org`
+- `ghfuzzyclone` - Fuzzy clone a GitHub repo from your personal account, every org you belong to, and repos shared with you as a collaborator. Caches the repo list under `$XDG_CACHE_HOME/ghfuzzyclone/`; `-o/--org ORG` scopes to one org, `-r/--refresh` updates the cache
 - `krepo` - Fuzzy find a repo in `$gh_org` and open it in the browser
 - `krepo-update` - Refresh the cached repo list (defined in `krepo.fish`)
 - `pasta` - Paste from clipboard
