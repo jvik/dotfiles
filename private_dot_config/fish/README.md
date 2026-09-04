@@ -159,11 +159,30 @@ All your ZSH aliases, functions, and environment variables have been ported. Key
 - `alias` → Use `abbr` for expanding aliases, `alias` for runtime
 - `function() { }` → `function name; ...; end`
 
+## Shortcut picker
+
+`ab` fuzzy-finds every abbreviation, alias and custom function and puts the chosen **name** on
+the command line, so `<space>` expands it and you learn the shortcut instead of just running it.
+This is the terminal counterpart to `$mod+?` in sway (`scripts/sway-shortcuts.sh`).
+
+```bash
+ab              # open the picker
+ab kube         # open it pre-filtered
+ab --dump       # print the parsed rows, no picker (useful for debugging)
+```
+
+The list is built from `abbr --show`, `alias` and `functions` at invocation time, so there is no
+cheatsheet to keep in sync. It covers far more than `abbr.fish`: of ~229 entries, only ~65 are
+defined here — the rest come from the `lewisacidic/fish-git-abbr` plugin.
+
+Rows are `kind  name  expansion`, grouped as abbreviations, then aliases, then functions. fzf
+matches against the expansion too, so searching `commit` finds `gcm`.
+
 ## Tips
 
 1. **Reload Config**: `reload-fish` or `source ~/.config/fish/config.fish`
-2. **View Abbreviations**: `abbr` (list all)
-3. **View Functions**: `functions` (list all)
+2. **View Abbreviations**: `ab` (fuzzy picker) or `abbr` (raw list)
+3. **View Functions**: `ab` or `functions` (list all)
 4. **Help System**: `help <command>` opens browser with docs
 5. **Syntax Check**: `fish -n config.fish`
 

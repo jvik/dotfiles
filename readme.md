@@ -164,6 +164,21 @@ Add to ~/.wallpaper
 
 ---
 
+## Shell
+
+The interactive shell is fish (`private_dot_config/fish/`, documented in its own
+[README](private_dot_config/fish/README.md)).
+
+Shortcut picker: `ab` fuzzy-finds every abbreviation, alias and custom function and puts the
+chosen **name** on the command line, so `<space>` expands it and you learn the shortcut rather
+than just running the command — the terminal counterpart to `$mod+?` in sway. The list is built
+from `abbr --show`, `alias` and `functions` at invocation time, so there is no cheatsheet file to
+keep in sync; of the ~229 entries only ~65 come from `abbr.fish`, the rest from the
+`lewisacidic/fish-git-abbr` plugin. fzf matches against the expansion as well as the name, so
+`ab commit` finds `gcm`. Run `ab --dump` to inspect the parsed rows without opening the picker.
+
+---
+
 ## Scripts
 
 Utility scripts live in `scripts/`. Example: `present-select.sh` (likely a helper for presentation profile selection). Make scripts executable:
