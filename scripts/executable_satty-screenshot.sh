@@ -5,7 +5,23 @@ set -euo pipefail
 
 mkdir -p "$HOME/Pictures"
 tmpfile=$(mktemp "$HOME/Pictures/.satty-capture-XXXXXX.png")
-trap 'pkill -x wayfreeze || true; rm -f "$tmpfile"' EXIT
+
+# "<con_id> <fullscreen_mode>" lines for containers we un-fullscreened below.
+restore_fs=""
+
+cleanup() {
+    pkill -x wayfreeze || true
+    rm -f "$tmpfile"
+    while read -r id mode; do
+        [ -n "$id" ] || continue
+        if [ "$mode" = "2" ]; then
+            swaymsg "[con_id=$id] fullscreen enable global" >/dev/null || true
+        else
+            swaymsg "[con_id=$id] fullscreen enable" >/dev/null || true
+        fi
+    done <<<"$restore_fs"
+}
+trap cleanup EXIT
 
 case "${1:-region}" in
     region)
@@ -37,6 +53,22 @@ fi
 # dismisses it.
 grim "${grim_args[@]}" "$tmpfile"
 pkill -x wayfreeze || true
+
+# Satty is a plain xdg-toplevel, so sway renders it *behind* a fullscreen window
+# (only layer-shell overlays -- wayfreeze, slurp -- get drawn on top). Drop
+# fullscreen on the focused workspace while satty is open; cleanup() restores it.
+# The capture is already on disk, so the reflow can't affect the image.
+ws_id=$(swaymsg -t get_workspaces | jq -r '.[] | select(.focused) | .id')
+restore_fs=$(swaymsg -t get_tree | jq -r --argjson ws "$ws_id" '
+    .. | objects | select(.type == "workspace" and .id == $ws)
+    | [recurse(.nodes[]?, .floating_nodes[]?)] | .[]
+    | select((.fullscreen_mode // 0) > 0)
+    | "\(.id) \(.fullscreen_mode)"')
+
+while read -r id _; do
+    [ -n "$id" ] || continue
+    swaymsg "[con_id=$id] fullscreen disable" >/dev/null || true
+done <<<"$restore_fs"
 
 flatpak run org.satty.Satty \
     --filename "$tmpfile" \

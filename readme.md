@@ -108,7 +108,7 @@ Keyboard shortcut overlay: `$mod+?` opens a searchable fuzzel palette of every k
 
 Network management: clicking the wlan tile in waybar (or the network icon in the swaync quick actions) opens [`networkmanager_dmenu`](https://github.com/firecat53/networkmanager-dmenu) via fuzzel — lists APs with signal strength, connects/forgets networks, and includes a "Rescan WiFi Networks" action (unlike `nmtui`). Installed by the `extras` Ansible role; configured at `private_dot_config/networkmanager-dmenu/config.ini`.
 
-Screenshots: `$mod+p` / `Print` freezes the screen with [`wayfreeze`](https://github.com/Jappie3/wayfreeze) and opens a sway mode to pick region/full/window capture (`r`/`f`/`w`) — see `scripts/satty-screenshot.sh`. The frozen overlay ensures the capture matches what was on screen when the shortcut was pressed, not whatever's on screen once you finish selecting. Installed by the `extras` Ansible role.
+Screenshots: `$mod+p` / `Print` freezes the screen with [`wayfreeze`](https://github.com/Jappie3/wayfreeze) and opens a sway mode to pick region/full/window capture (`r`/`f`/`w`) — see `scripts/satty-screenshot.sh`. The frozen overlay ensures the capture matches what was on screen when the shortcut was pressed, not whatever's on screen once you finish selecting. Since satty is a plain xdg-toplevel and sway renders it behind a fullscreen window, the script drops fullscreen on the focused workspace once the capture is on disk and restores it when satty exits. Installed by the `extras` Ansible role.
 
 ---
 
