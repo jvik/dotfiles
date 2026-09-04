@@ -539,7 +539,7 @@ done
 
 sel_text=$(printf '%s\n' "${lines[@]}" |
     fuzzel --dmenu \
-        --prompt 'Shortcut' \
+        --prompt '>' \
         --width 80 --lines 25) || exit 0
 
 [ -n "$sel_text" ] || exit 0
