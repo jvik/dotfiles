@@ -50,6 +50,7 @@ Fish comes with syntax highlighting built-in. This configuration includes:
     ├── fvim.fish
     ├── ghfuzzyclone.fish
     ├── t.fish
+    ├── krepo.fish
     └── git-fworktree.fish
 ```
 
@@ -74,7 +75,9 @@ Fish uses **abbreviations** which expand when you press space (like ZSH aliases)
 - `fvim` - Fuzzy find and open file in nvim
 - `t` - Sesh session manager with fzf
 - `git-fworktree` - Fuzzy select git worktree
-- `ghfuzzyclone` - Fuzzy clone GitHub repo
+- `ghfuzzyclone` - Fuzzy clone GitHub repo from `$gh_org`
+- `krepo` - Fuzzy find a repo in `$gh_org` and open it in the browser
+- `krepo-update` - Refresh the cached repo list (defined in `krepo.fish`)
 - `pasta` - Paste from clipboard
 - `copy [file]` - Copy to clipboard
 

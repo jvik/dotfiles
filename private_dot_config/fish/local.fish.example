@@ -10,3 +10,9 @@
 
 # Machine-specific settings
 set -gx PRIVATE_MACHINE true
+
+# GitHub org used by krepo, krepo-update and ghfuzzyclone
+# set -gx gh_org my-org
+
+# Command used to open a repo URL (defaults to xdg-open if unset)
+# set -gx gh_repo_browser firefox
