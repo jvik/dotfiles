@@ -27,6 +27,14 @@ The goal is safe, minimal, and idempotent changes.
 - Edit **source files in this repo**, not generated target files in `$HOME`.
 - Respect chezmoi naming conventions (`dot_`, `private_`, `executable_`, `.tmpl`).
 - For templates, keep compatibility with current variables and defaults.
+- `chezmoi apply`/`chezmoi diff` take the **target path** (under `$HOME`), never the
+  source path in this repo — `chezmoi apply private_dot_config/fish/functions/foo.fish`
+  fails with "not managed". Convert with `chezmoi target-path <source-path>`, or just
+  apply the equivalent `$HOME` path directly, e.g.
+  `chezmoi apply ~/.config/fish/functions/foo.fish`.
+- Prefer applying a **scoped target path** over a bare `chezmoi apply` — a bare apply
+  re-applies every managed file, which can revert unrelated in-progress edits elsewhere
+  in `$HOME` (e.g. `.claude/settings.json`).
 
 ### Ansible (`dot_bootstrap/`)
 

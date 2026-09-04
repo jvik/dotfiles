@@ -5,5 +5,7 @@ function ghfuzzyclone -d "Fuzzy search and clone a GitHub repository"
         return 1
     end
 
-    gh repo list $gh_org | fzf --preview "echo {}" | awk '{print $1}' | xargs gh repo clone
+    gh repo list $gh_org --limit 1000 \
+        | fzf --delimiter='\t' --with-nth=1 --preview 'echo {}' --preview-window 'down,3,wrap' \
+        | awk '{print $1}' | xargs gh repo clone
 end
