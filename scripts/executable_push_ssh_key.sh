@@ -16,7 +16,7 @@ print_usage() {
 }
 
 print_unlock_instructions() {
-    echo "Bash/Zsh: export BW_SESSION=\$($BW_CMD unlock --raw)"
+    echo "Bash: export BW_SESSION=\$($BW_CMD unlock --raw)"
     echo "Fish:      set -gx BW_SESSION ($BW_CMD unlock --raw)"
 }
 

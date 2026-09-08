@@ -12,8 +12,6 @@
       - tfenv
       - uv
       - zoxide
-      - zsh-autosuggestions
-      - zsh-syntax-highlighting
       - kubectl
       - kubectx
       - k9s
