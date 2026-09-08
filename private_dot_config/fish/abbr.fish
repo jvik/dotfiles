@@ -51,9 +51,6 @@ abbr -a kanshi-gen '~/scripts/kanshi-append-config.sh'
 # Audio
 abbr -a audio alsamixer
 
-# Bitwarden
-abbr -a bw 'flatpak run --command=bw com.bitwarden.desktop'
-
 # Chezmoi / Bootstrap
 abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
 abbr -a sysup 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml'
