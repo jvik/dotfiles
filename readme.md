@@ -4,7 +4,7 @@ Personal, reproducible Linux (and macOS-friendly) workstation setup powered by:
 
 * [chezmoi](https://www.chezmoi.io/) for dotfile management & templating
 * [Ansible](https://www.ansible.com/) for bootstrapping packages & system state
-* Modern tooling: zsh, Homebrew (Linuxbrew), LazyVim, WezTerm, sway/Wayland environment
+* Modern tooling: Homebrew (Linuxbrew), LazyVim, WezTerm, sway/Wayland environment
 
 > Goal: One command to bring a fresh machine to a comfortable, fully-configured environment.
 
@@ -44,14 +44,13 @@ You can re-run safely; tasks are idempotent.
 Minimal before first run:
 
 * curl & git (for initial chezmoi installer)
-* A POSIX shell (bash/zsh)
+* A POSIX shell (bash)
 * sudo access (for package installs)
 
 Automatically handled / installed:
 
 * Ansible (via `run_once_01_install_ansible.sh` for Fedora. Other distros are not tested, but Ubuntu/Debian will likely work.)
 * Homebrew (Linuxbrew) if not present (installed by Ansible playbook)
-* oh-my-zsh (if absent)
 
 ---
 
@@ -65,7 +64,7 @@ Key tasks:
 * Install base packages (fd-find, tree, flatpak, ansible-lint, htop, blueman, wezterm etc.)
 * Sway stack install (sway, waybar, fuzzel, SwayNotificationCenter, wdisplays, lxpolkit)
 * Flatpak application installation
-* Set login shell to zsh for user
+* Set login shell to fish for user
 * Install Homebrew (if missing) and package set.
 * Install fonts via Homebrew casks
 
@@ -152,8 +151,8 @@ Re-run provisioning:
 
 * Add new packages: edit `dot_bootstrap/setup.yml` (group by function; keep idempotent).
 * Add secrets: use chezmoi encryption (`age` or `gpg`) and keep them out of public repo. Prefer `.tmpl` with environment lookups instead of committing raw secrets.
-* Extend zsh: put functions in `private_dot_config/zsh/functions.zsh` (already provided) or use `antigen.zsh` for extra bundles.
-* Override local-only settings: create `private_dot_config/zsh/local.zsh` (see `local.zsh.example`). chezmoi can ignore or manage with encryption.
+* Extend fish: add functions under `private_dot_config/fish/functions/`.
+* Override local-only settings: create `private_dot_config/fish/local.fish` (see `local.fish.example`). chezmoi can ignore or manage with encryption.
 
 ### Wallpaper
 
@@ -187,10 +186,10 @@ Utility scripts live in `scripts/`. Example: `present-select.sh` (likely a helpe
 chmod +x scripts/*.sh
 ```
 
-Add to PATH (zsh):
+Add to PATH (fish):
 
-```bash
-export PATH="$HOME/scripts:$PATH"
+```fish
+fish_add_path $HOME/scripts
 ```
 
 ---

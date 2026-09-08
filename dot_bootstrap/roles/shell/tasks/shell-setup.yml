@@ -5,20 +5,6 @@
     shell: /bin/fish
   become: true
 
-# - name: Check if oh my zsh is already installed
-#   ansible.builtin.stat:
-#     path: '/home/{{ user }}/.oh-my-zsh'
-#   register: shell_oh_my_zsh_stat
-
-# - name: Install Oh-My-Zsh
-#   ansible.builtin.git:
-#     repo: https://github.com/ohmyzsh/ohmyzsh.git
-#     dest: /home/{{ user }}/.oh-my-zsh
-#     version: 'master'
-#     clone: true
-#     update: true
-#   when: not shell_oh_my_zsh_stat.stat.exists
-
 - name: Check if tpm plugin manager exists
   ansible.builtin.stat:
     path: '/home/{{ user }}/.config/tmux/plugins/tpm'
