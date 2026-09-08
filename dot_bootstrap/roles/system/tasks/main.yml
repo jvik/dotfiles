@@ -16,3 +16,6 @@
     file: firefox-arkenfox.yml
     apply:
       become: false
+
+- name: Include printer setup
+  ansible.builtin.include_tasks: printers.yml

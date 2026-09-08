@@ -5,5 +5,7 @@
       - power-profiles-daemon # For power profiles daemon
       - sway-notification-center
       - ncal
+      - system-config-printer
+      - python3-smbc
     state: present
   when: ansible_distribution == 'Ubuntu'

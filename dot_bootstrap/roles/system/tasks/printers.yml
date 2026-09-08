@@ -1,0 +1,37 @@
+---
+- name: Configure Work SafeCom printer
+  when: ansible_distribution == 'Ubuntu' and not private_machine
+  vars:
+    printer_bitwarden_item: "20286390-2609-4f8a-915a-b27d0005f004"
+    printer_name: SafeCom-SHARP
+    printer_model: "drv:///sample.drv/generic.ppd"
+  block:
+    - name: Look up printer connection details from Bitwarden
+      ansible.builtin.set_fact:
+        system_printer_smb_user: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='username') }}"
+        system_printer_smb_password: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='password') }}"
+        system_printer_smb_domain: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='smb_domain') }}"
+        system_printer_host: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='print_server_host') }}"
+        system_printer_share: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='smb_share') }}"
+      no_log: true
+
+    - name: Build printer SMB URI
+      ansible.builtin.set_fact:
+        system_printer_uri: >-
+          smb://{{ system_printer_smb_domain | urlencode }}/{{ system_printer_smb_user | urlencode }}:{{ system_printer_smb_password | urlencode }}@{{ system_printer_host }}/{{ system_printer_share | urlencode }}
+      no_log: true
+
+    - name: Add/configure printer
+      ansible.builtin.command:
+        argv:
+          - lpadmin
+          - -p
+          - "{{ printer_name }}"
+          - -v
+          - "{{ system_printer_uri }}"
+          - -m
+          - "{{ printer_model }}"
+          - -o
+          - media=a4
+          - -E
+      no_log: true
