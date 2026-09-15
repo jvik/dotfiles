@@ -17,6 +17,7 @@
       - wl-mirror
       - firefox
       - solaar
+      - fastfetch
   block:
     - name: Update dnf cache
       ansible.builtin.dnf:
@@ -52,6 +53,7 @@
       - wl-mirror
       - firefox
       - solaar
+      - fastfetch
   block:
     - name: Update apt cache
       ansible.builtin.apt:
@@ -88,6 +90,7 @@
       - wl-mirror
       - firefox
       - solaar
+      - fastfetch
   ansible.builtin.package:
     name: "{{ item }}"
     state: present
