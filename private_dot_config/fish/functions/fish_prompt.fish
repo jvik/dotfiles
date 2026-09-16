@@ -9,16 +9,12 @@ function fish_prompt
     
     # Colors
     set -l normal (set_color normal)
-    set -l cyan (set_color cyan)
     set -l blue (set_color blue)
     set -l green (set_color green)
     set -l yellow (set_color yellow)
     set -l red (set_color red)
     set -l magenta (set_color magenta)
     set -l brblack (set_color brblack)
-    
-    # User and host
-    set -l user_host $cyan(whoami)$brblack@$blue(prompt_hostname)
     
     # Current directory
     set -l pwd_display $yellow(prompt_pwd)
@@ -35,15 +31,6 @@ function fish_prompt
         end
         
         set git_info " "$brblack"on "$magenta"git:("$green$branch$git_dirty$magenta")"
-    end
-    
-    # Kubernetes context (if kubectl is available)
-    set -l k8s_info ""
-    if type -q kubectl
-        set -l k8s_ctx (kubectl config current-context 2>/dev/null)
-        if test -n "$k8s_ctx"
-            set k8s_info " "$brblack"k8s:"$cyan$k8s_ctx
-        end
     end
     
     # Vi mode indicator
@@ -69,7 +56,7 @@ function fish_prompt
     end
     
     # Build prompt
-    echo -n $user_host" "$pwd_display$git_info$k8s_info$mode_indicator$status_indicator
+    echo -n $pwd_display$git_info$mode_indicator$status_indicator
     echo -n $normal
     echo -n \n
     
