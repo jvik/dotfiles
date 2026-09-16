@@ -1,6 +1,11 @@
 function fish_prompt
     # Save the last command status
     set -l last_status $status
+
+    if set -q CLEANPROMPT
+        echo -n "❯ "
+        return
+    end
     
     # Colors
     set -l normal (set_color normal)
