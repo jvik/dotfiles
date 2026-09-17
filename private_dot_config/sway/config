@@ -34,6 +34,7 @@ exec_always {
 # mod+Shift+c into a black screen. The script defers and lock-guards it.
 exec_always ~/.config/sway/scripts/reapply-kanshi.sh
 exec_always pgrep -x swaync >/dev/null || swaync
+exec_always swaync-client --reload-css
 # The output watcher runs as a systemd unit, not as
 #   exec_always "pkill -f <name>; <name>"
 # sway runs exec_always through `sh -c "<the whole string>"`, so that shell's

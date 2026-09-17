@@ -186,11 +186,22 @@
   background: @text-color-disabled;
   border-radius: 0;
   margin-left: 10px;
+  border: 1px solid transparent;
+  outline: none;
+  box-shadow: none;
 }
 
 .widget-dnd>switch:checked {
   background: @green-base;
   border: 1px solid @green-base;
+  outline: none;
+  box-shadow: none;
+}
+
+.widget-dnd>switch slider {
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
 }
 
 .widget-label>label {
