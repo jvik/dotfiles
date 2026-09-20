@@ -11,4 +11,5 @@
       - slurp
       - wl-clipboard
       - rofimoji
+      - inotify-tools # waybar's update-status.sh watches its summary file
     state: present

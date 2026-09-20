@@ -1,0 +1,9 @@
+[Unit]
+Description=Check for pending package updates
+After=graphical-session-pre.target
+Wants=graphical-session-pre.target
+PartOf=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/scripts/update-check.sh

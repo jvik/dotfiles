@@ -22,6 +22,8 @@
 @define-color bg-media #66cc99;
 @define-color bg-media-vlc #ffa000;
 @define-color bg-temperature #f0932b;
+@define-color bg-updates #a61e4d;
+@define-color bg-updates-pending #d6336c;
 @define-color bg-tray #2980b9;
 @define-color bg-idle-inhibitor #5f8aa6;
 @define-color bg-idle-inhibitor-active #f39c12;
@@ -125,6 +127,7 @@ button:hover {
 #memory,
 #disk,
 #custom-temperature,
+#custom-updates,
 #backlight,
 #network,
 #custom-network-wlan,
@@ -371,6 +374,23 @@ label:focus {
 
 #custom-temperature.critical {
     background-color: @bg-critical;
+}
+
+/* Own hue on purpose: the temperature module sits immediately left and the tray
+   immediately right, so reusing their colors made this read as part of them.
+   Idle and pending are the same hue two steps apart, so the module stays
+   recognisable while only the pending state demands attention -- a desaturated
+   idle color reads as an unstyled gap between its vivid neighbours. */
+/* No margin-left here, unlike #custom-temperature above: the bar's own
+   "spacing": 4 already separates modules, and a one-sided margin would make
+   this badge sit 6px from temperature but 4px from the tray. Temperature keeps
+   its 2px as the separator that opens this group. */
+#custom-updates {
+    background-color: @bg-updates;
+}
+
+#custom-updates.pending {
+    background-color: @bg-updates-pending;
 }
 
 #tray {

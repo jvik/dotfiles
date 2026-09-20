@@ -21,6 +21,7 @@
       - ranger
       - ipython
       - mise
+      - topgrade
     state: present
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"

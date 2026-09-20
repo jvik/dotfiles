@@ -124,6 +124,14 @@ Some files contain hardware identifiers or device settings tied to specific mach
 
 ## Updating & Maintaining
 
+Package updates are applied by [topgrade](https://github.com/topgrade-rs/topgrade), configured in `private_dot_config/topgrade.toml`. It runs each package manager in sequence with full native streaming output (dnf's progress and transaction summary, flatpak's progress, and so on) and prints a pass/fail summary table at the end — unlike an Ansible playbook, which buffers each task's output and shows nothing until it completes. Fish abbreviations: `sysup` (dnf/apt + flatpak), `sysup-all` (everything in the config's `only` list), `sysup-check` (dry-run), `sysup-signal` (Signal AppImage only).
+
+The `only` list covers dnf/apt, Flatpak, Homebrew formulae and casks, and npm globals as built-in topgrade steps; uv tools, mise runtimes, Fisher plugins, and the Signal AppImage run as `[commands]` entries. uv, mise, and Fisher are custom commands on purpose: topgrade's built-in `uv`/`mise` steps call `uv self update` / `mise self-update`, which refuse to run on brew-managed installs, and its `shell` step would also update oh-my-zsh. Nothing is auto-confirmed (`assume_yes = false`), so dnf still shows its transaction summary and waits for y/N.
+
+Checking for updates is separate and fully automated: the `update-check.timer` systemd user unit runs `scripts/update-check.sh` daily (unprivileged dnf/apt + Flatpak query), writes `~/.cache/update-check/summary.json`, and sends a `notify-send` alert when updates are pending. The waybar `custom/updates` module shows the pending count from that summary — left-click opens a floating terminal running topgrade, right-click re-runs just the check. The same action is available as a button in the swaync notification center. The module does not poll: `update-status.sh` renders once and then blocks on `inotifywait`, streaming a fresh line whenever the summary is rewritten, so the badge tracks the check rather than lagging it. Updates are never applied unattended.
+
+First-time Signal installation is handled during bootstrap by `dot_bootstrap/roles/extras/tasks/signal.yml`; `dot_bootstrap/signal-update.yml` is the update path and runs unprivileged (no sudo prompt), which is what lets topgrade call it.
+
 Common chezmoi commands:
 
 ```bash

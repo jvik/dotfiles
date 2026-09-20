@@ -98,6 +98,10 @@
         {
           "label": "",
           "command": "flatpak run io.github.seadve.Kooha"
+        },
+        {
+          "label": "󰚰",
+          "command": "wezterm -e --class update-system fish -c \"topgrade --disable brew_formula brew_cask node custom_commands; and ~/scripts/update-check.sh; read -P 'Press enter to close ' x\""
         }
       ]
     }

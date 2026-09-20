@@ -1,0 +1,92 @@
+---
+# Force-refresh the Signal Desktop AppImage (download + GPG verify + desktop
+# integration). First-time installation is handled by roles/extras/tasks/signal.yml
+# during bootstrap, which is guarded by stat checks and never re-downloads; this
+# playbook is the update path.
+#
+# No task here needs root, so the play runs unprivileged and never prompts for a
+# password. That is what lets topgrade invoke it as a custom command.
+#
+# Usage:
+#   ansible-playbook -i localhost, -c local ~/.bootstrap/signal-update.yml
+#
+- name: Update Signal Desktop AppImage
+  hosts: localhost
+  become: false
+  gather_facts: false
+  vars_files:
+    - ~/.bootstrap/vars.yml
+
+  tasks:
+    - name: Import Signal GPG key
+      ansible.builtin.command:
+        cmd: >
+          bash -c "curl -s https://updates.signal.org/static/desktop/appimage.asc | gpg --import"
+      changed_when: false
+
+    - name: Download Signal Desktop AppImage
+      ansible.builtin.get_url:
+        url: https://updates.signal.org/desktop/signal-desktop.AppImage
+        dest: "/home/{{ user }}/Applications/signal-desktop.AppImage"
+        mode: "0755"
+        force: true
+
+    - name: Download Signal AppImage GPG signature
+      ansible.builtin.get_url:
+        url: https://updates.signal.org/desktop/signal-desktop.AppImage.gpg
+        dest: "/tmp/signal-desktop.AppImage.gpg"
+        mode: "0644"
+        force: true
+
+    - name: Verify Signal AppImage GPG signature
+      ansible.builtin.command:
+        cmd: >
+          gpg --verify /tmp/signal-desktop.AppImage.gpg
+          /home/{{ user }}/Applications/signal-desktop.AppImage
+      changed_when: false
+
+    - name: Remove GPG signature file
+      ansible.builtin.file:
+        path: /tmp/signal-desktop.AppImage.gpg
+        state: absent
+
+    - name: Extract Signal icon from AppImage
+      ansible.builtin.command:
+        cmd: >
+          /home/{{ user }}/Applications/signal-desktop.AppImage
+          --appimage-extract usr/share/icons/hicolor/256x256/apps/signal-desktop.png
+        chdir: /tmp
+      changed_when: false
+
+    - name: Ensure ~/.local/share/icons exists
+      ansible.builtin.file:
+        path: "/home/{{ user }}/.local/share/icons"
+        state: directory
+        mode: "0755"
+
+    - name: Copy Signal icon
+      ansible.builtin.copy:
+        src: /tmp/squashfs-root/usr/share/icons/hicolor/256x256/apps/signal-desktop.png
+        dest: "/home/{{ user }}/.local/share/icons/signal-desktop.png"
+        remote_src: true
+        mode: "0644"
+
+    - name: Remove AppImage extraction directory
+      ansible.builtin.file:
+        path: /tmp/squashfs-root
+        state: absent
+
+    - name: Update Signal .desktop file to use AppImage
+      ansible.builtin.copy:
+        dest: "/home/{{ user }}/.local/share/applications/signal-desktop.desktop"
+        content: |
+          [Desktop Entry]
+          Name=Signal
+          Comment=Private messaging from your desktop
+          Exec=/home/{{ user }}/Applications/signal-desktop.AppImage --user-data-dir=/home/{{ user }}/.config/Signal --password-store=gnome-libsecret %U
+          Icon=/home/{{ user }}/.local/share/icons/signal-desktop.png
+          Type=Application
+          StartupNotify=true
+          Categories=Network;InstantMessaging;
+          MimeType=x-scheme-handler/sgnl;x-scheme-handler/signalcaptcha;
+        mode: "0644"

@@ -1,0 +1,34 @@
+# Runs every package manager in sequence with native streaming output.
+# Mirrors the step set dot_bootstrap/update.yml used to cover.
+#
+# uv, mise and fisher run as custom commands rather than topgrade's built-in
+# steps: those call `uv self update` / `mise self-update`, which refuse to run on
+# brew-managed installs and would fail the run every time, and topgrade's `shell`
+# step also pulls in oh-my-zsh, which the old playbook never touched.
+# Absolute brew paths mirror the old playbook's homebrew_path, since custom
+# commands run via a non-interactive shell that may not have brew on PATH.
+
+# NOTE: a config-level `only` list silently overrides the `--only` CLI flag, so
+# the quick path (`sysup`, and the waybar/swaync click) narrows with `--disable`
+# instead: `topgrade --disable brew_formula brew_cask node custom_commands`
+# leaves just system + flatpak. Adding a step below means adding it there too.
+[misc]
+only = [
+    "system", # dnf on Fedora, apt on Ubuntu
+    "flatpak",
+    "brew_formula",
+    "brew_cask",
+    "node", # npm globals
+    "custom_commands", # the [commands] section below
+]
+
+assume_yes = false # keep dnf's transaction summary + y/N prompt
+pre_sudo = true # ask for the sudo password up front, not 30s into the run
+sudo_loop = true # keep the sudo ticket alive through long upgrades
+notify_end = "on_failure"
+
+[commands]
+"uv tools" = "/home/linuxbrew/.linuxbrew/bin/uv tool upgrade --all"
+"mise runtimes" = "/home/linuxbrew/.linuxbrew/bin/mise upgrade"
+"fisher plugins" = "/usr/bin/fish -c 'fisher update'"
+"Signal AppImage" = "ansible-playbook -i localhost, -c local ~/.bootstrap/signal-update.yml"

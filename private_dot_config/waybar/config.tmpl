@@ -29,6 +29,7 @@
         "cpu",
         "memory",
         "custom/temperature",
+        "custom/updates",
         "backlight",
         // "sway/language",
         "battery",
@@ -127,6 +128,19 @@
         "return-type": "json",
         "interval": 5,
         "format": "{}"
+    },
+    "custom/updates": {
+        "exec": "$HOME/.config/waybar/scripts/update-status.sh",
+        "return-type": "json",
+        // The script streams: it renders once, then blocks on inotify and emits
+        // a line whenever the summary changes. restart-interval only fires if it
+        // exits (no inotifywait), degrading to a 60s poll; it cannot be combined
+        // with "interval". exec-on-event would re-render the stale summary at
+        // click time, before the check it triggers has written anything.
+        "restart-interval": 60,
+        "exec-on-event": false,
+        "on-click": "wezterm -e --class update-system fish -c \"topgrade --disable brew_formula brew_cask node custom_commands; and ~/scripts/update-check.sh; read -P 'Press enter to close ' x\"",
+        "on-click-right": "~/scripts/update-check.sh"
     },
     "backlight": {
         // "device": "acpi_video1",
