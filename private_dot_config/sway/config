@@ -291,7 +291,11 @@ for_window [app_id="com.saivert.pwvucontrol"] floating enable
 for_window [app_id="snx-rs-gui"] floating enable
 # This borked
 # for_window [title="^(?=.*Extension:)(?=.*Mozilla Firefox).*"] floating enable
+# Sway can't set a border on the PiP window via criteria: it's floating and
+# requests CSD, so sway yields decoration control and clobbers the border at
+# map time. The script re-applies it once the window has settled.
 for_window [title="^(Picture-in-Picture)$"] floating enable, sticky enable
+for_window [title="^(Picture-in-Picture)$"] exec ~/.config/sway/scripts/border-pip.sh
 for_window [title="Copying *"] floating enable
 for_window [title="Moving *"] floating enable
 for_window [title="Rename *"] floating enable

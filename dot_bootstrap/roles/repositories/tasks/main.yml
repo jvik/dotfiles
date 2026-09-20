@@ -14,5 +14,8 @@
 # - name: Include RPM Fusion repository setup
 #   ansible.builtin.include_tasks: rpmfusion-repo.yml
 
-- name: Include Jottacloud CLI repository setup
-  ansible.builtin.include_tasks: jotta-cli-repo.yml
+# Jottacloud CLI repository setup disabled: their published RPM is signed
+# with a key that doesn't match repo.jotta.cloud/public.asc, so gpgcheck
+# always fails ("Import of the key didn't help, wrong key?"). Upstream bug.
+# - name: Include Jottacloud CLI repository setup
+#   ansible.builtin.include_tasks: jotta-cli-repo.yml
