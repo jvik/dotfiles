@@ -145,6 +145,22 @@ Re-run provisioning:
 ~/.local/share/chezmoi/run_install_02.sh
 ```
 
+Update packages (dnf/apt, Homebrew formulae, Flatpak) via
+[topgrade](https://github.com/topgrade-rs/topgrade), installed by the Homebrew role
+and configured at `private_dot_config/topgrade.toml` (→ `~/.config/topgrade.toml`):
+
+```bash
+sysup          # topgrade
+sysup-check    # topgrade --dry-run
+```
+
+The Signal Desktop AppImage (GPG-verified download, outside topgrade's scope) has
+its own playbook:
+
+```bash
+sysup-signal   # ansible-playbook ~/.bootstrap/update-signal.yml
+```
+
 ---
 
 ## Customization Tips

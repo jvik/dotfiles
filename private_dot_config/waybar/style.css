@@ -125,6 +125,7 @@ button:hover {
 #memory,
 #disk,
 #custom-temperature,
+#custom-update,
 #backlight,
 #network,
 #custom-network-wlan,
@@ -366,10 +367,19 @@ label:focus {
 
 #custom-temperature {
     background-color: @bg-temperature;
-    margin-left: 2px;
 }
 
 #custom-temperature.critical {
+    background-color: @bg-critical;
+}
+
+/* Not @bg-muted: the backlight module sits next to this one and uses it,
+   so the two would render as a single merged block. */
+#custom-update {
+    background-color: @bg-module;
+}
+
+#custom-update.pending {
     background-color: @bg-critical;
 }
 

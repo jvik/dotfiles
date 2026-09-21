@@ -53,9 +53,9 @@ abbr -a audio alsamixer
 
 # Chezmoi / Bootstrap
 abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
-abbr -a sysup 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml'
-abbr -a sysup-all 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml --tags system,brew,uv,npm,mise,fisher'
-abbr -a sysup-check 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update.yml --tags check'
+abbr -a sysup topgrade
+abbr -a sysup-check 'topgrade --dry-run'
+abbr -a sysup-signal 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update-signal.yml'
 
 # Git project root shortcuts
 abbr cg "cd (git rev-parse --show-toplevel)"

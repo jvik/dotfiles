@@ -5,7 +5,22 @@
       - power-profiles-daemon # For power profiles daemon
       - sway-notification-center
       - ncal
-      - system-config-printer
-      - python3-smbc
+      # - system-config-printer  # printer setup disabled for now, ansible failing
+      # - python3-smbc
     state: present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Silence Ubuntu Pro ESM apt advertising
+  become: true
+  ansible.builtin.command: pro config set apt_news=false
+  changed_when: false
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Always include phased updates (stop apt holding packages back with a "Not upgrading" note)
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/99-always-include-phased-updates
+    content: |
+      APT::Get::Always-Include-Phased-Updates "true";
+    mode: "0644"
   when: ansible_distribution == 'Ubuntu'
