@@ -23,8 +23,7 @@
   border-radius: 0;
 }
 
-.control-center .notification-row:focus,
-.control-center .notification-row:hover {
+.control-center .notification-row:focus {
   opacity: 1;
   background: @noti-bg-darker;
 }
@@ -62,7 +61,18 @@
   background: @cc-bg;
   border: 2px solid @yellow-base;
   box-shadow: none;
+  transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out;
   /* margin: 3px -2px 3px 0; */
+}
+
+/* swaync loads the packaged stylesheet and this one at the same provider priority,
+   and this one wins per property regardless of selector specificity -- so upstream's
+   hover rules for .notification never apply and have to be restated here. The second
+   selector covers collapsed groups (stacks), where only the group receives :hover. */
+.notification-row:hover .notification,
+.notification-group.collapsed:hover .notification-row .notification {
+  background: @noti-bg-hover;
+  border-color: @orange-base;
 }
 
 .close-button {
@@ -78,7 +88,8 @@
   border: none;
 }
 
-.notification:hover .close-button {
+.notification-row:hover .close-button,
+.notification-group:hover .notification-group-close-button .close-button {
   opacity: 1;
 }
 
@@ -91,12 +102,28 @@
 .notification-action {
   border: 2px solid @yellow-base;
   border-top: none;
+  transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
-.notification-default-action:hover,
-.notification-action:hover {
+.notification-row:hover .notification-action,
+.notification-group.collapsed:hover .notification-row .notification-action {
+  border-color: @orange-base;
+}
+
+.notification-default-action:hover {
   color: @blue-base;
-  background: @cc-bg;
+  background: transparent;
+}
+
+.notification-action:hover {
+  color: @cc-bg;
+  background: @blue-base;
+}
+
+.notification-group .notification-group-headers,
+.notification-group .notification-group-header,
+.notification-group .notification-group-icon {
+  color: @text-color;
 }
 
 .inline-reply-entry {
