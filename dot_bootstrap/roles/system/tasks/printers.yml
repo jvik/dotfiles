@@ -1,6 +1,36 @@
 ---
-- name: Configure Work SafeCom printer
+# The Bitwarden lookups below run on the controller as the invoking user, so they
+# need BW_SESSION from `bw-unlock`. Probe first: a locked vault should skip the
+# printer, not abort the whole bootstrap.
+- name: Check whether the Bitwarden vault is unlocked
+  ansible.builtin.command:
+    cmd: bw unlock --check
+  become: false
+  environment:
+    BW_SESSION: "{{ lookup('env', 'BW_SESSION') }}"
+  register: system_bw_unlocked
+  changed_when: false
+  failed_when: false
+  tags: printers
   when: ansible_distribution == 'Ubuntu' and not private_machine
+
+- name: Warn that printer setup needs an unlocked vault
+  ansible.builtin.debug:
+    msg: >-
+      Bitwarden vault locked — skipping SafeCom printer setup.
+      Run `bw-unlock`, then `chezmoi apply ~/.bootstrap` to configure it.
+  tags: printers
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - not private_machine
+    - system_bw_unlocked.rc | default(1) != 0
+
+- name: Configure Work SafeCom printer
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - not private_machine
+    - system_bw_unlocked.rc | default(1) == 0
+  tags: printers
   vars:
     printer_bitwarden_item: "20286390-2609-4f8a-915a-b27d0005f004"
     printer_name: SafeCom-SHARP
@@ -8,12 +38,25 @@
   block:
     - name: Look up printer connection details from Bitwarden
       ansible.builtin.set_fact:
-        system_printer_smb_user: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='username') }}"
-        system_printer_smb_password: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='password') }}"
-        system_printer_smb_domain: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='smb_domain') }}"
-        system_printer_host: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='print_server_host') }}"
-        system_printer_share: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, field='smb_share') }}"
+        system_printer_smb_user: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, search='id', field='username') }}"
+        system_printer_smb_password: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, search='id', field='password') }}"
+        system_printer_smb_domain: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, search='id', field='smb_domain') }}"
+        system_printer_host: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, search='id', field='print_server_host') }}"
+        system_printer_share: "{{ lookup('community.general.bitwarden', printer_bitwarden_item, search='id', field='smb_share') }}"
       no_log: true
+
+    - name: Verify Bitwarden lookups returned data
+      ansible.builtin.assert:
+        that:
+          - system_printer_smb_user | length > 0
+          - system_printer_smb_password | length > 0
+          - system_printer_smb_domain | length > 0
+          - system_printer_host | length > 0
+          - system_printer_share | length > 0
+        fail_msg: >-
+          Bitwarden lookup for printer credentials returned an empty value.
+          Is the vault unlocked in this shell? Run `bw-unlock` before
+          `chezmoi apply` / `ansible-playbook`.
 
     - name: Build printer SMB URI
       ansible.builtin.set_fact:
