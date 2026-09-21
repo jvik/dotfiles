@@ -74,7 +74,6 @@ The following files embed hardware identifiers and must reflect the current mach
 
 - `private_dot_config/kanshi/config` — monitor identifiers in profile names and `output` directives. Most desks are covered by per-family glob profiles (`"Samsung Electric Company LS49C95xU *"`) and a final `fallback-docked` catch-all, so a new monitor usually needs no profile at all. kanshi takes the **first** matching profile, so order matters: specific desks → family globs → `fallback-docked` last.
 - `private_dot_config/sway/config` — touchpad input IDs and the hardcoded wallpaper path
-- `private_dot_config/solaar/config.yaml` — Logitech peripheral serial numbers (MX Master, MX Keys, etc.)
 - `dot_var/app/hu.irl.cameractrls/` — camera device identifiers encoded in filenames
 
 When any hardware changes (displays, input devices, peripherals, cameras), update the relevant files above and keep this list and the matching section in [readme.md](readme.md) accurate.

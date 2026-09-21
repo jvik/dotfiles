@@ -35,11 +35,10 @@
   become: false
   when: not shell_fisher_stat.stat.exists
 
-- name: Install fzf.fish plugin via Fisher
+- name: Install Fisher plugins
   ansible.builtin.shell: |
     fish -c "fisher install PatrickF1/fzf.fish lewisacidic/fish-git-abbr"
   args:
     executable: /bin/bash
-    creates: '/home/{{ user }}/.config/fish/fish_plugins'
   become: false
-  when: shell_fisher_stat.stat.exists
+  changed_when: true
