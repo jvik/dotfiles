@@ -1,0 +1,67 @@
+---
+# Fedora ships darkman, so fedora-specific.yml installs it from the repos there.
+# Ubuntu only has it from 24.10 onwards, so try apt first and fall back to a
+# source build -- via `make install`, because that is what puts the systemd user
+# unit, the D-Bus service files and the .portal file in place. `go build` alone
+# would leave darkman unstartable.
+- name: Install darkman from apt
+  ansible.builtin.apt:
+    name: darkman
+    state: present
+  become: true
+  register: darkman_apt
+  failed_when: false
+  changed_when: darkman_apt.changed
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Check if darkman is installed from a package
+  ansible.builtin.stat:
+    path: /usr/bin/darkman
+  register: darkman_pkg_stat
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Check if darkman is installed from source
+  ansible.builtin.stat:
+    path: /usr/local/bin/darkman
+  register: darkman_src_stat
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Build darkman from source
+  vars:
+    darkman_version: "2.3.2"
+  when:
+    - ansible_distribution == 'Ubuntu'
+    - not darkman_pkg_stat.stat.exists
+    - not darkman_src_stat.stat.exists
+  block:
+    - name: Install darkman build dependencies (Ubuntu)
+      ansible.builtin.apt:
+        name:
+          - golang-go
+          - git
+          - make
+          - scdoc # darkman's default make target builds the man pages
+        state: present
+        lock_timeout: 180
+      become: true
+
+    - name: Clone darkman
+      ansible.builtin.git:
+        repo: https://gitlab.com/WhyNotHugo/darkman.git
+        dest: /tmp/darkman-build
+        version: "v{{ darkman_version }}"
+        depth: 1
+      become: true
+      become_user: "{{ user }}"
+
+    - name: Build darkman
+      community.general.make:
+        chdir: /tmp/darkman-build
+      become: true
+      become_user: "{{ user }}"
+
+    - name: Install darkman
+      community.general.make:
+        chdir: /tmp/darkman-build
+        target: install
+      become: true

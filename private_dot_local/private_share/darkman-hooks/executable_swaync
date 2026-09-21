@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Swap swaync's colour palette. Called as: swaync dark|light
+#
+# style.css imports palette.css, which is generated here rather than tracked by
+# chezmoi (see .chezmoiignore) so that toggling the theme is not a pending
+# change in the dotfiles repo.
+
+set -u
+
+mode=$1
+config=${XDG_CONFIG_HOME:-$HOME/.config}/swaync
+source=$config/palette-$mode.css
+
+case "$mode" in
+dark | light) ;;
+*)
+    echo "usage: ${0##*/} dark|light" >&2
+    exit 2
+    ;;
+esac
+
+[ -f "$source" ] || exit 0
+
+cp -- "$source" "$config/palette.css"
+
+if command -v swaync-client >/dev/null; then
+    swaync-client --reload-css
+fi

@@ -1,0 +1,16 @@
+# Sun times are computed from a fixed location on purpose.
+#
+# darkman 1.5.4 (what Fedora 43 ships) tries geoclue FIRST when usegeoclue is
+# true, and returns early as soon as the geoclue *client* initialises -- which
+# it always does when geoclue2 is installed. The lat/lng below would then be
+# discarded and no transition would ever be scheduled, because Fedora's geoclue
+# cannot resolve a position since the Mozilla Location Service shutdown, and
+# that failure is silent. Revisit on Fedora 44+, which ships darkman 2.x.
+#
+# ~/.cache/darkman/location.json also takes precedence over this file, so remove
+# it if darkman has ever run with geoclue enabled.
+lat: 59.91
+lng: 10.75
+usegeoclue: false
+# darkman get/set/toggle go over the D-Bus API in 1.5.4, so this must stay on.
+dbusserver: true

@@ -14,6 +14,9 @@
 - name: Include Ubuntu specific packages
   ansible.builtin.include_tasks: ubuntu-specific.yml
 
+- name: Include darkman installation
+  ansible.builtin.include_tasks: darkman.yml
+
 - name: Include native packages
   ansible.builtin.include_tasks: native-packages.yml
 

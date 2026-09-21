@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Point GTK at the light or dark theme. Called as: gtk dark|light
+#
+# Two mechanisms are needed because they reach different apps:
+#   gsettings      -> xdg-desktop-portal-gtk relays color-scheme to
+#                     org.freedesktop.appearance, which is what Firefox,
+#                     Electron, Flatpaks, GTK4/libadwaita and wezterm read.
+#   settings.ini   -> what plain GTK3 apps on Sway actually read for the theme
+#                     name. GTK3 watches the file, so this restyles them live.
+# Setting only the first is what made the old toggle look broken.
+
+set -u
+
+mode=$1
+settings=${XDG_CONFIG_HOME:-$HOME/.config}/gtk-3.0/settings.ini
+
+case "$mode" in
+dark)
+    scheme=prefer-dark
+    theme=Adwaita-dark
+    prefer_dark=1
+    ;;
+light)
+    scheme=prefer-light
+    theme=Adwaita
+    prefer_dark=0
+    ;;
+*)
+    echo "usage: ${0##*/} dark|light" >&2
+    exit 2
+    ;;
+esac
+
+gsettings set org.gnome.desktop.interface color-scheme "$scheme"
+gsettings set org.gnome.desktop.interface gtk-theme "$theme"
+
+# Rewrite just the two theme keys, leaving the cursor keys alone. Adding them
+# when absent keeps this working against a settings.ini that predates darkman.
+if [ -f "$settings" ]; then
+    if grep -q '^gtk-theme-name=' "$settings"; then
+        sed -i "s/^gtk-theme-name=.*/gtk-theme-name=$theme/" "$settings"
+    else
+        printf 'gtk-theme-name=%s\n' "$theme" >>"$settings"
+    fi
+
+    if grep -q '^gtk-application-prefer-dark-theme=' "$settings"; then
+        sed -i "s/^gtk-application-prefer-dark-theme=.*/gtk-application-prefer-dark-theme=$prefer_dark/" "$settings"
+    else
+        printf 'gtk-application-prefer-dark-theme=%s\n' "$prefer_dark" >>"$settings"
+    fi
+fi

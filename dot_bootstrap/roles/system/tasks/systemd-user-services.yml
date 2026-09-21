@@ -32,3 +32,12 @@
     scope: user
   become: false
   become_user: "{{ ansible_user_id }}"
+
+- name: Enable darkman systemd user service
+  ansible.builtin.systemd:
+    name: darkman.service
+    enabled: true
+    state: started
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"

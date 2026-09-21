@@ -1,22 +1,9 @@
-/* Gruvbox Dark color scheme */
-@define-color cc-bg #282828;
-@define-color noti-border-color #fabd2f;
-@define-color noti-bg #3c3836;
-@define-color noti-bg-darker #1d2021;
-@define-color noti-bg-hover #504945;
-@define-color noti-bg-focus #3c3836;
-@define-color noti-close-bg #fb4934;
-@define-color noti-close-bg-hover #cc241d;
-@define-color text-color #ebdbb2;
-@define-color text-color-disabled #928374;
-@define-color bg-selected #fabd2f;
-@define-color border-green #b8bb26;
-@define-color red-base #fb4934;
-@define-color red-hover #cc241d;
-@define-color green-base #b8bb26;
-@define-color blue-base #83a598;
-@define-color orange-base #fe8019;
-@define-color yellow-base #fabd2f;
+/* Colours live in palette-dark.css / palette-light.css. palette.css is a copy of
+ * whichever one is active, written by ~/.local/share/darkman-hooks/swaync. It is
+ * deliberately not in the source tree -- chezmoi leaves files it has no source
+ * entry for alone, so toggling the theme never shows up as a pending change.
+ * Same @import trick as waybar/style-light.css. */
+@import url("palette.css");
 
 * {
   font-family: "JetBrainsMono NFM SemiBold", monospace;

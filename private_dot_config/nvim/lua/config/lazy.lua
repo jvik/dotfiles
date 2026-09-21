@@ -20,7 +20,7 @@ require("lazy").setup({
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- import/override with your plugins
     { import = "plugins" },
-    { "ellisonleao/gruvbox.nvim", background = "dark" },
+    { "ellisonleao/gruvbox.nvim" },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
@@ -53,4 +53,22 @@ require("lazy").setup({
   },
 })
 
+-- Start on whatever darkman currently says, so a new nvim matches the rest of
+-- the desktop. Running instances get switched by
+-- ~/.local/share/darkman-hooks/nvim instead. "null" means darkman has no
+-- location yet; dark is the safer guess.
+local function system_background()
+  if vim.fn.executable("darkman") == 0 then
+    return "dark"
+  end
+
+  local mode = vim.trim(vim.fn.system({ "darkman", "get" }))
+  if vim.v.shell_error ~= 0 or mode ~= "light" then
+    return "dark"
+  end
+
+  return "light"
+end
+
+vim.o.background = system_background()
 vim.cmd.colorscheme("gruvbox")

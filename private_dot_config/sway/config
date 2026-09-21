@@ -98,7 +98,7 @@ bindsym $mod+Shift+q kill
 #: Application launcher
 bindsym $mod+d exec $menu
 bindsym $mod+Shift+f exec $browser
-bindsym $mod+Shift+i exec ~/scripts/toggle-dark-mode.sh
+bindsym $mod+Shift+i exec darkman toggle
 #: Jump to the most recently urgent window
 bindsym $mod+x [urgent=latest] focus
 #: Lock the screen

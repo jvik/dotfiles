@@ -28,6 +28,22 @@ function scheme_for_appearance(appearance)
 	end
 end
 
+-- Seleksjonsfargene må følge appearance: lyse verdier på mørk bakgrunn blir
+-- uleselige, og omvendt.
+function selection_for_appearance(appearance)
+	if appearance:find("Dark") then
+		return {
+			selection_bg = "#626880", -- Catppuccin Frappe surface2
+			selection_fg = "#c6d0f5", -- lys tekst på mørk bakgrunn
+		}
+	else
+		return {
+			selection_bg = "#d2d0e7", -- litt mer kontrast enn Rosé Pine Dawn sin default
+			selection_fg = "#26233a", -- mørk tekst på lys bakgrunn
+		}
+	end
+end
+
 -- Toggle dark/light mode (DISABLED - using automatic detection instead)
 -- wezterm.on("toggle-dark-mode", function(window, pane)
 -- 	local light_scheme = "rose-pine-dawn"
@@ -55,16 +71,15 @@ config.front_end = "OpenGL"
 -- config.webgpu_power_preference = "HighPerformance"
 
 -- color config --
--- Automatically detect system appearance (dark/light mode)
-config.color_scheme = scheme_for_appearance(get_appearance())
+-- Automatically detect system appearance (dark/light mode).
+-- darkman drives this via the XDG appearance portal, so it follows live.
+local appearance = get_appearance()
+config.color_scheme = scheme_for_appearance(appearance)
 --config.color_scheme = "Gruvbox (Gogh)"
 --config.color_scheme = "Catppuccin Frappe"
 --config.color_scheme = "Catppuccin Latte"
 --config.color_scheme = "rose-pine-dawn"
-config.colors = {
-	selection_bg = "#d2d0e7", -- litt mer kontrast enn Rosé Pine Dawn sin default
-	selection_fg = "#26233a", -- mørk tekst på lys bakgrunn
-}
+config.colors = selection_for_appearance(appearance)
 --config.color_scheme = "Monokai (light) (terminal.sexy)"
 config.force_reverse_video_cursor = true
 -- config.default_cursor_style = 'BlinkingBlock' --

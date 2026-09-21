@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Flip 'background' in every running neovim. Called as: nvim dark|light
+#
+# nvim creates its listen pipe under stdpath("run") at startup, so there is
+# nothing to configure -- the sockets are just there to be found.
+#
+# --remote-expr rather than --remote-send: sending keys would knock the user out
+# of insert mode mid-typing.
+
+set -u
+
+mode=$1
+
+case "$mode" in
+dark | light) ;;
+*)
+    echo "usage: ${0##*/} dark|light" >&2
+    exit 2
+    ;;
+esac
+
+command -v nvim >/dev/null || exit 0
+
+shopt -s nullglob
+for socket in "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"/nvim.*; do
+    [ -S "$socket" ] || continue
+    # A socket left behind by a dead nvim just makes this fail; ignore it.
+    nvim --server "$socket" --remote-expr "execute('set background=$mode')" \
+        >/dev/null 2>&1 || true
+done
