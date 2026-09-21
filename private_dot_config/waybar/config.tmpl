@@ -29,6 +29,7 @@
         "cpu",
         "memory",
         "custom/temperature",
+        "custom/update",
         "backlight",
         // "sway/language",
         "battery",
@@ -126,6 +127,14 @@
         "exec": "$HOME/.config/waybar/scripts/temperature.sh",
         "return-type": "json",
         "interval": 5,
+        "format": "{}"
+    },
+    "custom/update": {
+        "exec": "$HOME/scripts/update-check.sh --status",
+        "return-type": "json",
+        "interval": 60,
+        "signal": 8,
+        "on-click": "flatpak run org.wezfurlong.wezterm start -- fish -c 'topgrade; ~/scripts/update-check.sh'",
         "format": "{}"
     },
     "backlight": {

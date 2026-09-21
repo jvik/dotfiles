@@ -21,8 +21,8 @@ for hwmon in /sys/class/hwmon/hwmon*; do
                 fi
                 class=""
                 [ "$temp" -ge "$CRITICAL" ] && class="critical"
-                printf '{"text": "%s %d°C", "class": "%s", "tooltip": "%s: %d°C"}\n' \
-                    "$icon" "$temp" "$class" "$name" "$temp"
+                printf '{"text": "%d°C %s", "class": "%s", "tooltip": "%s: %d°C"}\n' \
+                    "$temp" "$icon" "$class" "$name" "$temp"
                 exit 0
             fi
             ;;
@@ -31,4 +31,4 @@ done
 
 # Fallback: thermal_zone0
 temp=$(( $(cat /sys/class/thermal/thermal_zone0/temp 2>/dev/null || echo 0) / 1000 ))
-printf '{"text": "󰔍 %d°C", "class": "", "tooltip": "thermal_zone0: %d°C"}\n' "$temp" "$temp"
+printf '{"text": "%d°C 󰔍", "class": "", "tooltip": "thermal_zone0: %d°C"}\n' "$temp" "$temp"

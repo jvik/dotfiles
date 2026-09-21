@@ -41,6 +41,13 @@ The goal is safe, minimal, and idempotent changes.
 - Keep tasks declarative and idempotent.
 - Place new tasks in the most relevant existing role/task files.
 - Keep distro-specific logic in the appropriate distro-specific files.
+- Package updates (dnf/apt, Homebrew formulae, Flatpak) are handled by
+  `topgrade` (installed via the Homebrew role, configured at
+  `private_dot_config/topgrade.toml`, scoped via its `only` list to just those
+  three), not a bespoke playbook — see `sysup` in `abbr.fish`.
+  `dot_bootstrap/update-signal.yml` remains a separate playbook for the Signal
+  Desktop AppImage refresh, since that's bespoke GPG-verified download logic
+  topgrade has no step for.
 
 ### Shell/scripts (`scripts/`, `private_dot_config/**/scripts/`)
 

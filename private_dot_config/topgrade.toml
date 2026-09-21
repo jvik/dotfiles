@@ -1,0 +1,21 @@
+[misc]
+# Run non-interactively, matching the old Ansible update playbook's behavior.
+assume_yes = true
+# Tidy up caches after upgrading (brew cleanup, apt autoremove, npm cache clean, ...).
+cleanup = true
+# topgrade is installed & upgraded via Homebrew (homebrew-packages.yml) — don't
+# also let it try to replace its own binary.
+no_self_update = true
+# Only touch the package managers actually in use here (Fedora/dnf via
+# `system`, linuxbrew, flatpak, mise). Without this, topgrade probes and
+# tries to update every tool it can detect on the system.
+only = ["system", "brew_formula", "flatpak"]
+
+[linux]
+# dnf only refreshes metadata when its cache expires; force a refresh every run
+# to match the old playbook's `update_cache: true`.
+dnf_arguments = "--refresh"
+
+[post_commands]
+# Refresh the waybar update-count widget once topgrade finishes.
+"Waybar update widget" = "~/scripts/update-check.sh"
