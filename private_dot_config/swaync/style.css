@@ -196,6 +196,10 @@
   color: @text-color;
 }
 
+.widget-dnd label {
+  color: @text-color;
+}
+
 .widget-dnd>switch {
   background: @text-color-disabled;
   border-radius: 0;
@@ -203,6 +207,10 @@
   border: 1px solid transparent;
   outline: none;
   box-shadow: none;
+}
+
+.widget-dnd>switch slider {
+  background: @text-color;
 }
 
 .widget-dnd>switch:checked {
@@ -274,15 +282,42 @@
   margin: 10px 0 0 0;
 }
 
+/* The album art picture (.mpris-background) is blurred behind .mpris-overlay,
+ * so this content always sits on a dark backdrop regardless of theme --
+ * these colors are intentionally fixed rather than pulled from the palette. */
+.widget-mpris-title {
+  color: #ebdbb2;
+  font-weight: 700;
+}
+
+.widget-mpris-subtitle {
+  color: #d5c4a1;
+}
+
 .widget-mpris-player button {
-  background: @text-color-disabled;
-  color: @cc-bg;
+  background: #3c3836;
+  color: #ebdbb2;
   font-size: 1.3rem;
   padding: 8px 12px;
   margin: 5px;
 }
 
 .widget-mpris-player button:hover {
-  background: @text-color;
-  color: @cc-bg;
+  background: #504945;
+  color: #fbf1c7;
+}
+
+.control-center-list-placeholder {
+  color: @text-color;
+}
+
+.control-center-list-placeholder label {
+  color: @text-color;
+  font-size: 1.2rem;
+}
+
+.control-center-list-placeholder image {
+  color: @text-color;
+  opacity: 0.8;
+  -gtk-icon-shadow: none;
 }
