@@ -7,6 +7,14 @@
   become: false
   become_user: "{{ ansible_user_id }}"
 
+- name: Enable autotiling systemd user service
+  ansible.builtin.systemd:
+    name: autotiling.service
+    enabled: true
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
+
 - name: Enable battery-check systemd user timer
   ansible.builtin.systemd:
     name: battery-check.timer

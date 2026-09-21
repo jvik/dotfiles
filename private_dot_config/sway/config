@@ -45,10 +45,10 @@ exec_always swaync-client --reload-css
 # own argv matches the pkill pattern and it SIGTERMs itself before reaching the
 # `;`. The predecessor of this watcher was never running for exactly that reason.
 exec_always systemctl --user restart sway-output-watch.service
+exec_always systemctl --user restart autotiling.service
 # Load-bearing: --monitor does not emit the subscribe ack, so the watcher does
 # not fire once at startup. This is the initial reconcile.
 exec_always ~/.config/sway/scripts/on-output-change.sh --once
-# exec_always "killall autotiling; $HOME/.local/bin/autotiling"
 
 ### Output Configuration
 workspace 10 output eDP-1
