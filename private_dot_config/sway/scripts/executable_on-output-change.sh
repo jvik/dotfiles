@@ -47,6 +47,9 @@ reconcile() {
         sleep 1
     done
     swaymsg -q "[tiling] resize set 0 0" || true
+    # A new head needs an image for its own aspect ratio; sway only re-applies
+    # the `output * bg` base layer on hotplug.
+    "$SCRIPTS/set-wallpaper.sh" || true
 }
 
 if [ "${1:-}" = "--once" ]; then

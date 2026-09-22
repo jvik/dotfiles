@@ -13,6 +13,7 @@
       - libreoffice-langpack-nb
       - tuned-ppd # For power profiles daemon
       - darkman
+      - ImageMagick # generates the wallpapers in scripts/generate-wallpapers.sh
     state: present
   when: ansible_distribution == 'Fedora'
 

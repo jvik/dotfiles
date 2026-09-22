@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# darkman 1.5.4 (Fedora 43) passes NO argument to hooks and globs two separate
+# directories, so the mode has to come from which directory this file sits in.
+# 2.x passes it as $1 and prefers ~/.local/share/darkman/, but still reads these
+# legacy directories until 3.0 -- ignoring $1 keeps one set of hooks working on
+# both. The real work lives in darkman-hooks/, a sibling rather than a
+# subdirectory because 1.5.4 tries to execute subdirectories it finds here.
+exec "$HOME/.local/share/darkman-hooks/wallpaper" light

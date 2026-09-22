@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Re-pick the wallpaper for the new theme. Called as: wallpaper dark|light
+#
+# The picker itself lives with the other sway scripts because it is also run at
+# sway startup and on every output change; this hook only supplies the mode, so
+# darkman and sway cannot disagree about which set of images is current.
+
+set -u
+
+mode=$1
+
+case "$mode" in
+dark | light) ;;
+*)
+    echo "usage: ${0##*/} dark|light" >&2
+    exit 2
+    ;;
+esac
+
+picker=${XDG_CONFIG_HOME:-$HOME/.config}/sway/scripts/set-wallpaper.sh
+
+[ -x "$picker" ] || exit 0
+
+exec "$picker" --mode "$mode"

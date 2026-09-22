@@ -1,4 +1,7 @@
-image=~/.wallpaper
+# No `image=` here: lockman.sh passes one `-i <output>:<path>` per head, built
+# from set-wallpaper.sh --print, so the lock screen shows the same per-output
+# images as the desktop. A global image= would be the wrong aspect on one of
+# them, and would also override the per-output arguments.
 scaling=fill
 
 # Farger (myke, matte og nøytrale som matcher wallpaperet)

@@ -116,7 +116,7 @@ Screenshots: `$mod+p` / `Print` freezes the screen with [`wayfreeze`](https://gi
 Some files contain hardware identifiers or device settings tied to specific machines. Review and update these when setting up on new hardware:
 
 - **`private_dot_config/kanshi/config`** — Display profiles. Per-family glob profiles (`"Samsung Electric Company LS49C95xU *"`) cover most desks and a final `fallback-docked` catch-all handles anything unrecognised, so a new monitor usually needs no profile at all. Add one only when a desk needs different geometry, with `scripts/kanshi-append-config.sh` (which inserts before the catch-all) or by editing directly. kanshi takes the first matching profile, so `fallback-docked` must stay last.
-- **`private_dot_config/sway/config`** — Touchpad input device IDs (e.g. `input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad"`) and the wallpaper path (`/home/jorgen/.wallpaper`).
+- **`private_dot_config/sway/config`** — Touchpad input device IDs (e.g. `input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad"`). The wallpaper is no longer device-specific: `set-wallpaper.sh` picks per output by aspect ratio at runtime, so new displays need no config change.
 - **`dot_var/app/hu.irl.cameractrls/`** — Camera control settings with PCI/USB device identifiers encoded in the filenames.
 
 ---
@@ -171,9 +171,56 @@ sysup-signal   # ansible-playbook ~/.bootstrap/update-signal.yml
 
 ### Wallpaper
 
-https://drive.proton.me/urls/K1NFJPP43M#p1daHRRboBCZ
+Wallpapers are chosen **per output, by aspect ratio**, and follow darkman. A single image cannot
+serve this hardware — the office desks are 32:9 (5120x1440, 3840x1080), home is 21:9 (3840x1600)
+and the laptop panel is 16:10 (1920x1200) — because sway's `fill` covers the output and crops the
+rest, so a 16:9 source loses the vertical middle 50% on an ultrawide.
 
-Add to ~/.wallpaper
+Images live outside the repo at:
+
+```
+~/Pictures/wallpapers/<dark|light>/<standard|wide|ultrawide>/
+```
+
+Buckets are by aspect ratio: `>= 3.0` → `ultrawide`, `>= 2.0` → `wide`, else `standard`.
+
+Populate them with:
+
+```bash
+~/scripts/generate-wallpapers.sh      # FORCE=1 to regenerate
+```
+
+Everything is **generated, not downloaded** — 27 files, ~3.6MB, a couple of seconds. Each preset is
+rendered once per bucket at that bucket's native resolution, so every output gets an exact fit and
+nothing is ever cropped. There is no source repo to curate and no photography: stock wallpapers
+either fought the theme or turned out to be novelty images wearing a gruvbox palette.
+
+The presets deliberately **complement gruvbox rather than reproduce it.** Filling the desktop with
+the same warm ochres as the chrome makes the whole screen one muddy yellow-brown; these sit on the
+cool side so the warm `#ebdbb2` text and `#fabd2f` accents read as accents against them:
+
+| Mode | Presets |
+|---|---|
+| dark | `abyss` teal→indigo, `nocturne` plum→navy, `tide` teal→blue, `ultra` indigo→teal, `moss` green→teal |
+| light | `haze`, `mist`, `glacier`, `bloom` — pale blue/lilac, cool against the `#fbf1c7` chrome |
+
+Each is a four-corner bilinear mesh rather than a two-stop ramp, so the colour travels across the
+frame instead of banding in one direction — which is what stops a 5120px-wide background reading as
+a flat field. Faint Gaussian noise dithers it: these ramps span only ~20 8-bit levels, so over 1440
+rows they band visibly without it. Output is JPEG q92 — at 5120x1440 that is ~200KB and 0.3s, versus
+6.2MB and 12s as 8-bit PNG (32MB at PNG's default 16-bit depth), and noise does not compress
+losslessly.
+
+Add your own images to any bucket and they join the rotation; the picker does not care where a file
+came from, only which directory it is in. It never falls back to a *different* bucket — an empty
+bucket yields a solid gruvbox colour instead, because borrowing a 16:10 image for a 32:9 output
+would crop away more than half of it, which is the failure this whole arrangement exists to avoid.
+
+`private_dot_config/sway/scripts/set-wallpaper.sh` does the picking and applying. It runs at sway
+startup, from `on-output-change.sh` on every hotplug, and from the darkman `40-wallpaper` hook on
+theme changes. `--print` emits `<output>\t<path>` without applying, which is how `lockman.sh` gives
+swaylock one `-i <output>:<path>` per head. Selection is deterministic (hash of the output name), so
+a hotplug or DPMS wake never reshuffles the desktop, and two heads never land on the same image.
 
 
 ---

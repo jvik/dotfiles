@@ -333,5 +333,13 @@ focus_on_window_activation focus
 include /etc/sway/config.d/*
 include ~/.config/sway/config.local
 
-# Override system default wallpaper (from /etc/sway/config.d/40-sway-background.conf)
-output * bg /home/jorgen/.wallpaper fill
+# Override system default wallpaper (from /etc/sway/config.d/40-sway-background.conf).
+# Must stay after the system includes above, which is what makes the override win.
+#
+# Base layer only: gruvbox dark0, so there is never a flash of the distro
+# default before the picker runs. set-wallpaper.sh then replaces it per output
+# with an image matching that output's aspect ratio (32:9 desk monitors vs the
+# 16:10 laptop panel) and the current darkman mode. It is re-run on output
+# changes by on-output-change.sh and on theme changes by the darkman hook.
+output * bg #282828 solid_color
+exec_always ~/.config/sway/scripts/set-wallpaper.sh

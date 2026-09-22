@@ -5,6 +5,7 @@
       - power-profiles-daemon # For power profiles daemon
       - sway-notification-center
       - ncal
+      - imagemagick # generates the wallpapers in scripts/generate-wallpapers.sh
       # - system-config-printer  # printer setup disabled for now, ansible failing
       # - python3-smbc
     state: present
