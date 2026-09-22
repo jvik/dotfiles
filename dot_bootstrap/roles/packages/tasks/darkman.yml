@@ -28,7 +28,7 @@
 
 - name: Build darkman from source
   vars:
-    darkman_version: "2.3.2"
+    darkman_version: "2.3.1"
   when:
     - ansible_distribution == 'Ubuntu'
     - not darkman_pkg_stat.stat.exists

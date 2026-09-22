@@ -272,8 +272,8 @@ bar {
 }
 
 ### Appearance
-default_border pixel 2
-default_floating_border pixel 2
+default_border normal
+default_floating_border normal
 
 gaps inner 8
 gaps outer 4
