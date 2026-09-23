@@ -22,6 +22,7 @@
       - ipython
       - mise
       - topgrade
+      - PeonPing/tap/peon-ping
     state: present
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
