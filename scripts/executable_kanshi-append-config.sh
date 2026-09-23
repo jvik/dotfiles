@@ -240,7 +240,7 @@ main() {
         if grep -q "^profile $FALLBACK_PROFILE {" "$config_path"; then
             local tmp
             tmp=$(mktemp) || error_exit "Could not create temp file"
-            awk -v anchor="^profile $FALLBACK_PROFILE \\{" -v block="$profile_text" '
+            awk -v anchor="^profile $FALLBACK_PROFILE [{]" -v block="$profile_text" '
                 !done && $0 ~ anchor { print block; done = 1 }
                 { print }
             ' "$config_path" > "$tmp" || { rm -f "$tmp"; error_exit "Failed to rewrite $config_path"; }
