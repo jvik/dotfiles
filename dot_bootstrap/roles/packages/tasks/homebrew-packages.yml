@@ -20,6 +20,8 @@
       - lazygit
       - ranger
       - ipython
+      # Required for the latest LazyVim
+      - tree-sitter-cli
       - mise
       - topgrade
       - PeonPing/tap/peon-ping
