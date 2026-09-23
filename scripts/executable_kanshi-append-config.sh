@@ -79,6 +79,27 @@ profile_exists() {
     grep -Eq "^profile[[:space:]]+${profile_name}[[:space:]]*\\{" "$config_path"
 }
 
+replace_profile_block() {
+    local name="$1"
+    local config_path="$2"
+    local new_lines="$3"
+    local start_line
+    local tmp
+
+    start_line=$(grep -nE "^profile[[:space:]]+${name}[[:space:]]*\\{" "$config_path" | head -n1 | cut -d: -f1) || true
+    [ -n "$start_line" ] || error_exit "Could not locate profile '$name' to update"
+
+    tmp=$(mktemp) || error_exit "Could not create temp file"
+    awk -v start="$start_line" -v block="$new_lines" '
+        NR == start { print; print block; skip = 1; next }
+        skip && /^}[ \t]*$/ { print; skip = 0; next }
+        skip { next }
+        { print }
+    ' "$config_path" > "$tmp" || { rm -f "$tmp"; error_exit "Failed to rewrite $config_path"; }
+    cat "$tmp" > "$config_path" || { rm -f "$tmp"; error_exit "Failed to write $config_path"; }
+    rm -f "$tmp"
+}
+
 main() {
     local requested_name="${1:-}"
     local config_path="${2:-$DEFAULT_CONFIG}"
@@ -88,6 +109,7 @@ main() {
     local profile_base
     local profile_name
     local output_lines
+    local update_existing=0
 
     if [ "$requested_name" = "-h" ] || [ "$requested_name" = "--help" ]; then
         print_usage
@@ -139,13 +161,10 @@ main() {
         else
             profile_base="laptop"
         fi
+    fi
 
-        # Quick guard: if an auto-derived source profile already exists,
-        # do not append another generated profile for the same source.
-        if profile_exists "$profile_base" "$config_path"; then
-            echo "Profile for current source already exists: $profile_base"
-            exit 0
-        fi
+    if profile_exists "$profile_base" "$config_path"; then
+        update_existing=1
     fi
 
     output_lines=$(printf '%s' "$outputs_json" | jq -r --argjson max_refresh "$MAX_REFRESH_MHZ" '
@@ -201,38 +220,48 @@ main() {
 
     [ -n "$output_lines" ] || error_exit "Could not generate output lines from sway outputs"
 
-    profile_name=$(find_unique_profile_name "$profile_base" "$config_path")
-
-    local profile_text
-    profile_text=$(
-        printf '\nprofile %s {\n' "$profile_name"
-        printf '%s\n' "$output_lines"
-        printf '}\n'
-    )
-
-    # Insert before the catch-all rather than appending. kanshi takes the first
-    # matching profile, so anything written after `profile fallback-docked`
-    # would never match.
-    if grep -q "^profile $FALLBACK_PROFILE {" "$config_path"; then
-        local tmp
-        tmp=$(mktemp) || error_exit "Could not create temp file"
-        awk -v anchor="^profile $FALLBACK_PROFILE \\{" -v block="$profile_text" '
-            !done && $0 ~ anchor { print block; done = 1 }
-            { print }
-        ' "$config_path" > "$tmp" || { rm -f "$tmp"; error_exit "Failed to rewrite $config_path"; }
-        cat "$tmp" > "$config_path" || { rm -f "$tmp"; error_exit "Failed to write $config_path"; }
-        rm -f "$tmp"
-        echo "Inserted profile '$profile_name' before $FALLBACK_PROFILE in $config_path"
+    if [ "$update_existing" -eq 1 ]; then
+        profile_name="$profile_base"
+        replace_profile_block "$profile_name" "$config_path" "$output_lines"
+        echo "Updated profile '$profile_name' with current monitor settings."
     else
-        printf '%s\n' "$profile_text" >> "$config_path"
-        echo "Appended profile '$profile_name' to $config_path"
+        profile_name=$(find_unique_profile_name "$profile_base" "$config_path")
+
+        local profile_text
+        profile_text=$(
+            printf '\nprofile %s {\n' "$profile_name"
+            printf '%s\n' "$output_lines"
+            printf '}\n'
+        )
+
+        # Insert before the catch-all rather than appending. kanshi takes the first
+        # matching profile, so anything written after `profile fallback-docked`
+        # would never match.
+        if grep -q "^profile $FALLBACK_PROFILE {" "$config_path"; then
+            local tmp
+            tmp=$(mktemp) || error_exit "Could not create temp file"
+            awk -v anchor="^profile $FALLBACK_PROFILE \\{" -v block="$profile_text" '
+                !done && $0 ~ anchor { print block; done = 1 }
+                { print }
+            ' "$config_path" > "$tmp" || { rm -f "$tmp"; error_exit "Failed to rewrite $config_path"; }
+            cat "$tmp" > "$config_path" || { rm -f "$tmp"; error_exit "Failed to write $config_path"; }
+            rm -f "$tmp"
+            echo "Inserted profile '$profile_name' before $FALLBACK_PROFILE in $config_path"
+        else
+            printf '%s\n' "$profile_text" >> "$config_path"
+            echo "Appended profile '$profile_name' to $config_path"
+        fi
     fi
 
     echo "Run 'chezmoi apply ~/.config/kanshi/config' to deploy it; the"
     echo "run_onchange hook restarts kanshi for you."
 
     if command -v notify-send >/dev/null 2>&1; then
-        notify-send -t 2000 "Kanshi" "Generated profile: $profile_name"
+        if [ "$update_existing" -eq 1 ]; then
+            notify-send -t 2000 "Kanshi" "Updated profile: $profile_name"
+        else
+            notify-send -t 2000 "Kanshi" "Generated profile: $profile_name"
+        fi
     fi
 }
 
