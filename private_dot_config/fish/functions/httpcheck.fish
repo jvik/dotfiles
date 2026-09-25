@@ -47,7 +47,7 @@ function httpcheck --description 'Repeatedly curl a host pinned to one resolved 
     echo "Using IP: $ip"
 
     for i in (seq $_flag_count)
-        curl -o /dev/null -s -w "attempt $i: %{http_code} time=%{time_total}s\n" \
+        curl -o /dev/null -s -w "attempt $i: code=%{http_code} exit=%{exitcode} total=%{time_total}s connect=%{time_connect}s tls=%{time_appconnect}s ttfb=%{time_starttransfer}s\n" \
             --max-time $_flag_timeout \
             --resolve "$host:$_flag_port:$ip" \
             "$_flag_scheme://$host"
