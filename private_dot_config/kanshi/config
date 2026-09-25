@@ -94,6 +94,11 @@ profile samsung-ultrawide-a950 {
 # -- let sway pick the preferred mode. Must stay last; kanshi takes the first
 # match, so anything below this would be unreachable.
 
+
+profile HNTX901781 {
+    output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
+}
 profile fallback-docked {
     output "eDP-1" enable position 0,0
     output "*" enable position 1920,0
