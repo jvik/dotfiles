@@ -142,7 +142,7 @@ case "$kind" in
 esac
 
 case "$variant" in
-    leader|detail)
+    leader|detail|iface)
         ;;
     *)
         print_json "" "invalid" ""
@@ -151,6 +151,12 @@ case "$variant" in
 esac
 
 iface=$(select_iface "$kind")
+
+# Lets network-menu.sh target the same interface this module displays.
+if [ "$variant" = "iface" ]; then
+    printf '%s\n' "$iface"
+    exit 0
+fi
 
 if [ -z "$iface" ] || ! has_global_ip "$iface"; then
     case "$kind" in
