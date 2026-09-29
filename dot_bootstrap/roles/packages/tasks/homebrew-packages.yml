@@ -4,6 +4,7 @@
   become_user: "{{ user }}"
   community.general.homebrew:
     name:
+      - bitwarden-cli
       - ctop
       - eza
       - fzf

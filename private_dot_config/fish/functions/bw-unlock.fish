@@ -25,12 +25,14 @@ function bw-unlock --description "Unlock Bitwarden and export BW_SESSION for thi
         return 1
     end
 
-    # Unlock; --raw prints only the session key.
+    # Unlock; --raw prints only the session key. `login --check` only reads
+    # local state, so an expired/revoked refresh token (server replies
+    # invalid_grant) only surfaces here -- a fresh login fixes it.
     set -l token ($bw unlock --raw)
-    or return 1
-
-    if test -z "$token"
-        echo "Bitwarden unlock returned empty session." >&2
+    set -l unlock_status $status
+    if test $unlock_status -ne 0; or test -z "$token"
+        echo "Bitwarden unlock failed. If you saw 'invalid_grant' or 'Unable to retrieve user-key'," >&2
+        echo "the stored login is stale. Re-login with: $bw logout; and $bw login" >&2
         return 1
     end
 
