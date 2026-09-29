@@ -225,6 +225,7 @@
     },
     "custom/network-lan": {
         "exec": "$HOME/.config/waybar/scripts/network-status.sh lan",
+        "on-click": "$HOME/.config/waybar/scripts/network-menu.sh lan",
         "return-type": "json",
         "interval": 2,
         "format": "{}"
@@ -249,6 +250,7 @@
     },
     "custom/network-usb": {
         "exec": "$HOME/.config/waybar/scripts/network-status.sh usb",
+        "on-click": "$HOME/.config/waybar/scripts/network-menu.sh usb",
         "return-type": "json",
         "interval": 2,
         "format": "{}"

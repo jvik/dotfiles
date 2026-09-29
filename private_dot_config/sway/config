@@ -259,6 +259,10 @@ bindsym $mod+Shift+v exec copyq toggle
 #: Toggle the notification center panel
 bindsym $mod+Shift+n exec swaync-client -t -sw
 
+## Network
+#: Pick a Wi-Fi network (networkmanager_dmenu via fuzzel)
+bindsym $mod+Control+n exec pkill fuzzel || ~/.local/bin/networkmanager_dmenu
+
 ## Help
 # Searchable overlay of every binding in this file, generated at invocation time.
 #: Show this shortcut cheatsheet
