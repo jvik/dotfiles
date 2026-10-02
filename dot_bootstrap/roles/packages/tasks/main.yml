@@ -1,27 +1,27 @@
 ---
 - name: Include Homebrew installation
-  ansible.builtin.include_tasks: homebrew-install.yml
+  ansible.builtin.import_tasks: homebrew-install.yml
 
 - name: Include Homebrew packages
-  ansible.builtin.include_tasks: homebrew-packages.yml
+  ansible.builtin.import_tasks: homebrew-packages.yml
 
 - name: Include Homebrew casks
-  ansible.builtin.include_tasks: homebrew-casks.yml
+  ansible.builtin.import_tasks: homebrew-casks.yml
 
 - name: Include Fedora specific packages
-  ansible.builtin.include_tasks: fedora-specific.yml
+  ansible.builtin.import_tasks: fedora-specific.yml
 
 - name: Include Ubuntu specific packages
-  ansible.builtin.include_tasks: ubuntu-specific.yml
+  ansible.builtin.import_tasks: ubuntu-specific.yml
 
 - name: Include darkman installation
-  ansible.builtin.include_tasks: darkman.yml
+  ansible.builtin.import_tasks: darkman.yml
 
 - name: Include native packages
-  ansible.builtin.include_tasks: native-packages.yml
+  ansible.builtin.import_tasks: native-packages.yml
 
 - name: Include sway packages
-  ansible.builtin.include_tasks: sway-packages.yml
+  ansible.builtin.import_tasks: sway-packages.yml
 
 - name: Include Flatpak packages
-  ansible.builtin.include_tasks: flatpak-packages.yml
+  ansible.builtin.import_tasks: flatpak-packages.yml

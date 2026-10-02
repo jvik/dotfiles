@@ -1,15 +1,15 @@
 ---
 - name: Include cursor themes
-  ansible.builtin.include_tasks: cursor-themes.yml
+  ansible.builtin.import_tasks: cursor-themes.yml
 
 - name: Include Signal Desktop
-  ansible.builtin.include_tasks: signal.yml
+  ansible.builtin.import_tasks: signal.yml
 
 - name: Include networkmanager-dmenu
-  ansible.builtin.include_tasks: networkmanager-dmenu.yml
+  ansible.builtin.import_tasks: networkmanager-dmenu.yml
 
 - name: Include wayfreeze
-  ansible.builtin.include_tasks: wayfreeze.yml
+  ansible.builtin.import_tasks: wayfreeze.yml
 
 - name: Include wl-clip-persist
-  ansible.builtin.include_tasks: wl-clip-persist.yml
+  ansible.builtin.import_tasks: wl-clip-persist.yml

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Hash below ensures that script is only run when dot_bootstrap folder changes
-# dot_bootstrap: {{ output "sh" "-c" (print "tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner --clamp-mtime -cf - -C " .chezmoi.sourceDir " dot_bootstrap | sha256sum | cut -d' ' -f1") }}
+# (update-signal.yml is a separate playbook, so it is left out).
+# dot_bootstrap: {{ output "sh" "-c" (print "tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner --clamp-mtime --exclude=dot_bootstrap/update-signal.yml -cf - -C " .chezmoi.sourceDir " dot_bootstrap | sha256sum | cut -d' ' -f1") }}
 
 # Default to readable progress output. Override as needed.
 export ANSIBLE_VERBOSITY="${ANSIBLE_VERBOSITY:-2}"
@@ -11,4 +12,53 @@ export ANSIBLE_CALLBACKS_ENABLED="${ANSIBLE_CALLBACKS_ENABLED:-profile_tasks,tim
 export ANSIBLE_DISPLAY_FAILED_STDERR="${ANSIBLE_DISPLAY_FAILED_STDERR:-true}"
 export ANSIBLE_PIPELINING="${ANSIBLE_PIPELINING:-true}"
 
-ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml
+# Only run the roles whose files changed since the last successful run. Each
+# role is tagged with its own name in setup.yml; keep this list in sync.
+# Changes to setup.yml or vars.yml, a missing state file, or BOOTSTRAP_ALL=1
+# run the whole playbook.
+bootstrap_dir="$HOME/.bootstrap"
+roles=(repositories packages shell dev_tools system extras)
+state_dir="${XDG_STATE_HOME:-$HOME/.local/state}/bootstrap"
+state_file="$state_dir/hashes"
+
+hash_paths() {
+    tar --sort=name --mtime='UTC 1970-01-01' --owner=0 --group=0 --numeric-owner \
+        --clamp-mtime -cf - -C "$bootstrap_dir" "$@" | sha256sum | cut -d' ' -f1
+}
+
+declare -A new_hash old_hash
+new_hash[shared]="$(hash_paths setup.yml vars.yml)"
+for role in "${roles[@]}"; do
+    new_hash[$role]="$(hash_paths "roles/$role")"
+done
+
+if [ -f "$state_file" ]; then
+    while read -r unit hash; do
+        old_hash[$unit]="$hash"
+    done < "$state_file"
+fi
+
+tags_args=()
+if [ "${BOOTSTRAP_ALL:-0}" = 1 ] || [ ! -f "$state_file" ] ||
+    [ "${new_hash[shared]}" != "${old_hash[shared]:-}" ]; then
+    echo "bootstrap: running all roles"
+else
+    changed=()
+    for role in "${roles[@]}"; do
+        [ "${new_hash[$role]}" != "${old_hash[$role]:-}" ] && changed+=("$role")
+    done
+    if [ "${#changed[@]}" -eq 0 ]; then
+        echo "bootstrap: no role changes, skipping ansible"
+        exit 0
+    fi
+    tags_args=(--tags "$(IFS=,; echo "${changed[*]}")")
+    echo "bootstrap: running changed roles: ${changed[*]}"
+fi
+
+ansible-playbook --ask-become-pass -i localhost, -c local "${tags_args[@]}" "$bootstrap_dir/setup.yml" || exit $?
+
+# Record state only after success, so a failed run is retried on the next apply.
+mkdir -p "$state_dir"
+for unit in "${!new_hash[@]}"; do
+    echo "$unit ${new_hash[$unit]}"
+done > "$state_file"

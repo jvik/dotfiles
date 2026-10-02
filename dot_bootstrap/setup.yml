@@ -13,11 +13,15 @@
       ansible.builtin.command: whoami
       become: true
       changed_when: false
+      tags: [always]
 
+  # Each role is tagged with its own name so run_onchange_02_install.sh can run
+  # only the roles whose files changed (--tags). Keep tags in sync with the
+  # role list in that script.
   roles:
-    - repositories
-    - packages
-    - shell
-    - dev_tools
-    - system
-    - extras
+    - { role: repositories, tags: [repositories] }
+    - { role: packages, tags: [packages] }
+    - { role: shell, tags: [shell] }
+    - { role: dev_tools, tags: [dev_tools] }
+    - { role: system, tags: [system] }
+    - { role: extras, tags: [extras] }

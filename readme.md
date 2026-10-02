@@ -37,6 +37,12 @@ ANSIBLE_VERBOSITY=3 ~/.local/share/chezmoi/run_install_02.sh
 
 You can re-run safely; tasks are idempotent.
 
+`chezmoi apply` only re-runs the playbook when something in `dot_bootstrap/` changed, and then only
+the roles whose files changed (each role is tagged with its own name in `setup.yml`). Per-role hashes
+from the last successful run are kept in `~/.local/state/bootstrap/hashes`. A change to `setup.yml` or
+`vars.yml`, a missing state file, or `BOOTSTRAP_ALL=1` runs every role. The `bootstrap` abbr always
+runs the full playbook.
+
 ---
 
 ## Requirements

@@ -1,25 +1,25 @@
 ---
-- name: Include udev rules setup
-  ansible.builtin.include_tasks: udev-rules.yml
+- name: Import udev rules setup
+  ansible.builtin.import_tasks: udev-rules.yml
 
-- name: Include sway systemd session setup
-  ansible.builtin.include_tasks: sway-session.yml
+- name: Import sway systemd session setup
+  ansible.builtin.import_tasks: sway-session.yml
 
-- name: Include systemd user services setup
-  ansible.builtin.include_tasks: systemd-user-services.yml
+- name: Import systemd user services setup
+  ansible.builtin.import_tasks: systemd-user-services.yml
 
-- name: Include logind sleep policy setup
-  ansible.builtin.include_tasks: logind-sleep-policy.yml
+- name: Import logind sleep policy setup
+  ansible.builtin.import_tasks: logind-sleep-policy.yml
 
-- name: Include inotify limits setup
-  ansible.builtin.include_tasks: inotify-limits.yml
+- name: Import inotify limits setup
+  ansible.builtin.import_tasks: inotify-limits.yml
 
-- name: Include Firefox arkenfox setup
-  ansible.builtin.include_tasks:
-    file: firefox-arkenfox.yml
-    apply:
-      become: false
+# become: false on a static import is applied to every imported task (the
+# equivalent of include_tasks' `apply:`); tasks that set become themselves win.
+- name: Import Firefox arkenfox setup
+  ansible.builtin.import_tasks: firefox-arkenfox.yml
+  become: false
 
 ## ansible failing, disabled for now
-# - name: Include printer setup
-#   ansible.builtin.include_tasks: printers.yml
+# - name: Import printer setup
+#   ansible.builtin.import_tasks: printers.yml

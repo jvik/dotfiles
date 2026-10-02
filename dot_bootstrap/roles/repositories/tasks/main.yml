@@ -1,18 +1,18 @@
 ---
 - name: Include VSCode repository setup
-  ansible.builtin.include_tasks: vscode-repo.yml
+  ansible.builtin.import_tasks: vscode-repo.yml
 
 # Firefox ESR is installed from Ubuntu's standard repos; Mozilla PPA not needed
 - name: Include Firefox repository setup
-  ansible.builtin.include_tasks: firefox-repo.yml
+  ansible.builtin.import_tasks: firefox-repo.yml
 
 # LibreWolf disabled, migrated to Firefox + arkenfox user.js
 # - name: Include LibreWolf repository setup
-#   ansible.builtin.include_tasks: librewolf-repo.yml
+#   ansible.builtin.import_tasks: librewolf-repo.yml
 
 # RPM Fusion repository setup currently disabled
 # - name: Include RPM Fusion repository setup
-#   ansible.builtin.include_tasks: rpmfusion-repo.yml
+#   ansible.builtin.import_tasks: rpmfusion-repo.yml
 
 - name: Include Jottacloud CLI repository setup
-  ansible.builtin.include_tasks: jotta-cli-repo.yml
+  ansible.builtin.import_tasks: jotta-cli-repo.yml

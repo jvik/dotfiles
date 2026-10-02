@@ -40,6 +40,11 @@ The goal is safe, minimal, and idempotent changes.
 
 - Keep tasks declarative and idempotent.
 - Place new tasks in the most relevant existing role/task files.
+- `run_onchange_02_install.sh.tmpl` runs only the roles whose files changed, via
+  `--tags <role>`. A new role must be added to `setup.yml` with a tag matching its
+  name **and** to the `roles=(...)` list in that script.
+- Role `tasks/main.yml` files use `import_tasks` (static), not `include_tasks`, so
+  role tags reach every task. Dynamic includes would be skipped under `--tags`.
 - Keep distro-specific logic in the appropriate distro-specific files.
 - Package updates (dnf/apt, Homebrew formulae, Flatpak) are handled by
   `topgrade` (installed via the Homebrew role, configured at
