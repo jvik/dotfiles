@@ -200,7 +200,8 @@
     },
     "custom/network-wlan": {
         "exec": "$HOME/.config/waybar/scripts/network-status.sh wlan",
-        "on-click": "$HOME/.local/bin/networkmanager_dmenu",
+        // System python: brew's python3 shadows it on PATH and lacks the gi/NM bindings.
+        "on-click": "/usr/bin/python3 $HOME/.local/bin/networkmanager_dmenu",
         "return-type": "json",
         "interval": 2,
         "format": "{}"

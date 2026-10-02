@@ -2,6 +2,9 @@
 - name: Include udev rules setup
   ansible.builtin.include_tasks: udev-rules.yml
 
+- name: Include sway systemd session setup
+  ansible.builtin.include_tasks: sway-session.yml
+
 - name: Include systemd user services setup
   ansible.builtin.include_tasks: systemd-user-services.yml
 

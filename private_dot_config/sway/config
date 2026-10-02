@@ -46,6 +46,9 @@ exec_always swaync-client --reload-css
 # `;`. The predecessor of this watcher was never running for exactly that reason.
 exec_always systemctl --user restart sway-output-watch.service
 exec_always systemctl --user restart autotiling.service
+# No `bar { swaybar_command waybar }`: waybar.service is enabled by ansible and
+# started with sway-session.target. As a sway bar, a reload started the new bar
+# while the old one still held its D-Bus name, and it hung for GLib's 25s timeout.
 # Load-bearing: --monitor does not emit the subscribe ack, so the watcher does
 # not fire once at startup. This is the initial reconcile.
 exec_always ~/.config/sway/scripts/on-output-change.sh --once
@@ -269,11 +272,6 @@ bindsym $mod+Control+n exec pkill fuzzel || ~/.local/bin/networkmanager_dmenu
 bindsym $mod+question exec ~/scripts/sway-shortcuts.sh
 #: Show this shortcut cheatsheet
 bindsym $mod+Shift+question exec ~/scripts/sway-shortcuts.sh
-
-### Status Bar
-bar {
-    swaybar_command waybar
-}
 
 ### Appearance
 default_border normal

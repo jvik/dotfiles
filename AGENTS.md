@@ -87,6 +87,20 @@ When any hardware changes (displays, input devices, peripherals, cameras), updat
 - Maintain accuracy of any setup or usage instructions.
 - Update [AGENTS.md](AGENTS.md) when core functionality changes: new repository conventions, renamed/reorganised directories, new tooling or shells, or changes to validation steps.
 
+### Cleanup
+
+- Before handoff, remove task-created scratch files, experiments, generated artifacts, dependencies, or code that is no longer needed.
+- Before removing an existing managed file, check its references and call sites, then choose the operation that matches the intended target state:
+  - To stop managing a file but leave it in the destination, use `chezmoi forget <target-path>`.
+  - To stop managing and remove it from the destination, review `chezmoi destroy --dry-run <target-path>` before running `chezmoi destroy <target-path>`.
+  - Use destination paths (for example, `~/.config/app/config`), not source paths in this repository. Check `git status` and the diff afterward so the source-state change is intentional.
+- `.chezmoiignore` is not a cleanup tool. Ignoring a path leaves both the source file in this repo and the target file in `$HOME` untouched; it only stops chezmoi from applying it. Use `forget`/`destroy` for unused files instead of ignoring them.
+  - Use `.chezmoiignore` only for repo-only files (`AGENTS.md`, `readme.md`), files generated at runtime that chezmoi must not overwrite (e.g. `.config/swaync/palette.css`), or OS/host-conditional exclusions via template.
+  - Patterns are **target paths** relative to `$HOME` (`.config/foo`), not source names (`private_dot_config/foo`).
+  - When removing a managed file or the thing that generated an ignored file, also drop its now-stale `.chezmoiignore` entry. Verify with `chezmoi ignored` and `chezmoi managed`.
+- Preserve intentional outputs, tests, and documentation.
+- Do not delete pre-existing or untracked user changes as cleanup. Limit removals to artifacts created for the current task unless explicitly asked otherwise.
+
 ## Security and secrets
 
 - **Never** commit tokens, passwords, or API keys in plain text.

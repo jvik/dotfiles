@@ -1,0 +1,21 @@
+[Unit]
+Description=Highly customizable Wayland bar for Sway and Wlroots based compositors
+Documentation=https://github.com/Alexays/Waybar/wiki/
+# Overrides the Fedora-packaged unit so both distros run the same one. Enabled by
+# ansible (roles/system/tasks/systemd-user-services.yml); graphical-session.target
+# is brought up by sway-session.target (sway-systemd, or roles/system/tasks/sway-session.yml).
+PartOf=graphical-session.target
+After=graphical-session.target
+After=graphical-session-pre.target
+Wants=graphical-session-pre.target
+
+[Service]
+Type=simple
+ExecStart=waybar
+ExecReload=kill -SIGUSR2 $MAINPID
+# Also covers starting before sway's import-environment has set WAYLAND_DISPLAY.
+Restart=on-failure
+RestartSec=1
+
+[Install]
+WantedBy=graphical-session.target

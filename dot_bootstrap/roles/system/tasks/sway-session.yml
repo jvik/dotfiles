@@ -1,0 +1,37 @@
+---
+# Session services (waybar, autotiling, kanshi) are WantedBy graphical-session.target,
+# which systemd only lets an environment-specific target start. Fedora's sway-systemd
+# package ships sway-session.target and starts it from /etc/sway/config.d; Ubuntu's
+# sway does not, so recreate the same pieces there.
+- name: Detect sway-systemd session integration
+  ansible.builtin.stat:
+    path: /usr/libexec/sway-systemd/session.sh
+  register: system_sway_systemd
+
+- name: Install sway-session.target
+  ansible.builtin.copy:
+    dest: /etc/systemd/user/sway-session.target
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Unit]
+      Description=Sway session
+      Documentation=man:systemd.special(7)
+      BindsTo=graphical-session.target
+      Wants=graphical-session-pre.target
+      After=graphical-session-pre.target
+  when: not system_sway_systemd.stat.exists
+
+- name: Start sway-session.target from sway
+  ansible.builtin.copy:
+    dest: /etc/sway/config.d/10-sway-session.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      # Managed by ansible (dot_bootstrap/roles/system/tasks/sway-session.yml).
+      # Import the env first so units started by the target can reach the compositor,
+      # and stop the target when sway exits so the bar etc. go with it.
+      exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE && systemctl --user start sway-session.target && swaymsg -t subscribe '["shutdown"]'; systemctl --user stop sway-session.target
+  when: not system_sway_systemd.stat.exists
