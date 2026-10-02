@@ -80,16 +80,3 @@ if command -v solaar &>/dev/null; then
     done < "$SOLAAR_TMP"
     rm -f "$SOLAAR_TMP"
 fi
-
-# --- jLink devices (Jabra headsets) ---
-if command -v jlink &>/dev/null; then
-    jlink_output=$(jlink --battery 2>/dev/null)
-    if [[ -n "$jlink_output" ]]; then
-        level=$(echo "$jlink_output" | grep -oP '"level":\s*\K\d+')
-        device=$(echo "$jlink_output" | grep -oP '"device":\s*"\K[^"]+')
-        if [[ -n "$level" && -n "$device" ]]; then
-            device_id="jlink_$(echo "$device" | tr -dc '[:alnum:]_-')"
-            notify_if_low "$device_id" "$device" "$level"
-        fi
-    fi
-fi

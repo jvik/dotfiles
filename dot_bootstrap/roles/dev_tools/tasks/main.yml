@@ -1,6 +1,3 @@
 ---
 - name: Include uv tools installation
   ansible.builtin.include_tasks: uv-tools.yml
-
-- name: Include jLink installation
-  ansible.builtin.include_tasks: jlink-install.yml
