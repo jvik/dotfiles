@@ -3,6 +3,9 @@
   hosts: localhost
   become: true
   gather_facts: true
+  # Only distribution, env and user facts are used; skip hardware/network probing.
+  gather_subset:
+    - min
   vars_files:
     - ~/.bootstrap/vars.yml
   pre_tasks:

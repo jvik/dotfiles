@@ -1,100 +1,24 @@
-- name: Install native packages on Fedora
-  vars:
-    native_packages:
-      - fd-find
-      - tree
-      - flatpak
-      - ansible-lint
-      - htop
-      - blueman
-      - unrar
-      - fish
-      - git
-      - neovim
-      - code
-      - playerctl
-      - copyq
-      - wl-mirror
-      - firefox
-      - solaar
-      - fastfetch
-  block:
-    - name: Update dnf cache
-      ansible.builtin.dnf:
-        update_cache: true
-        lock_timeout: 180
-
-    - name: Install packages with dnf
-      ansible.builtin.dnf:
-        name: "{{ item }}"
-        state: present
-        lock_timeout: 180
-      loop: "{{ native_packages }}"
-      loop_control:
-        label: "{{ item }}"
+# Packages are passed as one list so each distro does a single transaction
+# instead of one dnf/apt run (and metadata load) per package.
+- name: Install native packages with dnf
+  ansible.builtin.dnf:
+    name: "{{ packages_native }}"
+    state: present
+    update_cache: true
+    lock_timeout: 180
   when: ansible_distribution == 'Fedora'
 
-- name: Install native packages on Ubuntu
-  vars:
-    native_packages:
-      - fd-find
-      - tree
-      - flatpak
-      - ansible-lint
-      - htop
-      - blueman
-      - unrar
-      - fish
-      - git
-      - neovim
-      - code
-      - playerctl
-      - copyq
-      - wl-mirror
-      - firefox
-      - solaar
-      - fastfetch
-  block:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-        lock_timeout: 180
-
-    - name: Install packages with apt
-      ansible.builtin.apt:
-        name: "{{ item }}"
-        state: present
-        lock_timeout: 180
-      loop: "{{ native_packages }}"
-      loop_control:
-        label: "{{ item }}"
+- name: Install native packages with apt
+  ansible.builtin.apt:
+    name: "{{ packages_native }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+    lock_timeout: 180
   when: ansible_distribution == 'Ubuntu'
 
 - name: Install native packages on other distributions
-  vars:
-    native_packages:
-      - fd-find
-      - tree
-      - flatpak
-      - ansible-lint
-      - htop
-      - blueman
-      - unrar
-      - fish
-      - git
-      - neovim
-      - code
-      - playerctl
-      - copyq
-      - wl-mirror
-      - firefox
-      - solaar
-      - fastfetch
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ packages_native }}"
     state: present
-  loop: "{{ native_packages }}"
-  loop_control:
-    label: "{{ item }}"
   when: ansible_distribution not in ['Fedora', 'Ubuntu']

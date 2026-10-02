@@ -35,10 +35,25 @@
   become: false
   when: not shell_fisher_stat.stat.exists
 
+- name: List installed Fisher plugins
+  ansible.builtin.command: fish -c "fisher list"
+  become: false
+  register: shell_fisher_list
+  changed_when: false
+  failed_when: false
+
 - name: Install Fisher plugins
-  ansible.builtin.shell: |
-    fish -c "fisher install PatrickF1/fzf.fish lewisacidic/fish-git-abbr"
-  args:
-    executable: /bin/bash
+  vars:
+    shell_fisher_plugins:
+      - PatrickF1/fzf.fish
+      - lewisacidic/fish-git-abbr
+    # fisher records plugin names lowercased, so compare case-insensitively.
+    shell_fisher_missing: "{{ shell_fisher_plugins | map('lower') | difference(shell_fisher_list.stdout_lines | map('lower')) }}"
+  ansible.builtin.command:
+    argv:
+      - fish
+      - -c
+      - "fisher install {{ shell_fisher_missing | join(' ') }}"
   become: false
   changed_when: true
+  when: shell_fisher_missing | length > 0

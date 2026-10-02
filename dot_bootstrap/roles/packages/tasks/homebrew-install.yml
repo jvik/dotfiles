@@ -29,24 +29,34 @@
         NONINTERACTIVE: '1'
       changed_when: true
 
+# Only chown entries whose owner has drifted, instead of rewriting every file in
+# the prefix on each run. No forced `brew update` here: upgrades are topgrade's
+# job, and `brew install` auto-updates when it has a missing formula to install.
 - name: Fix Homebrew directory ownership
-  ansible.builtin.command: chown -R {{ user }}:{{ user }} /home/linuxbrew/.linuxbrew
+  ansible.builtin.command:
+    argv:
+      - find
+      - /home/linuxbrew/.linuxbrew
+      - (
+      - "!"
+      - -user
+      - "{{ user }}"
+      - -o
+      - "!"
+      - -group
+      - "{{ user }}"
+      - )
+      - -exec
+      - chown
+      - -h
+      - "{{ user }}:{{ user }}"
+      - "{}"
+      - +
+      - -print
   become: true
-  changed_when: true
+  register: packages_homebrew_chown
+  changed_when: packages_homebrew_chown.stdout | length > 0
   failed_when: false
-
-- name: Update Homebrew
-  ansible.builtin.command: /home/linuxbrew/.linuxbrew/bin/brew update
-  become: true
-  become_user: "{{ user }}"
-  changed_when: false
-  failed_when: false
-  retries: 3
-  delay: 5
-  register: brew_update_result
-  until: brew_update_result.rc == 0
-  environment:
-    PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
 
 - name: Set LinuxBrew Executable Path
   ansible.builtin.set_fact:

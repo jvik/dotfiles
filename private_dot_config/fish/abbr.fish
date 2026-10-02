@@ -52,7 +52,7 @@ abbr -a kanshi-gen '~/scripts/kanshi-append-config.sh'
 abbr -a audio alsamixer
 
 # Chezmoi / Bootstrap
-abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
+abbr -a bootstrap 'ANSIBLE_VERBOSITY=1 ANSIBLE_PIPELINING=true ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml'
 abbr -a sysup topgrade
 abbr -a sysup-check 'topgrade --dry-run'
 abbr -a sysup-signal 'ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/update-signal.yml'

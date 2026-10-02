@@ -9,5 +9,6 @@ export ANSIBLE_STDOUT_CALLBACK="${ANSIBLE_STDOUT_CALLBACK:-ansible.builtin.defau
 export ANSIBLE_CALLBACK_RESULT_FORMAT="${ANSIBLE_CALLBACK_RESULT_FORMAT:-yaml}"
 export ANSIBLE_CALLBACKS_ENABLED="${ANSIBLE_CALLBACKS_ENABLED:-profile_tasks,timer}"
 export ANSIBLE_DISPLAY_FAILED_STDERR="${ANSIBLE_DISPLAY_FAILED_STDERR:-true}"
+export ANSIBLE_PIPELINING="${ANSIBLE_PIPELINING:-true}"
 
 ansible-playbook --ask-become-pass -i localhost, -c local ~/.bootstrap/setup.yml

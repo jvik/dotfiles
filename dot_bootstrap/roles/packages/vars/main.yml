@@ -1,0 +1,19 @@
+---
+packages_native:
+  - fd-find
+  - tree
+  - flatpak
+  - ansible-lint
+  - htop
+  - blueman
+  - unrar
+  - fish
+  - git
+  - neovim
+  - code
+  - playerctl
+  - copyq
+  - wl-mirror
+  - firefox
+  - solaar
+  - fastfetch
