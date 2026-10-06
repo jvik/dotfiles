@@ -15,13 +15,35 @@
   become: false
   become_user: "{{ ansible_user_id }}"
 
+# daemon_reload: the ~/.config override of the packaged unit is ignored until reloaded.
 - name: Enable waybar systemd user service
   ansible.builtin.systemd:
     name: waybar.service
     enabled: true
+    daemon_reload: true
     scope: user
   become: false
   become_user: "{{ ansible_user_id }}"
+
+# 10-sway-session.conf starts the target with `exec`, which sway only runs at startup,
+# not on reload. Without this, a sway that predates the file loses its bar on the next
+# reload (the bar block is gone) and nothing starts waybar until the next login.
+# Not ansible_user_id: facts are gathered under the play's become, so that is root.
+- name: Check for a running sway session
+  ansible.builtin.command: pgrep -x -u {{ ansible_facts['env']['SUDO_USER'] }} sway
+  register: system_sway_running
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Start sway-session.target in the running sway session
+  ansible.builtin.systemd:
+    name: sway-session.target
+    state: started
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
+  when: system_sway_running.rc == 0
 
 - name: Enable battery-check systemd user timer
   ansible.builtin.systemd:
