@@ -153,7 +153,10 @@
         ]
     },
     "battery": {
+        // "top" (96-100%) exists so the battery trickling between Charging and
+        // Full at the top shows one stable plug icon instead of flipping.
         "states": {
+            "top": 100,
             "good": 95,
             "warning": 30,
             "critical": 15
@@ -161,8 +164,11 @@
         "format": "{capacity}% {icon}",
         "format-charging": "{capacity}% ",
         "format-plugged": "{capacity}% ",
-        "format-alt": "{time} {icon}",
+        "format-charging-top": "{capacity}% ",
+        "format-full": "{capacity}% ",
         "tooltip-format": "{time} remaining\n{power:.1f}W",
+        "tooltip-format-full": "Full: {capacity}%",
+        "on-click": "$HOME/.config/waybar/scripts/battery-toggle.sh",
         "tooltip-format-charging": "Charging: {capacity}%\n{power:.1f}W",
         "tooltip-format-plugged": "Plugged in: {capacity}%",
         "format-icons": [

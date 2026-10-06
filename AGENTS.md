@@ -19,6 +19,12 @@ The goal is safe, minimal, and idempotent changes.
    - Avoid introducing new tools/frameworks without clear need.
 4. **Prioritize idempotency**
    - Ansible tasks and install scripts must remain safe to run repeatedly.
+5. **Write code for humans first**
+   - Prefer clear over clever: descriptive names, small single-purpose functions,
+     and named constants instead of magic numbers or raw escape codes.
+   - Comments explain *why* (a non-obvious constraint or workaround), not *what*
+     the next line does.
+   - A reader unfamiliar with the file should be able to follow it top to bottom.
 
 ## Repository-specific rules
 
