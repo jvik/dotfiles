@@ -15,6 +15,7 @@ function bw-unlock --description "Unlock Bitwarden and export BW_SESSION for thi
     # Already unlocked and session still valid? Reuse it.
     if set -q BW_SESSION; and $bw unlock --check --session $BW_SESSION >/dev/null 2>&1
         echo "Bitwarden already unlocked (BW_SESSION set)."
+        $bw sync --session $BW_SESSION >/dev/null; and echo "Bitwarden vault synced."
         return 0
     end
 
@@ -38,4 +39,6 @@ function bw-unlock --description "Unlock Bitwarden and export BW_SESSION for thi
 
     set -gx BW_SESSION $token
     echo "BW_SESSION exported for this shell (via $bw)."
+
+    $bw sync >/dev/null; and echo "Bitwarden vault synced."
 end
