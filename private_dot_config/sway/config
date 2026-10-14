@@ -37,7 +37,10 @@ exec_always {
 # a DRM modeset on a compositor that is still rebuilding, which is what turned
 # mod+Shift+c into a black screen. The script defers and lock-guards it.
 exec_always ~/.config/sway/scripts/reapply-kanshi.sh
-exec_always pgrep -x swaync >/dev/null || swaync
+# swaync is the packaged swaync.service (enabled by ansible, Restart=on-failure),
+# not `exec_always pgrep -x swaync || swaync`: at login that raced the unit,
+# won, and pushed it into its start limit, so the unsupervised copy stayed dead
+# after crashing (swaync 0.12.4 segfaults when an output is removed on undock).
 exec_always swaync-client --reload-css
 # The output watcher runs as a systemd unit, not as
 #   exec_always "pkill -f <name>; <name>"

@@ -144,7 +144,6 @@ button:hover {
 #idle_inhibitor,
 #scratchpad,
 #mpd,
-#mpris,
 #power-profiles-daemon,
 #custom-bt-profile {
     padding: 0 10px;
@@ -327,15 +326,14 @@ label:focus {
     background-color: @bg-critical;
 }
 
-#custom-media,
-#mpris {
+#custom-media {
     background-color: @bg-media;
     color: @text-audio-muted;
     min-width: 100px;
 }
 
 #custom-media.custom-spotify,
-#mpris.playing {
+#custom-media.playing {
     background-color: @bg-media;
 }
 
@@ -353,12 +351,12 @@ label:focus {
 }
 
 #mpd.stopped,
-#mpis.stopped {
+#custom-media.stopped {
     background-color: @bg-muted;
 }
 
 #mpd.paused,
-#mpris.paused {
+#custom-media.paused {
     background-color: #51a37a;
 }
 

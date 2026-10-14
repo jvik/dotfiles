@@ -25,6 +25,16 @@
   become: false
   become_user: "{{ ansible_user_id }}"
 
+# Packaged unit; sway no longer launches swaync itself, so this is what starts
+# it at login and restarts it when it crashes.
+- name: Enable swaync systemd user service
+  ansible.builtin.systemd:
+    name: swaync.service
+    enabled: true
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
+
 # 10-sway-session.conf starts the target with `exec`, which sway only runs at startup,
 # not on reload. Without this, a sway that predates the file loses its bar on the next
 # reload (the bar block is gone) and nothing starts waybar until the next login.

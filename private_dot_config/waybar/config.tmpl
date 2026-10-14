@@ -9,7 +9,7 @@
         "sway/workspaces",
         "sway/mode",
         "sway/scratchpad",
-        "mpris"
+        "custom/media"
         // "custom/representation"
     ],
     // "modules-center": [
@@ -306,34 +306,23 @@
         "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+ --limit 1.0",
         "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-"
     },
-    "mpris": {
-        "format": "{status_icon} {dynamic} {player_icon}",
-        "format-paused": "{status_icon} <i>{dynamic}</i> {player_icon}",
-        "dynamic-order": [
-            "title",
-            "artist",
-            "album"
-        ],
-        "dynamic-separator": " - ",
-        "dynamic-len": 40,
-        "player-icons": {
-            "default": "🎵",
-            "firefox": "",
-            "chromium": "",
-            "google-chrome": "",
-            "mpv": "🎬",
-            "spotify": "",
-            "vlc": "🎬",
-            "plexamp": "🎵",
-            "plex": "🎬"
-        },
-        "status-icons": {
+    // Not the built-in "mpris" module: it segfaults waybar after a bar is
+    // destroyed on output removal (see the script). Player icons live there.
+    "custom/media": {
+        "exec": "$HOME/.config/waybar/scripts/media.sh",
+        "return-type": "json",
+        "restart-interval": 5,
+        // format adds an icon, so empty text alone would not hide the module.
+        "hide-empty-text": true,
+        "format": "{icon} {}",
+        "format-icons": {
             "paused": "",
             "playing": "",
             "stopped": ""
         },
-        "ignored-players": [],
-        "tooltip-format": "{player} ({status}): {dynamic}"
+        "on-click": "playerctl play-pause",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next"
     },
     // Custom modules
     "custom/weather": {
