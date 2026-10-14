@@ -320,9 +320,10 @@
             "playing": "",
             "stopped": ""
         },
-        "on-click": "playerctl play-pause",
-        "on-click-middle": "playerctl previous",
-        "on-click-right": "playerctl next"
+        // Same player the module shows (see the script), not playerctl's first.
+        "on-click": "playerctl --player=playerctld play-pause",
+        "on-click-middle": "playerctl --player=playerctld previous",
+        "on-click-right": "playerctl --player=playerctld next"
     },
     // Custom modules
     "custom/weather": {
