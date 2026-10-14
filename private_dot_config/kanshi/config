@@ -99,6 +99,12 @@ profile HNTX901781 {
     output "Samsung Electric Company LS49C95xU HNTX901781" enable mode 5120x1440@59.999Hz position 1920,0
     output "eDP-1" enable mode 1920x1200@60.002Hz position 7040,240
 }
+
+profile CNK84002M9-CNK8121FW3 {
+    output "HP Inc. HP E273 CNK84002M9" enable mode 1920x1080@60Hz position 0,0
+    output "HP Inc. HP E273 CNK8121FW3" enable mode 1920x1080@60Hz position 1920,0
+    output "eDP-1" enable mode 1920x1200@60.002Hz position 3840,0
+}
 profile fallback-docked {
     output "eDP-1" enable position 0,0
     output "*" enable position 1920,0
