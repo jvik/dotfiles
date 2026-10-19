@@ -256,6 +256,8 @@ agent-sandbox claude --dangerously-skip-permissions
 agent-sandbox copilot --allow-all-tools
 ```
 
+The fish abbreviations `asc` and `asco` expand to `agent-sandbox claude` and `agent-sandbox copilot`.
+
 - **Read-write:** the git toplevel (or `$PWD`), the main `.git` of a linked worktree, and the
   agent's own state (`~/.claude` + `~/.claude.json`, `~/.copilot`).
 - **Read-only:** `/usr`, `/etc`, `/opt`, `/nix`, linuxbrew, mise/cargo/go/bun toolchains, git config.
