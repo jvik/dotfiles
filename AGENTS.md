@@ -88,6 +88,7 @@ The following files embed hardware identifiers and must reflect the current mach
   `sway/scripts/set-wallpaper.sh` picks one per output by aspect ratio at runtime, from
   `~/Pictures/wallpapers/<mode>/<bucket>/`, so a new display needs no config change.)
 - `dot_var/app/hu.irl.cameractrls/` — camera device identifiers encoded in filenames
+- `private_dot_config/ollama/compose.yaml` — Ollama ROCm image and host `video`/`render` GIDs for the AMD GPU (also runs the Open WebUI frontend)
 
 When any hardware changes (displays, input devices, peripherals, cameras), update the relevant files above and keep this list and the matching section in [readme.md](readme.md) accurate.
 

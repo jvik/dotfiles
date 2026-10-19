@@ -1,0 +1,39 @@
+# Ollama with ROCm (AMD Radeon RX 9070 / gfx1201).
+# Start: docker compose -f ~/.config/ollama/compose.yaml up -d
+services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama
+    restart: unless-stopped
+    devices:
+      - /dev/kfd
+      - /dev/dri
+    # Numeric GIDs of the host's `video` and `render` groups (Fedora).
+    group_add:
+      - "39"
+      - "105"
+    environment:
+      # Default 4096 is too small for coding agents
+      OLLAMA_CONTEXT_LENGTH: "16384"
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+
+  # Web UI at http://localhost:3000
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+    ports:
+      - "127.0.0.1:3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+
+volumes:
+  ollama:
+  open-webui:
