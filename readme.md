@@ -244,6 +244,45 @@ keep in sync; of the ~229 entries only ~65 come from `abbr.fish`, the rest from 
 `lewisacidic/fish-git-abbr` plugin. fzf matches against the expansion as well as the name, so
 `ab commit` finds `gcm`. Run `ab --dump` to inspect the parsed rows without opening the picker.
 
+### Agent sandbox
+
+`agent-sandbox` (`dot_local/bin/executable_agent-sandbox`) runs a coding agent inside
+[bubblewrap](https://github.com/containers/bubblewrap), so `--dangerously-skip-permissions` /
+`--allow-all-tools` can only damage the current project:
+
+```fish
+agent-sandbox claude --dangerously-skip-permissions
+agent-sandbox copilot --allow-all-tools
+```
+
+- **Read-write:** the git toplevel (or `$PWD`), the main `.git` of a linked worktree, and the
+  agent's own state (`~/.claude` + `~/.claude.json`, `~/.copilot`).
+- **Read-only:** `/usr`, `/etc`, `/opt`, `/nix`, linuxbrew, mise/cargo/go/bun toolchains, git config.
+- **Hidden:** the rest of `$HOME` (an empty tmpfs, discarded on exit) and `/run` (no Wayland,
+  D-Bus, keyring, ssh-agent or docker). The environment is cleared down to an allowlist.
+- Network is shared. Commits are made unsigned unless `--ssh` exposes ssh-agent; `--gh` passes
+  `gh auth token` as `GH_TOKEN`. Copilot gets `COPILOT_GITHUB_TOKEN` from `gh auth token` since
+  its keyring login is unreachable. `--ro`/`--rw <path>` add extra binds.
+- Refuses to run with `$HOME` as the project. Claude's auto-updater is disabled inside; update
+  from outside.
+- Claude's own Bash sandbox is turned off inside: it is also bwrap, and AppArmor forbids nesting,
+  so every command would otherwise fall back to an unsandboxed permission prompt.
+
+### herdr
+
+[herdr](https://herdr.dev) (`private_dot_config/herdr/config.toml`) is the agent multiplexer. Prefix
+is `ctrl+a` as in tmux; `prefix+a` / `prefix+shift+a` open sandboxed Claude / Copilot in a new
+pane, `prefix+alt+g` opens lazygit. Start it with `hr` instead of `herdr`: herdr keeps a background
+server, so plain `herdr` only reattaches to old workspaces (often `~`, where the sandbox refuses to
+run); `hr` first adds a workspace for the current directory. herdr detects agents through `agent-sandbox` without hints,
+and the sandbox hides its socket so an agent cannot drive other panes. Session restore is off and
+`herdr integration install` should not be run: both would relaunch agents outside the sandbox.
+
+`new-worktree <branch>` (`prefix+w` inside herdr) creates a git worktree as its own workspace
+(`herdr worktree create`, new branches based on a fetched `origin/main`, or `--from <ref>`) and runs
+`agent-sandbox claude` in it (`--agent copilot` for Copilot). It must run from a normal herdr pane,
+not from inside the sandbox, which hides the herdr socket and cannot write outside the project.
+
 ---
 
 ## Scripts

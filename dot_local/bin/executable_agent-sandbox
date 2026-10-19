@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+# agent-sandbox — run a coding agent (claude, copilot, …) inside bubblewrap.
+#
+# The agent CAN:
+#   - read and write the current project (git toplevel, or $PWD outside a repo)
+#   - read the system (/usr, /etc) and your toolchains (mise, brew, cargo, nix)
+#   - read and write its own state dir (~/.claude, ~/.copilot) so login and history persist
+#   - reach the network, since it has to talk to its API
+#
+# The agent CANNOT:
+#   - see the rest of $HOME (ssh keys, ~/.config/gh, browser profiles, other repos);
+#     it gets an empty tmpfs home, so anything it writes outside the project is lost on exit
+#   - talk to your session: /run is not mounted, so no Wayland, D-Bus, keyring,
+#     ssh-agent or docker socket
+#   - sign commits or push over ssh, unless --ssh is given (commits are made unsigned)
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: agent-sandbox [options] [--] <command> [args...]
+
+Options:
+  --ssh         Expose ssh-agent (git push over ssh, signed commits)
+  --gh          Expose GitHub CLI auth (GH_TOKEN from `gh auth token`)
+  --ro <path>   Extra read-only bind (repeatable)
+  --rw <path>   Extra read-write bind (repeatable)
+  -h, --help    Show this help
+
+Examples:
+  agent-sandbox claude --dangerously-skip-permissions
+  agent-sandbox --gh copilot --allow-all-tools
+  agent-sandbox --ro ~/src/shared-lib bash
+EOF
+}
+
+expose_ssh=false
+expose_gh=false
+extra_binds=()
+
+while (($#)); do
+    case "$1" in
+        --ssh) expose_ssh=true ;;
+        --gh) expose_gh=true ;;
+        --ro | --rw)
+            path=$(realpath -e "${2:?$1 needs a path}")
+            if [[ "$1" == --ro ]]; then
+                extra_binds+=(--ro-bind "$path" "$path")
+            else
+                extra_binds+=(--bind "$path" "$path")
+            fi
+            shift
+            ;;
+        -h | --help) usage; exit 0 ;;
+        --) shift; break ;;
+        -*) echo "agent-sandbox: unknown option $1" >&2; usage >&2; exit 2 ;;
+        *) break ;;
+    esac
+    shift
+done
+
+if (($# == 0)); then
+    usage >&2
+    exit 2
+fi
+
+project_dir=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+if [[ "$project_dir" == "$HOME" || "$project_dir" == / ]]; then
+    echo "agent-sandbox: refusing to expose $project_dir read-write; cd into a project" >&2
+    exit 1
+fi
+
+args=(
+    --unshare-all
+    --share-net
+    --die-with-parent
+    --hostname agent-sandbox
+
+    # System, read-only. bin/lib/sbin are symlinks into /usr on merged-usr distros.
+    --ro-bind /usr /usr
+    --ro-bind /etc /etc
+    --ro-bind-try /opt /opt
+    --ro-bind-try /nix /nix
+    --ro-bind-try /home/linuxbrew /home/linuxbrew
+    # /etc/resolv.conf points into /run on systemd-resolved hosts
+    --ro-bind-try /run/systemd/resolve /run/systemd/resolve
+    --proc /proc
+    --dev /dev
+    --tmpfs /dev/shm
+    --tmpfs /tmp
+
+    # Empty, throwaway home; only what is bound below survives the session.
+    --tmpfs "$HOME"
+    --ro-bind-try "$HOME/.local/bin" "$HOME/.local/bin"
+    --ro-bind-try "$HOME/.local/share/mise" "$HOME/.local/share/mise"
+    --ro-bind-try "$HOME/.config/mise" "$HOME/.config/mise"
+    --ro-bind-try "$HOME/.cargo/bin" "$HOME/.cargo/bin"
+    --ro-bind-try "$HOME/.rustup" "$HOME/.rustup"
+    --ro-bind-try "$HOME/go/bin" "$HOME/go/bin"
+    --ro-bind-try "$HOME/.bun/bin" "$HOME/.bun/bin"
+    --ro-bind-try "$HOME/.nix-profile" "$HOME/.nix-profile"
+    --ro-bind-try "$HOME/.gitconfig" "$HOME/.gitconfig"
+    --ro-bind-try "$HOME/.gitignore" "$HOME/.gitignore"
+    --ro-bind-try "$HOME/.config/git" "$HOME/.config/git"
+
+    --bind "$project_dir" "$project_dir"
+)
+
+for dir in bin sbin lib lib32 lib64 libx32; do
+    if [[ -L "/$dir" ]]; then
+        args+=(--symlink "$(readlink "/$dir")" "/$dir")
+    elif [[ -d "/$dir" ]]; then
+        args+=(--ro-bind "/$dir" "/$dir")
+    fi
+done
+
+# A linked worktree keeps its objects and refs in the main repo's .git, which
+# lies outside the worktree; without it git cannot commit.
+git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null || true)
+if [[ -n "$git_common_dir" && "$git_common_dir" != "$project_dir"/* ]]; then
+    args+=(--bind "$git_common_dir" "$git_common_dir")
+fi
+
+# Start from an empty environment so tokens exported in the shell do not leak in.
+args+=(--clearenv)
+for var in PATH USER LOGNAME LANG LANGUAGE LC_ALL LC_CTYPE LC_MESSAGES TZ \
+    TERM COLORTERM TERM_PROGRAM TERM_PROGRAM_VERSION NO_COLOR FORCE_COLOR \
+    EDITOR VISUAL MISE_DATA_DIR MISE_CONFIG_DIR \
+    ANTHROPIC_API_KEY ANTHROPIC_BASE_URL ANTHROPIC_MODEL COPILOT_GITHUB_TOKEN; do
+    if [[ -n "${!var:-}" ]]; then
+        args+=(--setenv "$var" "${!var}")
+    fi
+done
+args+=(
+    --setenv HOME "$HOME"
+    --setenv SHELL /bin/bash
+    --setenv AGENT_SANDBOX 1
+)
+
+if $expose_ssh && [[ -S "${SSH_AUTH_SOCK:-}" ]]; then
+    args+=(
+        --ro-bind "$SSH_AUTH_SOCK" "$SSH_AUTH_SOCK"
+        --setenv SSH_AUTH_SOCK "$SSH_AUTH_SOCK"
+        --ro-bind-try "$HOME/.ssh/known_hosts" "$HOME/.ssh/known_hosts"
+    )
+else
+    # Signing needs ssh-agent; commit unsigned instead of failing every commit.
+    args+=(
+        --setenv GIT_CONFIG_COUNT 1
+        --setenv GIT_CONFIG_KEY_0 commit.gpgsign
+        --setenv GIT_CONFIG_VALUE_0 false
+    )
+fi
+
+# The gh token lives in the keyring, which is unreachable from inside.
+gh_token() {
+    command -v gh >/dev/null && gh auth token 2>/dev/null
+}
+
+if $expose_gh; then
+    token=$(gh_token) || { echo "agent-sandbox: gh auth token failed" >&2; exit 1; }
+    args+=(
+        --ro-bind-try "$HOME/.config/gh" "$HOME/.config/gh"
+        --setenv GH_TOKEN "$token"
+    )
+fi
+
+# Per-agent state. Directories are created up front because a bind onto a
+# missing path would silently land in the throwaway tmpfs home instead.
+agent=$(basename "$1")
+case "$agent" in
+    claude)
+        mkdir -p "$HOME/.claude"
+        args+=(
+            --bind "$HOME/.claude" "$HOME/.claude"
+            --bind-try "$HOME/.claude.json" "$HOME/.claude.json"
+            --ro-bind-try "$HOME/.local/share/claude" "$HOME/.local/share/claude"
+            # The install dir is read-only in here; update from outside instead.
+            --setenv DISABLE_AUTOUPDATER 1
+        )
+        # Claude's own Bash sandbox is bwrap too, and AppArmor's bwrap profile
+        # forbids nesting it. It would fail and retry every command unsandboxed
+        # behind a permission prompt, so hand sandboxing to this outer layer.
+        set -- "$1" --settings '{"sandbox":{"enabled":false}}' "${@:2}"
+        ;;
+    copilot)
+        mkdir -p "$HOME/.copilot"
+        copilot_cli_dir="$HOME/.config/Code/User/globalStorage/github.copilot-chat/copilotCli"
+        args+=(
+            --bind "$HOME/.copilot" "$HOME/.copilot"
+            --ro-bind-try "$copilot_cli_dir" "$copilot_cli_dir"
+        )
+        if [[ -z "${COPILOT_GITHUB_TOKEN:-}" ]] && token=$(gh_token); then
+            args+=(--setenv COPILOT_GITHUB_TOKEN "$token")
+        fi
+        ;;
+esac
+
+# TIOCSTI lets a process type into the parent terminal. Only detach from the
+# terminal when the kernel still allows it, since that breaks job control.
+if [[ "$(cat /proc/sys/dev/tty/legacy_tiocsti 2>/dev/null || echo 1)" != 0 ]]; then
+    args+=(--new-session)
+fi
+
+exec bwrap "${args[@]}" "${extra_binds[@]}" --chdir "$PWD" -- "$@"
