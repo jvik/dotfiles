@@ -283,6 +283,17 @@ and the sandbox hides its socket so an agent cannot drive other panes. Session r
 `agent-sandbox claude` in it (`--agent copilot` for Copilot). It must run from a normal herdr pane,
 not from inside the sandbox, which hides the herdr socket and cannot write outside the project.
 
+### Thunderbolt dock reset
+
+`reset-thunderbolt` (`dot_local/bin/executable_reset-thunderbolt`, re-runs itself with sudo)
+recovers a dock that stops working after suspend without a reboot. Symptoms: the dock charges
+the laptop but no monitors or USB devices appear, `boltctl list` shows it disconnected, and
+`dmesg` has `xhci_hcd 0000:00:0d.0: xHC error in resume` followed by
+`usb usb3-port6: unable to enumerate USB device`. The fault is on the laptop side, so re-plugging
+or power-cycling the dock does not help. The script unbinds the UCSI Type-C controller, removes
+the Thunderbolt NHI and its xHCI PCI functions, rescans the PCI bus and rebinds UCSI, then waits
+for a Thunderbolt router to appear.
+
 ---
 
 ## Scripts

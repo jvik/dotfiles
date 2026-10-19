@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# reset-thunderbolt — recover a Thunderbolt/USB4 dock without rebooting.
+#
+#   reset-thunderbolt
+#
+# After suspend the host side sometimes wedges: the Type-C controller (UCSI)
+# still negotiates power with the dock but reports no alternate modes, the
+# thunderbolt driver never sees a router, and the dock's USB hub fails to
+# enumerate ("usb usb3-port6: unable to enumerate USB device"). Re-plugging the
+# cable or power-cycling the dock does not help because the fault is in the
+# laptop. A plain driver unbind/rebind is not enough either; the PCI functions
+# have to be removed and rediscovered so the controller is reset.
+#
+# Devices are discovered from the drivers rather than hardcoded: the thunderbolt
+# NHI functions, the xHCI function at .0 of the same PCI slot (the Thunderbolt
+# ports' own USB controller, not the laptop's main one), and the UCSI platform
+# device. Re-runs with sudo if not already root.
+
+set -euo pipefail
+
+PCI=/sys/bus/pci
+UCSI_DRIVER=/sys/bus/platform/drivers/ucsi_acpi
+DOCK_WAIT_SECONDS=20
+
+if ((EUID != 0)); then
+    exec sudo "$0" "$@"
+fi
+
+mapfile -t tbt < <(find "$PCI/drivers/thunderbolt" -maxdepth 1 -name '0000:*' -printf '%f\n' | sort)
+if ((${#tbt[@]} == 0)); then
+    echo "reset-thunderbolt: no PCI device bound to the thunderbolt driver" >&2
+    exit 1
+fi
+
+# Function .0 of the Thunderbolt slot is the xHCI controller for those ports.
+xhci=()
+for dev in "${tbt[@]}"; do
+    candidate="${dev%.*}.0"
+    if [[ -e "$PCI/drivers/xhci_hcd/$candidate" ]] && [[ ! " ${xhci[*]} " == *" $candidate "* ]]; then
+        xhci+=("$candidate")
+    fi
+done
+
+mapfile -t ucsi < <(find "$UCSI_DRIVER" -maxdepth 1 -name 'USBC*' -printf '%f\n')
+
+echo "thunderbolt: ${tbt[*]}"
+echo "xhci:        ${xhci[*]:-none}"
+echo "ucsi:        ${ucsi[*]:-none}"
+
+# Unbind UCSI first so it does not react to the ports disappearing underneath it.
+for dev in "${ucsi[@]}"; do
+    echo "$dev" >"$UCSI_DRIVER/unbind"
+done
+
+for dev in "${xhci[@]}" "${tbt[@]}"; do
+    echo 1 >"$PCI/devices/$dev/remove"
+done
+sleep 2
+echo 1 >"$PCI/rescan"
+sleep 3
+
+for dev in "${ucsi[@]}"; do
+    echo "$dev" >"$UCSI_DRIVER/bind"
+done
+
+# A router other than the host's own "N-0" means the dock was discovered.
+echo -n "waiting for dock"
+for ((i = 0; i < DOCK_WAIT_SECONDS; i++)); do
+    if compgen -G '/sys/bus/thunderbolt/devices/[0-9]-[1-9]*' >/dev/null; then
+        echo
+        echo "reset-thunderbolt: dock is back"
+        boltctl list | grep -B2 -A2 -E 'status: +connected$' || true
+        exit 0
+    fi
+    echo -n .
+    sleep 1
+done
+
+echo
+echo "reset-thunderbolt: no Thunderbolt device appeared within ${DOCK_WAIT_SECONDS}s; check 'dmesg | tail'" >&2
+exit 1
