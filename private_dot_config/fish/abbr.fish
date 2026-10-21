@@ -44,6 +44,10 @@ abbr -a kcns 'kubectl config set-context --current --namespace'
 # Tmux
 abbr -a tmuxa 'tmux attach || tmux new-session'
 
+# Coding agents in bubblewrap (see agent-sandbox)
+abbr -a asc 'agent-sandbox claude'
+abbr -a asco 'agent-sandbox copilot'
+
 # I3/Sway config
 abbr -a i3config 'nvim ~/.config/i3/config'
 abbr -a kanshi-gen '~/scripts/kanshi-append-config.sh'

@@ -124,6 +124,7 @@ Some files contain hardware identifiers or device settings tied to specific mach
 - **`private_dot_config/kanshi/config`** — Display profiles. Per-family glob profiles (`"Samsung Electric Company LS49C95xU *"`) cover most desks and a final `fallback-docked` catch-all handles anything unrecognised, so a new monitor usually needs no profile at all. Add one only when a desk needs different geometry, with `scripts/kanshi-append-config.sh` (which inserts before the catch-all) or by editing directly. kanshi takes the first matching profile, so `fallback-docked` must stay last.
 - **`private_dot_config/sway/config`** — Touchpad input device IDs (e.g. `input "1739:52839:SYNA8018:00_06CB:CE67_Touchpad"`). The wallpaper is no longer device-specific: `set-wallpaper.sh` picks per output by aspect ratio at runtime, so new displays need no config change.
 - **`dot_var/app/hu.irl.cameractrls/`** — Camera control settings with PCI/USB device identifiers encoded in the filenames.
+- **`private_dot_config/ollama/compose.yaml`** — Docker Compose setup for [Ollama](https://ollama.com) using the `ollama/ollama:rocm` image for the AMD Radeon RX 9070 (gfx1201). Passes through `/dev/kfd` and `/dev/dri` and adds the host's numeric `video`/`render` GIDs (`getent group video render`). Models live in the `ollama` Docker volume; the API is bound to `127.0.0.1:11434` and the context window is raised to 16k via `OLLAMA_CONTEXT_LENGTH` (the default 4k is too small for coding agents). VS Code's Copilot Chat connects to it through *Manage Models → Ollama* (default endpoint `http://localhost:11434`). [Open WebUI](https://github.com/open-webui/open-webui) is included as the GUI at <http://localhost:3000> (data in the `open-webui` volume; the first account created becomes admin). Start with `docker compose -f ~/.config/ollama/compose.yaml up -d`, then e.g. `docker exec -it ollama ollama run llama3.2`. Requires the native `ollama.service` to be disabled (same port). For NVIDIA/Intel/CPU-only hardware, change the image and device settings.
 
 ---
 
@@ -254,6 +255,8 @@ keep in sync; of the ~229 entries only ~65 come from `abbr.fish`, the rest from 
 agent-sandbox claude --dangerously-skip-permissions
 agent-sandbox copilot --allow-all-tools
 ```
+
+The fish abbreviations `asc` and `asco` expand to `agent-sandbox claude` and `agent-sandbox copilot`.
 
 - **Read-write:** the git toplevel (or `$PWD`), the main `.git` of a linked worktree, and the
   agent's own state (`~/.claude` + `~/.claude.json`, `~/.copilot`).
