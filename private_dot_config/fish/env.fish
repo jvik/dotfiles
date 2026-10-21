@@ -30,6 +30,10 @@ set -gx HISTSIZE 10000
 # SSH Auth Socket
 set -gx SSH_AUTH_SOCK $HOME/.var/app/com.bitwarden.desktop/data/.bitwarden-ssh-agent.sock
 
+# SOPS age key, fetched from Bitwarden on demand. sops splits this shell-style
+# and execs it without a shell, so the pipe needs an explicit `sh -c`.
+set -gx SOPS_AGE_KEY_CMD "sh -c 'bw get item age-key | jq -r \".fields[] | select(.name==\\\"private-key\\\") | .value\"'"
+
 # GitHub token
 if type -q gh
     set -x GITHUB_TOKEN (gh auth token)
