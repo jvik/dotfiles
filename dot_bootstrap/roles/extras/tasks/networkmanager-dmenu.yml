@@ -4,12 +4,12 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: "/home/{{ user }}/.local/bin/networkmanager_dmenu"
-  register: networkmanager_dmenu_stat
+  register: extras_networkmanager_dmenu_stat
 
 - name: Install networkmanager_dmenu
   become: true
   become_user: "{{ user }}"
-  when: not networkmanager_dmenu_stat.stat.exists
+  when: not extras_networkmanager_dmenu_stat.stat.exists
   block:
     - name: Ensure ~/.local/bin exists
       ansible.builtin.file:

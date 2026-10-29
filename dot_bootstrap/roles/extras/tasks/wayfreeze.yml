@@ -4,10 +4,10 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: "/home/{{ user }}/.cargo/bin/wayfreeze"
-  register: wayfreeze_stat
+  register: extras_wayfreeze_stat
 
 - name: Install wayfreeze
-  when: not wayfreeze_stat.stat.exists
+  when: not extras_wayfreeze_stat.stat.exists
   block:
     - name: Install wayfreeze build dependencies (Fedora)
       ansible.builtin.dnf:
@@ -37,5 +37,5 @@
       become: true
       become_user: "{{ user }}"
       ansible.builtin.command: cargo install --git https://github.com/Jappie3/wayfreeze --locked
-      register: wayfreeze_install
+      register: extras_wayfreeze_install
       changed_when: true

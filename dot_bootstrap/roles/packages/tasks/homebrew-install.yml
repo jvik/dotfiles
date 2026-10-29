@@ -4,12 +4,12 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: /home/linuxbrew/.linuxbrew/bin/brew
-  register: homebrew_brew
+  register: packages_homebrew_brew
 
 - name: Download & Install HomeBrew
   become: true
   become_user: "{{ user }}"
-  when: not homebrew_brew.stat.exists
+  when: not packages_homebrew_brew.stat.exists
   block:
     - name: Create tmp dir
       ansible.builtin.file:
@@ -57,8 +57,3 @@
   register: packages_homebrew_chown
   changed_when: packages_homebrew_chown.stdout | length > 0
   failed_when: false
-
-- name: Set LinuxBrew Executable Path
-  ansible.builtin.set_fact:
-    homebrew_executable: /home/linuxbrew/.linuxbrew/bin/brew
-    homebrew_path: /home/linuxbrew/.linuxbrew/bin

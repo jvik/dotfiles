@@ -1,13 +1,21 @@
 ---
+# Settings marked "required" are demanded by ansible-lint; it ignores a custom
+# yamllint config that deviates from them.
 extends: default
 
 rules:
+  # Long URIs and a block-scalar shell command can't be wrapped without changing
+  # them, so allow headroom over the 160 default but still flag runaway lines.
   line-length:
-    max: 160
-    level: warning
-  # Ansible/YAML 1.1 loaders accept on/off, but ansible-lint wants true/false.
+    max: 250
   truthy:
     allowed-values: ["true", "false"]
     check-keys: false
   comments:
     min-spaces-from-content: 1
+  comments-indentation: false # required
+  braces:
+    max-spaces-inside: 1 # required
+  octal-values:
+    forbid-implicit-octal: true # required
+    forbid-explicit-octal: true # required

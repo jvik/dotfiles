@@ -4,12 +4,12 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: "/home/{{ user }}/.local/share/icons/phinger-cursors-light"
-  register: phinger_cursors_stat
+  register: extras_phinger_cursors_stat
 
 - name: Install phinger-cursors
   become: true
   become_user: "{{ user }}"
-  when: not phinger_cursors_stat.stat.exists
+  when: not extras_phinger_cursors_stat.stat.exists
   block:
     - name: Ensure ~/.local/share/icons exists
       ansible.builtin.file:

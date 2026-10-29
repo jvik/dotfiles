@@ -1,3 +1,4 @@
+---
 # Packages are passed as one list so each distro does a single transaction
 # instead of one dnf/apt run (and metadata load) per package.
 - name: Install native packages with dnf

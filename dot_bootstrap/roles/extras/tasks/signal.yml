@@ -4,12 +4,12 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: "/home/{{ user }}/Applications/signal-desktop.AppImage"
-  register: signal_appimage_stat
+  register: extras_signal_appimage_stat
 
 - name: Install Signal Desktop AppImage
   become: true
   become_user: "{{ user }}"
-  when: not signal_appimage_stat.stat.exists
+  when: not extras_signal_appimage_stat.stat.exists
   block:
     - name: Ensure ~/Applications exists
       ansible.builtin.file:
@@ -52,12 +52,12 @@
   become_user: "{{ user }}"
   ansible.builtin.stat:
     path: "/home/{{ user }}/.local/share/applications/signal-desktop.desktop"
-  register: signal_desktop_stat
+  register: extras_signal_desktop_stat
 
 - name: Create Signal desktop integration
   become: true
   become_user: "{{ user }}"
-  when: not signal_desktop_stat.stat.exists
+  when: not extras_signal_desktop_stat.stat.exists
   block:
     - name: Extract Signal icon from AppImage
       ansible.builtin.command:

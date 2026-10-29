@@ -9,21 +9,21 @@
     name: darkman
     state: present
   become: true
-  register: darkman_apt
+  register: packages_darkman_apt
   failed_when: false
-  changed_when: darkman_apt.changed
+  changed_when: packages_darkman_apt.changed
   when: ansible_distribution == 'Ubuntu'
 
 - name: Check if darkman is installed from a package
   ansible.builtin.stat:
     path: /usr/bin/darkman
-  register: darkman_pkg_stat
+  register: packages_darkman_pkg_stat
   when: ansible_distribution == 'Ubuntu'
 
 - name: Check if darkman is installed from source
   ansible.builtin.stat:
     path: /usr/local/bin/darkman
-  register: darkman_src_stat
+  register: packages_darkman_src_stat
   when: ansible_distribution == 'Ubuntu'
 
 - name: Build darkman from source
@@ -31,8 +31,8 @@
     darkman_version: "2.3.1"
   when:
     - ansible_distribution == 'Ubuntu'
-    - not darkman_pkg_stat.stat.exists
-    - not darkman_src_stat.stat.exists
+    - not packages_darkman_pkg_stat.stat.exists
+    - not packages_darkman_src_stat.stat.exists
   block:
     - name: Install darkman build dependencies (Ubuntu)
       ansible.builtin.apt:
