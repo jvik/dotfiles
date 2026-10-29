@@ -87,8 +87,10 @@
 }
 
 .notification-action {
+  background: @noti-bg;
+  color: @text-color;
+  text-shadow: none;
   border: 2px solid @yellow-base;
-  border-top: none;
   transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
@@ -102,7 +104,33 @@
   background: transparent;
 }
 
-.notification-action:hover {
+.notification-action,
+.notification-action button,
+.notification-action:focus,
+.notification-action:active,
+.notification-action label,
+.notification-action button label,
+.notification-content button,
+.notification-content button label,
+.notification button,
+.notification button label {
+  color: @text-color;
+  text-shadow: none;
+}
+
+.notification-action button,
+.notification-content button,
+.notification button {
+  background: @noti-bg;
+  box-shadow: none;
+}
+
+.notification-action:hover,
+.notification-action:hover label,
+.notification-action button:hover,
+.notification-action button:hover label,
+.notification button:hover,
+.notification button:hover label {
   color: @cc-bg;
   background: @blue-base;
 }
@@ -285,6 +313,10 @@
 /* The album art picture (.mpris-background) is blurred behind .mpris-overlay,
  * so this content always sits on a dark backdrop regardless of theme --
  * these colors are intentionally fixed rather than pulled from the palette. */
+.widget-mpris-player {
+  background: #3c3836;
+}
+
 .widget-mpris-title {
   color: #ebdbb2;
   font-weight: 700;

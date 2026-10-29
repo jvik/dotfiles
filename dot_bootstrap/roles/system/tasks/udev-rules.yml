@@ -6,3 +6,17 @@
     owner: root
     group: root
     mode: '0644'
+
+# The Lenovo 510 webcam keeps its controls across sessions, so it can come up
+# zoomed in (seen at zoom_absolute=190) or with a stale brightness; reset zoom
+# to 1x and brightness to its default on every plug-in.
+- name: Reset Lenovo 510 webcam controls on connect
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/90-lenovo-510-webcam-zoom.rules
+    content: |
+      ACTION=="add", SUBSYSTEM=="video4linux", ATTR{index}=="0", \
+        ATTRS{idVendor}=="17ef", ATTRS{product}=="Lenovo 510*", \
+        RUN+="/usr/bin/v4l2-ctl -d $devnode -c zoom_absolute=100,brightness=128"
+    owner: root
+    group: root
+    mode: '0644'
