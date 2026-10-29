@@ -1,0 +1,44 @@
+---
+# Ubuntu restricts unprivileged user namespaces via AppArmor
+# (kernel.apparmor_restrict_unprivileged_userns=1). VS Code's agent terminal sandbox probes
+# with `unshare --user --net`, so grant only unshare userns instead of clearing the sysctl for
+# every program. bwrap needs no profile from us: Ubuntu's bwrap-userns-restrict already allows it.
+- name: Allow user namespaces for sandbox tools on Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Install AppArmor userns profile for unshare
+      ansible.builtin.copy:
+        dest: /etc/apparmor.d/unshare
+        content: |
+          abi <abi/4.0>,
+          include <tunables/global>
+
+          profile unshare /usr/bin/unshare flags=(unconfined) {
+            userns,
+
+            include if exists <local/unshare>
+          }
+        owner: root
+        group: root
+        mode: '0644'
+      register: system_apparmor_unshare_profile
+
+    - name: Load AppArmor userns profile for unshare
+      ansible.builtin.command:
+        cmd: apparmor_parser -r /etc/apparmor.d/unshare
+      when: system_apparmor_unshare_profile is changed
+      changed_when: true
+
+    # An earlier version of this file installed its own `bwrap` profile, which has the same
+    # name as the one in Ubuntu's bwrap-userns-restrict and replaced it when loaded.
+    - name: Remove conflicting AppArmor bwrap profile
+      ansible.builtin.file:
+        path: /etc/apparmor.d/bwrap
+        state: absent
+      register: system_apparmor_bwrap_removed
+
+    - name: Restore Ubuntu's AppArmor bwrap profile
+      ansible.builtin.command:
+        cmd: apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+      when: system_apparmor_bwrap_removed is changed
+      changed_when: true

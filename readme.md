@@ -271,6 +271,15 @@ The fish abbreviations `asc` and `asco` expand to `agent-sandbox claude` and `ag
 - Claude's own Bash sandbox is turned off inside: it is also bwrap, and AppArmor forbids nesting,
   so every command would otherwise fall back to an unsandboxed permission prompt.
 
+VS Code's agent terminal sandbox (required by org policy) needs unprivileged user and network
+namespaces, which Ubuntu's AppArmor blocks by default; without them agent terminal commands refuse
+to run. The `system` role
+(`roles/system/tasks/apparmor-userns.yml`) installs an unconfined AppArmor profile with `userns`
+for `/usr/bin/unshare` only (bwrap is already covered by Ubuntu's `bwrap-userns-restrict`), rather than clearing
+`kernel.apparmor_restrict_unprivileged_userns` system-wide; the `packages` role adds
+`slirp4netns`, `iptables` and `uidmap`, and unlinks Homebrew's `util-linux` (a glib dependency)
+so its `unshare` does not shadow `/usr/bin/unshare` on PATH.
+
 ### herdr
 
 [herdr](https://herdr.dev) (`private_dot_config/herdr/config.toml`) is the agent multiplexer. Prefix

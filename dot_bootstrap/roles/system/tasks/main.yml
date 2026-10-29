@@ -14,6 +14,9 @@
 - name: Import inotify limits setup
   ansible.builtin.import_tasks: inotify-limits.yml
 
+- name: Import AppArmor userns setup
+  ansible.builtin.import_tasks: apparmor-userns.yml
+
 # become: false on a static import is applied to every imported task (the
 # equivalent of include_tasks' `apply:`); tasks that set become themselves win.
 - name: Import Firefox arkenfox setup

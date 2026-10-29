@@ -28,3 +28,15 @@
     state: present
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+
+# util-linux arrives as a glib dependency and, once linked, shadows /usr/bin/unshare on
+# PATH. VS Code's agent terminal sandbox then probes with the brew unshare, which the
+# AppArmor userns profile (system role, apparmor-userns.yml) does not cover. Dependents
+# reference the keg by its opt path, so unlinking is safe.
+- name: Unlink Homebrew util-linux so system unshare/nsenter win on PATH
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/brew unlink util-linux
+    removes: /home/linuxbrew/.linuxbrew/bin/unshare
+  when: ansible_distribution == 'Ubuntu'

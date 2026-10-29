@@ -6,6 +6,9 @@
       - sway-notification-center
       - ncal
       - imagemagick # generates the wallpapers in scripts/generate-wallpapers.sh
+      - slirp4netns # network for VS Code's bwrap agent terminal sandbox
+      - iptables
+      - uidmap
       # - system-config-printer  # printer setup disabled for now, ansible failing
       # - python3-smbc
     state: present
