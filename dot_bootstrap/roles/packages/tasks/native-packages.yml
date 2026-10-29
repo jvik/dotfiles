@@ -13,7 +13,6 @@
     name: "{{ packages_native }}"
     state: present
     update_cache: true
-    cache_valid_time: 3600
     lock_timeout: 180
   when: ansible_distribution == 'Ubuntu'
 

@@ -1,0 +1,6 @@
+---
+# Package repos must exist before packages_native is installed. As a dependency
+# (not just play order) this also holds under `--tags packages`, which would
+# otherwise skip the repositories role.
+dependencies:
+  - role: repositories

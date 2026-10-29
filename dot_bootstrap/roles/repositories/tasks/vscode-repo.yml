@@ -15,3 +15,41 @@
         gpgkey: https://packages.microsoft.com/keys/microsoft.asc
         gpgcheck: true
         enabled: true
+
+- name: Add vscode native repo for Ubuntu
+  when: ansible_distribution == 'Ubuntu'
+  block:
+    - name: Create keyrings directory for vscode
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    # deb822 Signed-By accepts an armored key, so no gpg --dearmor step is needed.
+    - name: Install Microsoft repository key
+      ansible.builtin.get_url:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        dest: /etc/apt/keyrings/packages.microsoft.asc
+        mode: '0644'
+
+    - name: Create Visual Studio Code deb822 sources file
+      ansible.builtin.copy:
+        content: |
+          Types: deb
+          URIs: https://packages.microsoft.com/repos/code
+          Suites: stable
+          Components: main
+          Architectures: amd64,arm64,armhf
+          Signed-By: /etc/apt/keyrings/packages.microsoft.asc
+        dest: /etc/apt/sources.list.d/vscode.sources
+        owner: root
+        group: root
+        mode: '0644'
+      register: repositories_vscode_sources
+
+    # The packages role only refreshes apt when its cache is over an hour old,
+    # so it would not see this new repo on its own.
+    - name: Refresh apt cache after adding vscode repo
+      ansible.builtin.apt:
+        update_cache: true
+      when: repositories_vscode_sources.changed
