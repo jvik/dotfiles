@@ -126,8 +126,14 @@ Run relevant lightweight checks based on changed files:
 ```bash
 chezmoi diff
 chezmoi apply --dry-run
-ansible-lint dot_bootstrap/setup.yml
+uv run ansible-lint dot_bootstrap/setup.yml
 ```
+
+`just validate` runs all of the above; `just --list` shows the other recipes
+(`apply <source-path>`, `role <name>`, ...).
+
+Lint tooling (`ansible-lint`, `yamllint`) is pinned via uv in `pyproject.toml`;
+run `uv sync` once to create `.venv`. Config lives in `.ansible-lint` and `.yamllint`.
 
 For shell changes, run appropriate local lint/tests when available.
 

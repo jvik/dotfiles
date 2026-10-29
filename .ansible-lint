@@ -1,0 +1,12 @@
+---
+profile: moderate
+
+# Only the bootstrap is Ansible; everything else in the repo is dotfiles.
+exclude_paths:
+  - .git/
+  - .venv/
+  - private_dot_config/
+  - dot_var/
+
+# Add rules here only for violations that are deliberate, with a reason.
+skip_list: []

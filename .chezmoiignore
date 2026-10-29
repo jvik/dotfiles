@@ -1,4 +1,7 @@
 AGENTS.md
 CLAUDE.md
 readme.md
+pyproject.toml
+justfile
+uv.lock
 .config/swaync/palette.css

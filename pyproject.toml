@@ -1,0 +1,16 @@
+[project]
+name = "dotfiles-tooling"
+version = "0.0.0"
+description = "Dev tooling for linting the Ansible bootstrap; not a package."
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ansible-core",
+    "ansible-lint",
+    "yamllint",
+]
+
+[tool.uv]
+package = false
