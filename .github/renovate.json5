@@ -1,0 +1,28 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended"],
+  timezone: "Europe/Oslo",
+  // One weekly batch is plenty for a dotfiles repo.
+  schedule: ["before 6am on monday"],
+  // pyproject.toml leaves the lint tools unconstrained, so uv.lock is the only
+  // place their versions move.
+  lockFileMaintenance: {
+    enabled: true,
+    schedule: ["before 6am on monday"],
+  },
+  customManagers: [
+    {
+      // Versions pinned in Ansible vars, annotated with a comment like:
+      //   # renovate: datasource=github-releases depName=owner/repo
+      //   foo_version: "1.2.3"
+      customType: "regex",
+      description: "Pinned versions in the Ansible bootstrap",
+      managerFilePatterns: ["/^dot_bootstrap/.+\\.ya?ml$/"],
+      matchStrings: [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+\\w+_version: \"(?<currentValue>[^\"]+)\"",
+      ],
+      // Upstream tags are v-prefixed; the vars hold the bare version.
+      extractVersionTemplate: "^v(?<version>.+)$",
+    },
+  ],
+}

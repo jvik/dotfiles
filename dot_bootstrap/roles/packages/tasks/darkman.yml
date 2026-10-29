@@ -28,6 +28,7 @@
 
 - name: Build darkman from source
   vars:
+    # renovate: datasource=gitlab-tags depName=WhyNotHugo/darkman
     darkman_version: "2.3.1"
   when:
     - ansible_distribution == 'Ubuntu'

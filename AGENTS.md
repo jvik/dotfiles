@@ -52,6 +52,9 @@ The goal is safe, minimal, and idempotent changes.
 - Role `tasks/main.yml` files use `import_tasks` (static), not `include_tasks`, so
   role tags reach every task. Dynamic includes would be skipped under `--tags`.
 - Keep distro-specific logic in the appropriate distro-specific files.
+- Pin upstream versions in a `<name>_version` var with a
+  `# renovate: datasource=<datasource> depName=<dep>` comment on the line above,
+  so Renovate (`.github/renovate.json5`) can bump them.
 - Package updates (dnf/apt, Homebrew formulae, Flatpak) are handled by
   `topgrade` (installed via the Homebrew role, configured at
   `private_dot_config/topgrade.toml`, scoped via its `only` list to just those

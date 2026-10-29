@@ -10,6 +10,9 @@
   become: true
   become_user: "{{ user }}"
   when: not extras_networkmanager_dmenu_stat.stat.exists
+  vars:
+    # renovate: datasource=github-tags depName=firecat53/networkmanager-dmenu
+    networkmanager_dmenu_version: "2.6.2"
   block:
     - name: Ensure ~/.local/bin exists
       ansible.builtin.file:
@@ -19,6 +22,6 @@
 
     - name: Download networkmanager_dmenu
       ansible.builtin.get_url:
-        url: https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/v2.6.2/networkmanager_dmenu
+        url: https://raw.githubusercontent.com/firecat53/networkmanager-dmenu/v{{ networkmanager_dmenu_version }}/networkmanager_dmenu
         dest: "/home/{{ user }}/.local/bin/networkmanager_dmenu"
         mode: "0755"

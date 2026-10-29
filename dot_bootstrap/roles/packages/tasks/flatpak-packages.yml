@@ -43,6 +43,7 @@
 
 - name: Install Satty from its release bundle
   vars:
+    # renovate: datasource=github-releases depName=Satty-org/Satty
     satty_version: "0.22.0"
   when: packages_satty_installed.rc != 0
   block:
