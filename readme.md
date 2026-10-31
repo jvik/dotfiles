@@ -295,6 +295,32 @@ Edit skills in this repository and apply a scoped target, for example
 installed skills can coexist. With `agent-sandbox`, expose it using
 `--ro ~/.agents/skills`; other agents may also need configuration for skill discovery.
 
+### Claude Code settings
+
+Shared defaults live in `.chezmoitemplates/claude-settings.json`.
+`dot_claude/modify_settings.json` uses chezmoi's modify-template support to fill
+missing settings in `~/.claude/settings.json`, preserving changes made in Claude.
+Existing local values win recursively, including `false`, `null`, and empty values;
+arrays are replaced as a whole rather than combined. If nothing is missing, the
+file is left byte-for-byte unchanged.
+
+On a new machine, chezmoi installs all defaults. On an existing machine, changing
+or removing a default in Git does not change an existing local value. To adopt a
+changed default, remove that key from `~/.claude/settings.json` and run
+`chezmoi apply ~/.claude/settings.json`. A deleted key that still has a repo default
+will be restored on apply; use an explicit empty value where Claude supports it.
+Do not `chezmoi re-add` this file: edit the defaults file directly to share a setting.
+
+Claude's native `.claude/settings.local.json` is for overrides within one project;
+it is not a global companion to `~/.claude/settings.json`.
+
+### VS Code Insiders runtime arguments
+
+`dot_vscode-insiders/modify_argv.json` manages only `password-store` in
+`~/.vscode-insiders/argv.json`. It preserves settings written by VS Code, including
+the machine's crash-reporter ID. When the password store is already correct, it
+also preserves the original JSONC formatting and comments.
+
 ### Agent sandbox
 
 `agent-sandbox` (`dot_local/bin/executable_agent-sandbox`) runs a coding agent inside

@@ -1,0 +1,14 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $defaults := include ".chezmoitemplates/claude-settings.json" | fromJson -}}
+{{- $current := .chezmoi.stdin | default "{}" | fromJson -}}
+{{- if not (kindIs "map" $current) -}}
+{{- fail "Claude settings must be a JSON object" -}}
+{{- end -}}
+{{- /* Local values win recursively; arrays are replaced, including empty arrays. */ -}}
+{{- $merged := list $defaults $current | jq ".[0] * .[1]" | first -}}
+{{- if eq (toJson $current) (toJson $merged) -}}
+{{- /* Avoid rewriting Claude's formatting when no defaults are missing. */ -}}
+{{- .chezmoi.stdin -}}
+{{- else -}}
+{{ $merged | toPrettyJson }}
+{{ end -}}

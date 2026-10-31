@@ -40,7 +40,12 @@ The goal is safe, minimal, and idempotent changes.
   `chezmoi apply ~/.config/fish/functions/foo.fish`.
 - Prefer applying a **scoped target path** over a bare `chezmoi apply` — a bare apply
   re-applies every managed file, which can revert unrelated in-progress edits elsewhere
-  in `$HOME` (e.g. `.claude/settings.json`).
+  in `$HOME`.
+- Claude's global settings use `dot_claude/modify_settings.json` to merge defaults
+  from `.chezmoitemplates/claude-settings.json` into `~/.claude/settings.json`.
+  Existing local values win, including arrays; do not replace this with a fully
+  managed settings file or use `chezmoi re-add` on it. Change shared defaults in
+  the defaults file; they only fill missing keys on existing machines.
 
 ### Personal agent skills (`dot_agents/skills/`)
 
