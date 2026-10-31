@@ -42,6 +42,13 @@ The goal is safe, minimal, and idempotent changes.
   re-applies every managed file, which can revert unrelated in-progress edits elsewhere
   in `$HOME` (e.g. `.claude/settings.json`).
 
+### Personal agent skills (`dot_agents/skills/`)
+
+- Keep reusable personal workflows in `dot_agents/skills/<name>/SKILL.md`, deployed to
+  `~/.agents/skills/`. Keep project-specific instructions in the project's `AGENTS.md`.
+- Keep skill directories non-exact so independently installed skills can coexist.
+- Sandbox users must expose the skill directory (and any symlink targets) read-only.
+
 ### Ansible (`dot_bootstrap/`)
 
 - Keep tasks declarative and idempotent.
