@@ -10,6 +10,7 @@
       - fzf
       - gh
       - just
+      - just-lsp
       - tfenv
       - uv
       - zoxide

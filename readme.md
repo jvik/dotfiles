@@ -40,7 +40,7 @@ You can re-run safely; tasks are idempotent.
 `chezmoi apply` only re-runs the playbook when something in `dot_bootstrap/` changed, and then only
 the roles whose files changed (each role is tagged with its own name in `setup.yml`). Per-role hashes
 from the last successful run are kept in `~/.local/state/bootstrap/hashes`. A change to `setup.yml` or
-`vars.yml`, a missing state file, or `BOOTSTRAP_ALL=1` runs every role. The `bootstrap` abbr always
+`vars.yml` or `collections/requirements.yml`, a missing state file, or `BOOTSTRAP_ALL=1` runs every role. The `bootstrap` abbr always
 runs the full playbook.
 
 ---
@@ -65,6 +65,11 @@ Automatically handled / installed:
 Playbook: `dot_bootstrap/setup.yml`
 
 Automatically executed by chezmoi.
+
+The install script installs the pinned `community.general` and `ansible.posix` collections
+from `dot_bootstrap/collections/requirements.yml` before parsing the playbook. For a manual
+playbook run, install them first with
+`ansible-galaxy collection install -r ~/.bootstrap/collections/requirements.yml`.
 
 Key tasks:
 * Install base packages (fd-find, tree, flatpak, ansible-lint, htop, blueman, wezterm etc.)
@@ -167,6 +172,36 @@ its own playbook:
 sysup-signal   # ansible-playbook ~/.bootstrap/update-signal.yml
 ```
 
+Scan everything installed for known vulnerabilities with
+[syft](https://github.com/anchore/syft) + [grype](https://github.com/anchore/grype)
+(both installed by the packages role via Homebrew). `scripts/vuln-scan.sh` builds one
+SBOM per install root — the OS package DB under `/` (dnf/apt), the Homebrew prefix
+(formulae and global npm), `~/.local/share/uv`, mise installs, `~/.cargo/bin`,
+`~/go/bin`, `~/.local/bin` — and matches them against a single grype DB update.
+Flatpaks are not covered.
+
+The output is an action list with one row per package that *shipped* vulnerable code
+(`rpm:darkman`, `brew:ctop`, `npm:@google/gemini-cli`, `snap:core24`, `mise:kubectl@1.36.5`,
+...), worst first, with the command that fixes it. For rpm and brew it checks whether an
+update is actually available, so "no distro update yet" means there is nothing to do but
+wait. `NEW` counts findings that weren't in the previous run; that column is what to look
+at on a routine run.
+
+```bash
+just vuln-scan                  # scan everything, print the action list
+just vuln-scan --only-fixed     # only vulnerabilities with a released fix
+just vuln-scan --fail-on high   # non-zero exit if anything High or worse is found
+just vuln-report                # re-print the latest action list without scanning
+```
+
+Routine: `sysup` first, then `just vuln-scan`. Work through the rows whose action is a
+command (or remove the package if unused), and either wait on "no ... update yet" rows or
+accept them with an ignore rule (with a `reason`) in
+`private_dot_config/vuln-scan/grype.yaml` (→ `~/.config/vuln-scan/grype.yaml`, used only
+by this script). The last 4 runs are kept under `~/.local/state/vuln-scan/<timestamp>/`
+(`latest` symlink); `findings.tsv` there has one line per finding for drilling into an
+owner: `grep -F 'brew:ctop' ~/.local/state/vuln-scan/latest/findings.tsv`.
+
 ---
 
 ## Customization Tips
@@ -245,6 +280,18 @@ keep in sync; of the ~229 entries only ~65 come from `abbr.fish`, the rest from 
 `lewisacidic/fish-git-abbr` plugin. fzf matches against the expansion as well as the name, so
 `ab commit` finds `gcm`. Run `ab --dump` to inspect the parsed rows without opening the picker.
 
+### Personal agent skills
+
+Reusable personal skills live in `dot_agents/skills/` and deploy to `~/.agents/skills/`
+for Codex discovery across repositories. `git-worktrees` covers isolated checkout setup,
+working with shared Git metadata, validation, and cleanup that preserves unfinished work.
+Invoke it with `$git-worktrees`, or let Codex select it for a matching request.
+
+Edit skills in this repository and apply a scoped target, for example
+`chezmoi apply ~/.agents/skills/git-worktrees`. The directory is non-exact so separately
+installed skills can coexist. With `agent-sandbox`, expose it using
+`--ro ~/.agents/skills`; other agents may also need configuration for skill discovery.
+
 ### Agent sandbox
 
 `agent-sandbox` (`dot_local/bin/executable_agent-sandbox`) runs a coding agent inside
@@ -254,12 +301,16 @@ keep in sync; of the ~229 entries only ~65 come from `abbr.fish`, the rest from 
 ```fish
 agent-sandbox claude --dangerously-skip-permissions
 agent-sandbox copilot --allow-all-tools
+agent-sandbox codex
 ```
 
-The fish abbreviations `asc` and `asco` expand to `agent-sandbox claude` and `agent-sandbox copilot`.
+The fish abbreviations `asclaude`, `ascopilot`, and `ascodex` expand to
+`agent-sandbox claude`, `agent-sandbox copilot`, and `agent-sandbox codex`.
+`asc` and `asco` remain shorter alternatives for Claude and Copilot. These shortcuts
+sandbox those launches; invoking an agent directly still bypasses `agent-sandbox`.
 
 - **Read-write:** the git toplevel (or `$PWD`), the main `.git` of a linked worktree, and the
-  agent's own state (`~/.claude` + `~/.claude.json`, `~/.copilot`).
+  agent's own state (`~/.claude` + `~/.claude.json`, `~/.copilot`, `~/.codex` or `$CODEX_HOME`).
 - **Read-only:** `/usr`, `/etc`, `/opt`, `/nix`, linuxbrew, mise/cargo/go/bun toolchains, git config.
 - **Hidden:** the rest of `$HOME` (an empty tmpfs, discarded on exit) and `/run` (no Wayland,
   D-Bus, keyring, ssh-agent or docker). The environment is cleared down to an allowlist.
@@ -270,6 +321,8 @@ The fish abbreviations `asc` and `asco` expand to `agent-sandbox claude` and `ag
   from outside.
 - Claude's own Bash sandbox is turned off inside: it is also bwrap, and AppArmor forbids nesting,
   so every command would otherwise fall back to an unsandboxed permission prompt.
+- Codex runs with `--no-daemon` so it cannot reuse a host-side shared daemon. This requires
+  a Codex CLI version supporting that flag. `OPENAI_API_KEY` is passed through for Codex only.
 
 VS Code's agent terminal sandbox (required by org policy) needs unprivileged user and network
 namespaces, which Ubuntu's AppArmor blocks by default; without them agent terminal commands refuse

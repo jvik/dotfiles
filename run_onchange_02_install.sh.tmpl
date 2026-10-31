@@ -14,7 +14,7 @@ export ANSIBLE_PIPELINING="${ANSIBLE_PIPELINING:-true}"
 
 # Only run the roles whose files changed since the last successful run. Each
 # role is tagged with its own name in setup.yml; keep this list in sync.
-# Changes to setup.yml or vars.yml, a missing state file, or BOOTSTRAP_ALL=1
+# Changes to setup.yml, vars.yml or collections, a missing state file, or BOOTSTRAP_ALL=1
 # run the whole playbook.
 bootstrap_dir="$HOME/.bootstrap"
 roles=(repositories packages shell dev_tools system extras)
@@ -27,7 +27,7 @@ hash_paths() {
 }
 
 declare -A new_hash old_hash
-new_hash[shared]="$(hash_paths setup.yml vars.yml)"
+new_hash[shared]="$(hash_paths setup.yml vars.yml collections/requirements.yml)"
 for role in "${roles[@]}"; do
     new_hash[$role]="$(hash_paths "roles/$role")"
 done
@@ -55,6 +55,8 @@ else
     echo "bootstrap: running changed roles: ${changed[*]}"
 fi
 
+# Collections must be available before Ansible parses statically imported tasks.
+ansible-galaxy collection install -r "$bootstrap_dir/collections/requirements.yml" || exit $?
 ansible-playbook --ask-become-pass -i localhost, -c local "${tags_args[@]}" "$bootstrap_dir/setup.yml" || exit $?
 
 # Record state only after success, so a failed run is retried on the next apply.
