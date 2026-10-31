@@ -52,6 +52,8 @@ The goal is safe, minimal, and idempotent changes.
 ### Ansible (`dot_bootstrap/`)
 
 - Keep tasks declarative and idempotent.
+- The bootstrap script excludes Python virtual environments from PATH to use the
+  provisioned Ansible; keep the repository's uv lint environment separate.
 - Place new tasks in the most relevant existing role/task files.
 - `run_onchange_02_install.sh.tmpl` runs only the roles whose files changed, via
   `--tags <role>`. A new role must be added to `setup.yml` with a tag matching its

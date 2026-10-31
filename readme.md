@@ -67,7 +67,9 @@ Playbook: `dot_bootstrap/setup.yml`
 Automatically executed by chezmoi.
 
 The install script installs the pinned `community.general` and `ansible.posix` collections
-from `dot_bootstrap/collections/requirements.yml` before parsing the playbook. For a manual
+from `dot_bootstrap/collections/requirements.yml` before parsing the playbook. It excludes
+Python virtual environments from its PATH so it uses the provisioned Ansible rather than
+the repository's lint-only `.venv`; installed collections are reused. For a manual
 playbook run, install them first with
 `ansible-galaxy collection install -r ~/.bootstrap/collections/requirements.yml`.
 
@@ -84,7 +86,8 @@ Template vars file created at `~/.bootstrap/vars.yml` from `vars.yml.tmpl`.
 Dry run / lint (optional):
 
 ```bash
-ansible-lint dot_bootstrap/setup.yml
+just setup
+just lint
 ansible-playbook -i localhost, -c local --check ~/.bootstrap/setup.yml
 ```
 
