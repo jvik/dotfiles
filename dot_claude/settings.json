@@ -48,6 +48,8 @@
       "Bash(which*)"
     ],
     "deny": [
+      "Read(./.env)",
+      "Edit(./.env)",
       "Bash(find*-exec*)",
       "Bash(find*-execdir*)",
       "Bash(find*-delete*)",
