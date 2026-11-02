@@ -45,6 +45,9 @@ abbr -a kcns 'kubectl config set-context --current --namespace'
 abbr -a tmuxa 'tmux attach || tmux new-session'
 
 # Coding agents in bubblewrap (see agent-sandbox)
+abbr -a asclaude 'agent-sandbox claude'
+abbr -a ascopilot 'agent-sandbox copilot'
+abbr -a ascodex 'agent-sandbox codex'
 abbr -a asc 'agent-sandbox claude'
 abbr -a asco 'agent-sandbox copilot'
 

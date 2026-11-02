@@ -6,6 +6,7 @@ default:
 # Install lint tooling into .venv
 setup:
     uv sync
+    uv run ansible-galaxy collection install -r dot_bootstrap/collections/requirements.yml
 
 # Lint the Ansible bootstrap
 lint:
@@ -29,6 +30,7 @@ apply source:
 
 # Run one bootstrap role from the applied ~/.bootstrap copy (apply it first)
 role name:
+    ansible-galaxy collection install -r "$HOME/.bootstrap/collections/requirements.yml"
     ansible-playbook --ask-become-pass -i localhost, -c local --tags {{ name }} "$HOME/.bootstrap/setup.yml"
 
 # Everything AGENTS.md asks for before handoff

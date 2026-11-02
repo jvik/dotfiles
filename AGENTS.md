@@ -40,11 +40,25 @@ The goal is safe, minimal, and idempotent changes.
   `chezmoi apply ~/.config/fish/functions/foo.fish`.
 - Prefer applying a **scoped target path** over a bare `chezmoi apply` — a bare apply
   re-applies every managed file, which can revert unrelated in-progress edits elsewhere
-  in `$HOME` (e.g. `.claude/settings.json`).
+  in `$HOME`.
+- Claude's global settings use `dot_claude/modify_settings.json` to merge defaults
+  from `.chezmoitemplates/claude-settings.json` into `~/.claude/settings.json`.
+  Existing local values win, including arrays; do not replace this with a fully
+  managed settings file or use `chezmoi re-add` on it. Change shared defaults in
+  the defaults file; they only fill missing keys on existing machines.
+
+### Personal agent skills (`dot_agents/skills/`)
+
+- Keep reusable personal workflows in `dot_agents/skills/<name>/SKILL.md`, deployed to
+  `~/.agents/skills/`. Keep project-specific instructions in the project's `AGENTS.md`.
+- Keep skill directories non-exact so independently installed skills can coexist.
+- Sandbox users must expose the skill directory (and any symlink targets) read-only.
 
 ### Ansible (`dot_bootstrap/`)
 
 - Keep tasks declarative and idempotent.
+- The bootstrap script excludes Python virtual environments from PATH to use the
+  provisioned Ansible; keep the repository's uv lint environment separate.
 - Place new tasks in the most relevant existing role/task files.
 - `run_onchange_02_install.sh.tmpl` runs only the roles whose files changed, via
   `--tags <role>`. A new role must be added to `setup.yml` with a tag matching its

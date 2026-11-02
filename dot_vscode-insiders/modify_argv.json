@@ -1,0 +1,11 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $current := .chezmoi.stdin | default "{}" | fromJsonc -}}
+{{- if not (kindIs "map" $current) -}}
+{{- fail "VS Code Insiders argv.json must be a JSON object" -}}
+{{- end -}}
+{{- /* VS Code writes crash-reporting settings here; preserve them and its comments. */ -}}
+{{- if eq (get $current "password-store") "gnome-libsecret" -}}
+{{- .chezmoi.stdin -}}
+{{- else -}}
+{{ $current | setValueAtPath "password-store" "gnome-libsecret" | toPrettyJson }}
+{{ end -}}

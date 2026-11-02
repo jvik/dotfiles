@@ -1,5 +1,0 @@
-// Permanent command line arguments for VS Code Insiders (mirrors ~/.vscode/argv.json).
-// NOTE: Changing this file requires a restart of VS Code.
-{
-	"password-store": "gnome-libsecret"
-}

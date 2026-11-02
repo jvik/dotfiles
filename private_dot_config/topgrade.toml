@@ -9,7 +9,7 @@ no_self_update = true
 # Only touch the package managers actually in use here (Fedora/dnf via
 # `system`, linuxbrew, flatpak, mise). Without this, topgrade probes and
 # tries to update every tool it can detect on the system.
-only = ["system", "brew_formula", "flatpak"]
+only = ["system", "brew_formula", "flatpak", "mise"]
 
 [linux]
 # dnf only refreshes metadata when its cache expires; force a refresh every run

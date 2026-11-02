@@ -1,0 +1,8 @@
+---
+collections:
+  - name: community.general
+    # renovate: datasource=galaxy-collection depName=community.general
+    version: "10.7.6"
+  - name: ansible.posix
+    # renovate: datasource=galaxy-collection depName=ansible.posix
+    version: "1.6.2"

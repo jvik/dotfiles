@@ -4,7 +4,7 @@
 # The agent CAN:
 #   - read and write the current project (git toplevel, or $PWD outside a repo)
 #   - read the system (/usr, /etc) and your toolchains (mise, brew, cargo, nix)
-#   - read and write its own state dir (~/.claude, ~/.copilot) so login and history persist
+#   - read and write its own state dir (~/.claude, ~/.copilot, ~/.codex) so login and history persist
 #   - reach the network, since it has to talk to its API
 #
 # The agent CANNOT:
@@ -30,6 +30,7 @@ Options:
 Examples:
   agent-sandbox claude --dangerously-skip-permissions
   agent-sandbox --gh copilot --allow-all-tools
+  agent-sandbox codex
   agent-sandbox --ro ~/src/shared-lib bash
 EOF
 }
@@ -169,6 +170,19 @@ fi
 # missing path would silently land in the throwaway tmpfs home instead.
 agent=$(basename "$1")
 case "$agent" in
+    codex)
+        codex_home=$(realpath -m "${CODEX_HOME:-$HOME/.codex}")
+        mkdir -p "$codex_home"
+        args+=(
+            --bind "$codex_home" "$codex_home"
+            --setenv CODEX_HOME "$codex_home"
+        )
+        if [[ -n "${OPENAI_API_KEY:-}" ]]; then
+            args+=(--setenv OPENAI_API_KEY "$OPENAI_API_KEY")
+        fi
+        # A shared host daemon would execute outside this sandbox.
+        set -- "$1" --no-daemon "${@:2}"
+        ;;
     claude)
         mkdir -p "$HOME/.claude"
         args+=(
