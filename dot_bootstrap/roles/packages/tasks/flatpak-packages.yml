@@ -28,8 +28,35 @@
       - com.github.jeromerobert.pdfarranger/x86_64/stable
       - it.mijorus.smile/x86_64/stable
       - io.github.peazip.PeaZip/x86_64/stable
-      - org.wezfurlong.wezterm/x86_64/stable
     state: present
+
+# On Fedora WezTerm comes from the nightly COPR instead: the Flathub build is
+# stuck on 20240203, which aborts on Wayland under wlroots 0.20.
+- name: Install WezTerm Flatpak (non-Fedora)
+  become: true
+  become_user: "{{ user }}"
+  community.general.flatpak:
+    method: user
+    name: org.wezfurlong.wezterm/x86_64/stable
+    state: present
+  when: ansible_distribution != 'Fedora'
+
+- name: Remove WezTerm Flatpak replaced by the native package (user)
+  become: true
+  become_user: "{{ user }}"
+  community.general.flatpak:
+    method: user
+    name: org.wezfurlong.wezterm
+    state: absent
+  when: ansible_distribution == 'Fedora'
+
+- name: Remove WezTerm Flatpak replaced by the native package (system)
+  become: true
+  community.general.flatpak:
+    method: system
+    name: org.wezfurlong.wezterm
+    state: absent
+  when: ansible_distribution == 'Fedora'
 
 # Satty is not published on Flathub, so it is installed from the release bundle
 # rather than through the flatpak module. Installed system-wide to match the

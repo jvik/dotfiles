@@ -1,0 +1,10 @@
+---
+# The Flathub WezTerm build (20240203) aborts on Wayland under wlroots 0.20
+# ("unknown opcode 0 for wl_shm"), and no newer stable release exists. The
+# nightly COPR is maintained by WezTerm's author and tracks main.
+- name: Enable WezTerm nightly COPR
+  ansible.builtin.command:
+    cmd: dnf copr enable -y wezfurlong/wezterm-nightly
+    creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:wezfurlong:wezterm-nightly.repo
+  become: true
+  when: ansible_distribution == 'Fedora'

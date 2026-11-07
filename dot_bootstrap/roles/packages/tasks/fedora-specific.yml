@@ -14,6 +14,7 @@
       - tuned-ppd # For power profiles daemon
       - darkman
       - ImageMagick # generates the wallpapers in scripts/generate-wallpapers.sh
+      - wezterm # from the wezterm-nightly COPR (repositories role)
     state: present
   when: ansible_distribution == 'Fedora'
 

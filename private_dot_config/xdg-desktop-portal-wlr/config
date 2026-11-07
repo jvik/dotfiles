@@ -1,0 +1,4 @@
+[screencast]
+# Use a dmenu-style chooser so both outputs and individual windows can be picked
+chooser_type=dmenu
+chooser_cmd=fuzzel --dmenu --prompt="Del: "

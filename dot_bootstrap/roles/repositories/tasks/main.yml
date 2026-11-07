@@ -16,3 +16,6 @@
 
 - name: Include Jottacloud CLI repository setup
   ansible.builtin.import_tasks: jotta-cli-repo.yml
+
+- name: Include WezTerm nightly repository setup
+  ansible.builtin.import_tasks: wezterm-repo.yml
