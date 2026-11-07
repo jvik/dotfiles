@@ -15,6 +15,7 @@
       - darkman
       - ImageMagick # generates the wallpapers in scripts/generate-wallpapers.sh
       - wezterm # from the wezterm-nightly COPR (repositories role)
+      - gnome-keyring # secrets service for libsecret apps (VS Code password-store), started from sway config
     state: present
   when: ansible_distribution == 'Fedora'
 
