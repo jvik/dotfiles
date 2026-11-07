@@ -296,7 +296,7 @@ for_window [app_id="waybar-battery"] floating enable, sticky enable, move positi
 # The Flatpak (XWayland) reports class "bitwarden"; criteria are case-sensitive.
 # Centred and sticky so the SSH key confirmation prompt pops up in front of the
 # current work on whichever workspace is focused.
-for_window [class="(?i)^bitwarden$"] floating enable, sticky enable, move position center
+for_window [class="(?i)^bitwarden$"] floating enable, sticky enable, resize set width 38 ppt height 52 ppt, move position center
 for_window [app_id="nmwui"] floating enable, move position center
 for_window [app_id="Calculator|snap-store"] floating enable
 for_window [app_id="org.pulseaudio.pavucontrol"] floating enable, border pixel 1, sticky enable, resize set width 40 ppt height 60 ppt

@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# A sway reload re-applies outputs and restarts the bar, which flickers the
+# whole screen, so only do it when a file sway actually reads has changed.
+# Scripts under sway/scripts/ are run fresh on each use and need no reload.
+# sway/config: {{ include "private_dot_config/sway/config" | sha256sum }}
+# sway/colors/gruvbox: {{ include "private_dot_config/sway/colors/gruvbox" | sha256sum }}
+
+if [ -n "$SWAYSOCK" ] && command -v swaymsg &>/dev/null; then
+    swaymsg reload
+fi
