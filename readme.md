@@ -80,6 +80,11 @@ Key tasks:
 * Set login shell to fish for user
 * Install Homebrew (if missing) and package set.
 * Install fonts via Homebrew casks
+* Unlock the LUKS disk with the TPM at boot (Fedora with Secure Boot on; key sealed to PCR 7).
+  The first run asks once for the disk passphrase to enroll the TPM key; the passphrase stays as a
+  fallback. After toggling Secure Boot or a firmware dbx update, boot asks for the passphrase
+  again: re-seal with the command in `roles/system/tasks/tpm2-luks-unlock.yml`. Post-boot checks
+  and troubleshooting: [docs/tpm-disk-unlock.md](docs/tpm-disk-unlock.md).
 
 Template vars file created at `~/.bootstrap/vars.yml` from `vars.yml.tmpl`.
 

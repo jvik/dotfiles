@@ -17,6 +17,12 @@
 - name: Import AppArmor userns setup
   ansible.builtin.import_tasks: apparmor-userns.yml
 
+# Relies on dracut reading tpm2-device= from crypttab; Ubuntu's
+# initramfs-tools doesn't support it.
+- name: Import TPM disk unlock setup
+  ansible.builtin.import_tasks: tpm2-luks-unlock.yml
+  when: ansible_distribution == 'Fedora'
+
 # become: false on a static import is applied to every imported task (the
 # equivalent of include_tasks' `apply:`); tasks that set become themselves win.
 - name: Import Firefox arkenfox setup

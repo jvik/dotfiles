@@ -1,6 +1,7 @@
 AGENTS.md
 CLAUDE.md
 readme.md
+docs
 pyproject.toml
 justfile
 uv.lock

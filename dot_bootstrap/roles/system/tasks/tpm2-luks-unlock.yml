@@ -1,0 +1,103 @@
+---
+# Unlock LUKS volumes with the TPM at boot instead of typing the passphrase.
+# The key is sealed to PCR 7 (Secure Boot state and keys), so kernel updates
+# keep working. Toggling Secure Boot or a firmware Secure Boot database (dbx)
+# update makes the TPM refuse, and boot falls back to the passphrase, which is
+# never removed. Re-seal afterwards with:
+#   sudo systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=7 <device>
+# Without Secure Boot, PCR 7 doesn't stop another OS from unsealing the key,
+# so nothing is enrolled then.
+
+- name: Check for a TPM 2.0 device
+  ansible.builtin.stat:
+    path: /dev/tpmrm0
+  register: system_tpm2_device
+
+- name: Check Secure Boot state
+  ansible.builtin.command: mokutil --sb-state
+  register: system_secure_boot_state
+  changed_when: false
+  failed_when: false
+
+- name: Check for crypttab
+  ansible.builtin.stat:
+    path: /etc/crypttab
+  register: system_crypttab
+
+- name: Unlock LUKS volumes with the TPM
+  when:
+    - system_tpm2_device.stat.exists
+    - "'SecureBoot enabled' in system_secure_boot_state.stdout"
+    - system_crypttab.stat.exists
+  block:
+    - name: List LUKS volumes that prompt for a passphrase at boot
+      # crypttab fields: name, device, key file, options. No key file ("none",
+      # "-" or absent) means a passphrase prompt. Prints "name device", with the
+      # UUID= device Fedora's installer writes turned into the path
+      # systemd-cryptenroll needs.
+      ansible.builtin.command:
+        argv:
+          - awk
+          - >-
+            NF >= 2 && $1 !~ /^#/ && ($3 == "" || $3 == "none" || $3 == "-") {
+            sub(/^UUID=/, "/dev/disk/by-uuid/", $2); print $1, $2 }
+          - /etc/crypttab
+      register: system_luks_crypttab
+      changed_when: false
+
+    - name: Split crypttab entries into volume names and devices
+      ansible.builtin.set_fact:
+        system_luks_names: "{{ system_luks_crypttab.stdout_lines | map('split') | map('first') | list }}"
+        system_luks_devices: "{{ system_luks_crypttab.stdout_lines | map('split') | map('last') | list }}"
+
+    - name: Read LUKS headers
+      ansible.builtin.command: cryptsetup luksDump {{ item }}
+      loop: "{{ system_luks_devices }}"
+      register: system_luks_headers
+      changed_when: false
+
+    - name: Find LUKS volumes without a TPM key
+      ansible.builtin.set_fact:
+        system_luks_devices_to_enroll: >-
+          {{ system_luks_headers.results
+             | rejectattr('stdout', 'search', 'systemd-tpm2')
+             | map(attribute='item') | list }}
+
+    - name: Ask for the disk passphrase to authorize TPM enrollment
+      ansible.builtin.pause:
+        prompt: Disk encryption passphrase (adds a TPM key to {{ system_luks_devices_to_enroll | join(', ') }})
+        echo: false
+      register: system_luks_passphrase
+      no_log: true
+      when: system_luks_devices_to_enroll | length > 0
+
+    - name: Seal a LUKS key to the TPM, bound to Secure Boot state
+      # The passphrase goes in on stdin rather than the environment, which
+      # Ansible echoes at -vvv. A wrong passphrase fails this task; its output
+      # is hidden by no_log, so just re-run the bootstrap.
+      ansible.builtin.command:
+        argv:
+          - systemd-cryptenroll
+          - --unlock-key-file=/dev/stdin
+          - --tpm2-device=auto
+          - --tpm2-pcrs=7
+          - "{{ item }}"
+        stdin: "{{ system_luks_passphrase.user_input }}"
+        stdin_add_newline: false
+      loop: "{{ system_luks_devices_to_enroll }}"
+      changed_when: true
+      no_log: true
+
+    - name: Have systemd-cryptsetup try the TPM before prompting
+      community.general.crypttab:
+        name: "{{ item }}"
+        opts: tpm2-device=auto
+        state: opts_present
+      loop: "{{ system_luks_names }}"
+      register: system_crypttab_tpm2
+
+    - name: Rebuild initramfs so early boot gets the new crypttab
+      # Fedora's host-only initramfs carries its own copy of /etc/crypttab.
+      ansible.builtin.command: dracut --force --regenerate-all
+      when: system_crypttab_tpm2 is changed
+      changed_when: true
