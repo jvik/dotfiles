@@ -2,3 +2,6 @@
 window_manager: sway
 user: {{ .chezmoi.username }}
 private_machine: {{ eq (env "PRIVATE_MACHINE") "true" }}
+# Bitwarden clients default to the US cloud; the account lives on the EU cloud.
+bitwarden_server_url: https://vault.bitwarden.eu
+bitwarden_notifications_url: https://notifications.bitwarden.eu

@@ -80,6 +80,8 @@ Key tasks:
 * Set login shell to fish for user
 * Install Homebrew (if missing) and package set.
 * Install fonts via Homebrew casks
+* Point the Bitwarden CLI and Firefox extension at the EU cloud (`bitwarden_server_url` in `vars.yml.tmpl`).
+  The desktop app has no managed setting: pick the EU region on its login screen.
 * Unlock the LUKS disk with the TPM at boot (Fedora with Secure Boot on; key sealed to PCR 7).
   The first run asks once for the disk passphrase to enroll the TPM key; the passphrase stays as a
   fallback. After toggling Secure Boot or a firmware dbx update, boot asks for the passphrase

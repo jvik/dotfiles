@@ -30,6 +30,24 @@
   environment:
     PATH: "/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
 
+# Only set the server when it differs, so re-runs report no change. Switch it
+# while logged out: the stored login belongs to the old server.
+- name: Read the Bitwarden CLI server
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/bw config server
+  register: packages_bw_server
+  changed_when: false
+
+- name: Point the Bitwarden CLI at the configured server
+  become: true
+  become_user: "{{ user }}"
+  ansible.builtin.command:
+    cmd: /home/linuxbrew/.linuxbrew/bin/bw config server {{ bitwarden_server_url }}
+  when: packages_bw_server.stdout != bitwarden_server_url
+  changed_when: true
+
 # util-linux arrives as a glib dependency and, once linked, shadows /usr/bin/unshare on
 # PATH. VS Code's agent terminal sandbox then probes with the brew unshare, which the
 # AppArmor userns profile (system role, apparmor-userns.yml) does not cover. Dependents
