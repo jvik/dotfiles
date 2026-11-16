@@ -12,7 +12,7 @@
   when: not extras_networkmanager_dmenu_stat.stat.exists
   vars:
     # renovate: datasource=github-tags depName=firecat53/networkmanager-dmenu
-    networkmanager_dmenu_version: "2.6.2"
+    networkmanager_dmenu_version: "2.7.2"
   block:
     - name: Ensure ~/.local/bin exists
       ansible.builtin.file:
