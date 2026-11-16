@@ -55,6 +55,18 @@
   become_user: "{{ ansible_user_id }}"
   when: system_sway_running.rc == 0
 
+# Starting an already-active target does not pull in units enabled since it started.
+# On Fedora, sway-systemd brings sway-session.target up at login, before this role
+# enables waybar.service, so the task above is a no-op and waybar would stay down.
+- name: Start waybar in the running sway session
+  ansible.builtin.systemd:
+    name: waybar.service
+    state: started
+    scope: user
+  become: false
+  become_user: "{{ ansible_user_id }}"
+  when: system_sway_running.rc == 0
+
 - name: Enable battery-check systemd user timer
   ansible.builtin.systemd:
     name: battery-check.timer
