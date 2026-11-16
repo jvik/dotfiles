@@ -9,6 +9,8 @@
       - eza
       - fzf
       - gh
+      # Toolchain for the VS Code Go extension
+      - go
       - just
       - just-lsp
       - tfenv
