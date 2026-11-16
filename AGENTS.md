@@ -46,6 +46,11 @@ The goal is safe, minimal, and idempotent changes.
   Existing local values win, including arrays; do not replace this with a fully
   managed settings file or use `chezmoi re-add` on it. Change shared defaults in
   the defaults file; they only fill missing keys on existing machines.
+- Firefox rewrites `~/.config/mozilla/firefox/profiles.ini` at runtime, so its source is
+  a modify template (`modify_profiles.ini`) that only enforces "`main` is the default
+  profile and every `[Install<hash>]` section opens it", passing everything else
+  through. Never hardcode an install hash: it comes from Firefox's install path and
+  differs per distro. Do not `chezmoi re-add` the live file.
 
 ### Personal agent skills (`dot_agents/skills/`)
 
