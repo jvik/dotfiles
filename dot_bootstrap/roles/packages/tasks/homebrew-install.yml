@@ -11,6 +11,20 @@
   become_user: "{{ user }}"
   when: not packages_homebrew_brew.stat.exists
   block:
+    # The installer only needs sudo to create the prefix. With NONINTERACTIVE
+    # it checks via `sudo -n`, which cannot reuse Ansible's become password, so
+    # it aborts with "Insufficient permissions". Creating the prefix here as
+    # root, owned by the user, lets the installer run without sudo.
+    - name: Create Homebrew prefix owned by the user
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: /home/linuxbrew/.linuxbrew
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: '0755'
+
     - name: Create tmp dir
       ansible.builtin.file:
         path: '/home/{{ user }}/temp'
